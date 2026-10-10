@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: '1.24.5'
+          cache: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Native host dependencies
+        run: sudo apt-get update && sudo apt-get install -y clang libcurl4-openssl-dev
+      - run: python -m pip install -r requirements-dev.txt
+      - name: Public source and documentation
+        run: |
+          python scripts/check_public_tree.py
+          python scripts/check_docs.py
+          python -m compileall -q analysis backend scripts packaging tests
+      - name: Backend race tests and vet
+        working-directory: backend
+        run: |
+          go test -race ./...
+          go vet ./...
+      - name: Setup, launcher and diagnostics
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Packaging metadata and rejection checks
+        run: python -m unittest discover -s packaging -p 'test_rebuild.py' -v
+      - name: Native host sanitizer harness
+        env:
+          ND_SANITIZERS: address,undefined
+        run: python tests/native-host/run.py

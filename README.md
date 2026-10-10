@@ -1,0 +1,90 @@
+# Navidrome for Shanling M1 Plus
+
+[![CI](https://github.com/shivaluma/shanling-m1plus-navidrome/actions/workflows/ci.yml/badge.svg)](https://github.com/shivaluma/shanling-m1plus-navidrome/actions/workflows/ci.yml)
+![Status: experimental](https://img.shields.io/badge/status-experimental-orange)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+Browse your own music server through a native Shanling interface and hand playback to the stock player.
+
+An independent reverse-engineering project for **Shanling M1 Plus firmware V2.1**. It combines a native C/AWTK extension, a small Go Subsonic proxy and a guarded startup hook. Existing Shanling widgets, theme and font sizes remain the basis of the interface.
+
+**Hardware validation is pending.** The implementation and experimental packaging have passed host and MIPS emulation checks, including authenticated browsing and byte-range streaming against a real Navidrome server. Boot, native rendering, audio decoding and DAC output on an M1 Plus have not been verified. No ready-to-flash firmware release is distributed here.
+
+[Tiếng Việt](README.vi.md) · [Build](docs/build.md) · [Installation and device testing](docs/installation.md) · [Architecture](docs/architecture.md) · [Validation](docs/validation.md) · [Research](docs/research/README.md)
+
+## Features implemented
+
+- Artists, albums and playlists, with four readable rows per page.
+- Search across artists, albums and tracks using the native T9 keyboard.
+- Album and playlist playback queues, up to 128 tracks per selected chunk.
+- HTTPS to your Navidrome server, with certificate and hostname verification.
+- Incremental audio streaming with GET/HEAD, Range and If-Range support.
+- Local credential setup, an explicit enable marker and optional SD boot diagnostics.
+- Stock-application fallback for missing payload, early backend failure or a failing extended application.
+
+The target is **Navidrome and the Subsonic API**. Jellyfin integration, offline downloads, transcoding, scrobbling and changes to the local music database are outside the current implementation. Generic Subsonic servers have not been independently validated.
+
+## How it fits together
+
+```mermaid
+flowchart LR
+    SD[SD card: extension and private configuration] --> Hook[Guarded startup hook]
+    Hook --> UI[Native AWTK interface]
+    Hook --> Proxy[Go proxy on 127.0.0.1:17831]
+    UI -->|Browse and prepare| Proxy
+    Proxy -->|Verified HTTPS / Subsonic| Server[Your Navidrome server]
+    UI -->|Recovered queue ABI| Player[Stock Shanling player]
+    Player -->|Temporary loopback stream URL| Proxy
+```
+
+Only the init-script reference and a launcher enter the rebuilt rootfs. The backend, plugin and CA bundle stay on the SD card. The original kernel and stock application bytes are preserved.
+
+## Current evidence
+
+| Layer | Evidence | Status |
+| --- | --- | --- |
+| Go backend | Unit/race tests, TLS and streaming fixtures | Passed |
+| Native C interface | 13 host scenarios, Darwin UBSAN and Linux ASAN/UBSAN | Passed with mocked toolkit/player |
+| MIPS execution | 17 backend checks and original-library plugin loading | Passed under QEMU P5600 |
+| Real Navidrome | Local full-FLAC integration; authenticated live MIPS browse/search and two audio ranges | Passed in the documented scope |
+| Firmware packaging | 3,016 file hashes, 494 symlinks, 208 hardlink groups; unchanged kernel | Passed offline; rootfs 36,864 bytes smaller than stock |
+| M1 Plus hardware | Updater acceptance, boot, UI, keyboard, audio and sleep/resume | **Unverified** |
+
+See [validation details and retained reports](docs/validation.md). Passing emulation tests does not establish device compatibility or recovery.
+
+## Start with host tests
+
+These checks do not require a player or proprietary firmware:
+
+```sh
+git clone https://github.com/shivaluma/shanling-m1plus-navidrome.git
+cd shanling-m1plus-navidrome
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+(cd backend && go test -race ./... && go vet ./...)
+python -m unittest discover -s tests -p 'test_*.py' -v
+python -m unittest discover -s packaging -p 'test_rebuild.py' -v
+```
+
+The native host harness additionally needs Clang and libcurl development headers; see [testing](docs/testing.md). To build the MIPS extension and experimental update container, follow [the build guide](docs/build.md) with your own matching V2.1 firmware.
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| `backend/` | Loopback-only Go Subsonic client and streaming proxy |
+| `native/` | Native interface, startup interposer and recovered ABI declarations |
+| `scripts/` | Input preparation, build, ELF checks, SD setup and diagnostics |
+| `packaging/` | Metadata-preserving SquashFS repacker and restore-draft builder |
+| `analysis/` | Static container inspection, ELF inventory and disassembly tools |
+| `tests/` | Setup, launcher, diagnostics, native host and MIPS runtime checks |
+| `docs/` | Build, device testing, architecture, validation and research notes |
+
+Firmware, extracted vendor libraries, private configuration, toolchains and generated images are local build inputs/outputs and are excluded from Git.
+
+## Contributing
+
+The most useful next contributions are reproducible hardware results, recovered ABI corrections, large-library behavior and native UI fixes. Start with [CONTRIBUTING.md](CONTRIBUTING.md), the [roadmap](docs/roadmap.md) and [security guidance](SECURITY.md). Report the exact firmware hash and distinguish host/emulation results from device observations.
+
+Project-authored source is MIT licensed. Third-party components retain their licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). This project is independent of Shanling and Navidrome.

@@ -1,0 +1,28 @@
+{
+  "recorded_at_utc": "2026-10-10T13:15:04.796747+00:00",
+  "passed": true,
+  "checks": [
+    "actual SD MIPS backend starts with TLS CA and runtime limits",
+    "authenticated artist list",
+    "artist to album browsing",
+    "album list pagination",
+    "album to track browsing",
+    "search using real library text",
+    "playlist list",
+    "playback capability without upstream credentials",
+    "real audio HEAD through MIPS proxy",
+    "two real audio byte ranges for playback and seek"
+  ],
+  "backend_sha256": "d3d7846fbe8d058a8046775a9c17486e47b61f49898d767ccbfb09005f835593",
+  "library_counts": {
+    "artists": 1,
+    "albums_in_page": 1,
+    "tracks_in_selected_album": 1,
+    "playlists": 0
+  },
+  "audio_content_type": "audio/mp4",
+  "stream_bytes_read": 8192,
+  "scope": "Actual SD MIPS backend under QEMU P5600 using authenticated live server. No hardware boot, native UI rendering, audio decoding or DAC verification.",
+  "sensitive_data_retained": false,
+  "playlist_detail_live_test": "not exercised: no playlists on this account; local fixture tests cover it"
+}

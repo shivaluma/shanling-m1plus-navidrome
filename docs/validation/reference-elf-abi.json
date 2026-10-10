@@ -1,0 +1,284 @@
+{
+  "native": {
+    "path": "./dist/libnavidrome_ui.so",
+    "class": 32,
+    "little_endian": true,
+    "machine": "EM_MIPS",
+    "type": "ET_DYN",
+    "flags": 1879053319,
+    "isa_level": 32,
+    "isa_rev": 2,
+    "fp_abi": 6,
+    "needed": [
+      "libc.so.6",
+      "libdl.so.2",
+      "libpthread.so.0",
+      "libm.so.6",
+      "libcurl.so.4",
+      "libgcc_s.so.1"
+    ],
+    "soname": "libnavidrome_ui.so",
+    "has_interpreter": false,
+    "has_dynamic": true,
+    "search_paths": [],
+    "imports": [
+      {
+        "name": "pthread_create",
+        "version": "GLIBC_2.2",
+        "library": "libpthread.so.0",
+        "weak": false
+      },
+      {
+        "name": "strcmp",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strdup",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "snprintf",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strncmp",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strspn",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "__ctype_tolower_loc",
+        "version": "GLIBC_2.3",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "pthread_cond_wait",
+        "version": "GLIBC_2.3.2",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "pthread_mutex_lock",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "malloc",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "time",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "fwrite",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "curl_easy_cleanup",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "pthread_detach",
+        "version": "GLIBC_2.0",
+        "library": "libpthread.so.0",
+        "weak": false
+      },
+      {
+        "name": "curl_easy_perform",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "strlen",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "memcpy",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "nanosleep",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "stderr",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "curl_slist_free_all",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "curl_slist_append",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "pthread_mutex_unlock",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "dlsym",
+        "version": "GLIBC_2.0",
+        "library": "libdl.so.2",
+        "weak": false
+      },
+      {
+        "name": "free",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "curl_easy_init",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "_exit",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "memset",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "calloc",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strtod",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "__isoc99_sscanf",
+        "version": "GLIBC_2.7",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "unsetenv",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "realloc",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "pthread_cond_signal",
+        "version": "GLIBC_2.3.2",
+        "library": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "curl_easy_setopt",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "curl_easy_getinfo",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "sprintf",
+        "version": "GLIBC_2.0",
+        "library": "libc.so.6",
+        "weak": false
+      }
+    ],
+    "exports": [
+      {
+        "name": "__libc_start_main",
+        "version": "",
+        "library": "",
+        "weak": false
+      },
+      {
+        "name": "nd_ui_start",
+        "version": "",
+        "library": "",
+        "weak": false
+      }
+    ],
+    "size": 54464,
+    "sha256": "61ba03b7e0928e9a3190a0f5f14561ce7654c9c1c038eb594863f11d85e21b58"
+  },
+  "backend": {
+    "path": "./dist/navidrome-service",
+    "class": 32,
+    "little_endian": true,
+    "machine": "EM_MIPS",
+    "type": "ET_EXEC",
+    "flags": 1342182404,
+    "isa_level": 32,
+    "isa_rev": 1,
+    "fp_abi": 3,
+    "needed": [],
+    "soname": "",
+    "has_interpreter": false,
+    "has_dynamic": false,
+    "search_paths": [],
+    "imports": [],
+    "exports": [],
+    "size": 7078103,
+    "sha256": "9badb7a0a1979fcffc1367836b0f10ba39c0087c5598ca32575e9fc2ac335b9d"
+  },
+  "original_libraries_resolve_all_native_imports": true,
+  "limitations": [
+    "Static symbol compatibility does not prove runtime ABI of recovered toolkit APIs.",
+    "Go softfloat executable kernel acceptance and device memory use need hardware tests."
+  ]
+}

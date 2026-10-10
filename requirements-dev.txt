@@ -1,0 +1,5 @@
+dissect.squashfs==1.12
+dissect.cstruct==4.7
+dissect.util==3.24
+pyelftools==0.33
+capstone==5.0.9

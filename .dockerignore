@@ -1,0 +1,11 @@
+.git
+.venv
+.work
+inputs
+dist
+tools
+packaging/tools
+packaging/test-results
+tests/mips-runtime/sysroot
+**/__pycache__
+**/config.json

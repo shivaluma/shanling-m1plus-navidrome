@@ -1,0 +1,106 @@
+{
+  "status": "experimental-offline-validated",
+  "original_sha256": "1ccb4667e3e9bdf9a35be4dc58d09b898ca53c5fd58396b7667fb91fe895f925",
+  "original_unchanged": true,
+  "kernel_unchanged": true,
+  "overlay_directory": "./packaging/test-input/overlay",
+  "added_paths": [
+    "usr/share/navidrome-packaging-test",
+    "usr/share/navidrome-packaging-test/dummy-executable",
+    "usr/share/navidrome-packaging-test/dummy.so.1",
+    "usr/share/navidrome-packaging-test/marker.txt"
+  ],
+  "changed_paths": [
+    "etc/init.d/S90play"
+  ],
+  "filesystem": {
+    "passed": true,
+    "expected_paths": 3744,
+    "actual_paths": 3744,
+    "removed_original_paths": [],
+    "missing_paths": [],
+    "unexpected_paths": [],
+    "mismatches": {},
+    "hardlink_groups": 208,
+    "hardlink_equivalence_preserved": true,
+    "root_metadata_preserved": true,
+    "files_hashed": 3018,
+    "symlinks_checked": 494,
+    "compression_matches": true
+  },
+  "package": {
+    "source": "./packaging/test-results/metadata-roundtrip-final/update-V2.1-ND-packaging-test-EXPERIMENTAL.bin",
+    "size": 61122560,
+    "sha256": "4e9087126a348690116343af6e366068ef1b679e4f9ea9115cb38ddfe973ded0",
+    "model": "Shanling M1 Plus",
+    "version": "V2.1-ND-packaging-test",
+    "payloads": {
+      "recovery-update/xImage": {
+        "size": 5410880,
+        "md5": "867d05c9895df6f3f136a7311f3b7a55",
+        "sha256": "3b326f04f20690af82fd7b2d3d61f9d01478c75081f30e99973a4e11b58fbcd8"
+      },
+      "recovery-update/rootfs.squashfs": {
+        "size": 55701504,
+        "md5": "9bea37306f440f87ada9dce2c537cb4b",
+        "sha256": "76fa87ee903f218c7b57c5a8453492badd924dd1a741de0bd1857d6953ec24d7"
+      }
+    },
+    "uimage": {
+      "name": "Linux-5.10.21+",
+      "arch_id": 5,
+      "load": "0x80f00000",
+      "entry": "0x80f00000",
+      "compression_id": 0,
+      "header_crc_valid": true,
+      "payload_crc_valid": true
+    },
+    "squashfs": {
+      "version": "4.0",
+      "inode_count": 3332,
+      "compression_id": 3,
+      "block_size": 131072,
+      "bytes_used": 55699854,
+      "image_size": 55701504
+    },
+    "limitation": "Validates container consistency only; does not establish device acceptance, signatures, flash capacity, or bootability."
+  },
+  "build": {
+    "sqfstar": "./packaging/tools/squashfs-tools-4.7.5/squashfs-tools/sqfstar",
+    "sqfstar_sha256": "b2e1a134956ebea0078f159b7606a2ceef506b98a35609d54333e71810dae2a4",
+    "command": [
+      "./packaging/tools/squashfs-tools-4.7.5/squashfs-tools/sqfstar",
+      "-comp",
+      "lzo",
+      "-b",
+      "131072",
+      "-processors",
+      "2",
+      "-mem",
+      "256M",
+      "-no-progress",
+      "-numeric-owner",
+      "-no-xattrs",
+      "-mkfs-time",
+      "1750924170",
+      "-root-mode",
+      "755",
+      "-root-uid",
+      "0",
+      "-root-gid",
+      "0",
+      "-root-time",
+      "1750924104",
+      "./packaging/test-results/metadata-roundtrip-final/rootfs.squashfs"
+    ],
+    "upstream_version": "4.7.5",
+    "source_sha256": "547b7b7f4d2e44bf91b6fc554664850c69563701deab9fd9cd7e21f694c88ea6",
+    "darwin_patch_sha256": "3f3f568514c57fd50f508fef67e0e293a9668067801f42d4471b429a79bd1575"
+  },
+  "unknowns": [
+    "hardware flash capacity",
+    "recovery update acceptance of development version",
+    "device boot and native UI behavior",
+    "on-device streaming"
+  ]
+}

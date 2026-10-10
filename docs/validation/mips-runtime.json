@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "unadjusted_rejection": {
+    "exit_status": 1,
+    "stderr": "ELF binary's NaN mode not supported by CPU"
+  },
+  "adjusted_usage_exit_status": 0,
+  "qemu": "qemu-mipsel version 7.2.22 (Debian 1:7.2+dfsg-7+deb12u18+b3)",
+  "cpu": "P5600",
+  "kernel_emulation": "Linux user-mode syscall translation, not the supplied device kernel",
+  "adjustment": {
+    "original_sha256": "b0cc202cac640fa90a2df9dd2a72e6e624d27d805ff8a3ef4ee5a79339ad2cbb",
+    "adjusted_sha256": "9badb7a0a1979fcffc1367836b0f10ba39c0087c5598ca32575e9fc2ac335b9d",
+    "old_flags": "0x50001004",
+    "new_flags": "0x50001404",
+    "only_changed_range": [
+      36,
+      40
+    ],
+    "all_machine_code_unchanged": true,
+    "reason": "Declare NaN2008 to match stock userland and P5600 execution policy; Go softfloat uses integer-based IEEE754 arithmetic with matching quiet-NaN representation, no C ABI floating-point calls.",
+    "evidence": [
+      "docs/flash-capacity-evidence.md",
+      "docs/mips-runtime.md"
+    ]
+  },
+  "checks": [
+    "unadjusted NaN mode rejected on P5600",
+    "adjusted ELF starts; bytes outside e_flags unchanged",
+    "verified HTTPS authentication and Unicode artist list",
+    "artist \u2192 album navigation",
+    "album \u2192 track navigation",
+    "album pagination",
+    "Unicode search and pagination",
+    "playlist browsing",
+    "track preparation produces opaque local URL",
+    "full 1 MiB stream byte equality",
+    "Range 206 forwarding and exact bytes",
+    "HEAD preserves length with empty body",
+    "Range 416 suppresses upstream error body",
+    "malformed input, unknown capability and origin/Host rejection",
+    "malformed upstream, authentication, HTTP and audio-error documents fail closed",
+    "self-signed upstream rejected without ca_file",
+    "hostname mismatch rejected even with trusted ca_file"
+  ],
+  "upstream_endpoint_counts": {
+    "getArtists": 1,
+    "getArtist": 1,
+    "getAlbum": 4,
+    "getAlbumList2": 1,
+    "search3": 1,
+    "getPlaylists": 1,
+    "getPlaylist": 1,
+    "stream": 5
+  },
+  "unique_auth_salts": 15,
+  "fixture_errors": [],
+  "stream_payload_size": 1048580,
+  "stream_payload_sha256": "a3d66c607a15a21a6ce5a1baf212e6466c3bb9cfb2a423154ebd3a13caa528e8",
+  "credentials": "Generated disposable fixture-only credentials; never printed or saved in report",
+  "tls": "Self-signed one-day RSA certificate with IP SAN127.0.0.1; ca_file trust succeeds, missing trust and wrong host both fail",
+  "limitations": [
+    "No physical M1 Plus or XBurst2 CPU execution",
+    "No device kernel NaN-policy proof",
+    "No valid audio decoding or DAC playback; byte transport fixture only",
+    "No Wi-Fi stability, device CA/time, RAM or flash capacity verification",
+    "No live Navidrome server credentials used"
+  ],
+  "native_plugin_probe": {
+    "plugin_sha256": "61ba03b7e0928e9a3190a0f5f14561ce7654c9c1c038eb594863f11d85e21b58",
+    "startup_interception_passed": true,
+    "preload_exit_status": 0,
+    "passed": true,
+    "exit_status": 0,
+    "probe_scope": "RTLD_NOW loading with original libraries and missing-GUI-symbol fail-closed path; custom crt uses _exit, no normal teardown test",
+    "harness_sha256": "90a5dd2d63fced790292f21ff2ef35146b4c82b685764da2961c60bf1fd36a73",
+    "original_library_files_copied": 117,
+    "original_library_symlinks": 134,
+    "scope": "Test sysroot only; never a firmware rebuild input"
+  }
+}

@@ -1,0 +1,26 @@
+name: Hardware validation
+description: Record physical M1 Plus results without conflating them with emulation.
+body:
+  - type: input
+    id: revision
+    attributes:
+      label: Commit, device model and original firmware SHA-256
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Results by step
+      description: Updater, boot, native UI/keyboard, browsing/search, sound/output, seek/queue, Wi-Fi and sleep/resume. Mark untested items explicitly.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Inspected boot diagnostics
+      description: Optional. Never paste config.json, passwords, auth URLs, stream capabilities or personal song metadata.
+  - type: textarea
+    id: recovery
+    attributes:
+      label: Recovery observations
+      description: Describe only methods actually tested; a restore package alone is not proof of recovery.

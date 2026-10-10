@@ -1,0 +1,19 @@
+{
+  "navidrome_version": "0.64.2 (10114574)",
+  "checks": [
+    "official /auth/createAdmin initial local admin: PASS",
+    "real media scan and Unicode metadata index: PASS",
+    "artists → artist albums → paged albums → album tracks: PASS",
+    "search3 Unicode query, track/disc normalization and paging: PASS",
+    "real playlist listing and playlist tracks: PASS",
+    "capability prepare + complete original FLAC byte equality: PASS",
+    "real GET Range + If-Range and HEAD Range: PASS"
+  ],
+  "fixture": {
+    "format": "FLAC",
+    "bytes": 32537,
+    "sha256": "b1b7b75c18470d72f9da4102908d3b7f110e7f79501d458d4daa2ee1d32b79c6"
+  },
+  "credentials": "ephemeral local-only; not retained or logged",
+  "device_execution": false
+}

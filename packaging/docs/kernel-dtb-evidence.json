@@ -1,0 +1,7685 @@
+{
+  "source": ".work/analysis-v2.1/kernel-unpacked.bin",
+  "source_size": 12051904,
+  "source_sha256": "b85c34385bbe57b5a0b422a6d541a3cfff5108f63ca8918180924ec5ed0fe97f",
+  "dtbs": [
+    {
+      "offset": 11979680,
+      "offset_hex": "0xb6cba0",
+      "size": 30354,
+      "sha256": "bdb15604265d87a6c2016d56a11993ca0eb1f78825c60e55802679d90870c409",
+      "nodes": {
+        "/": {
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "compatible": {
+            "hex": "696e67656e69632c783230303000",
+            "strings": [
+              "ingenic,x2000"
+            ]
+          }
+        },
+        "/aliases": {
+          "i2c0": {
+            "hex": "2f6170622f693263403078313030353030303000",
+            "cells": [
+              794914914,
+              795423331,
+              1076918321,
+              808465712,
+              808464384
+            ],
+            "strings": [
+              "/apb/i2c@0x10050000"
+            ]
+          },
+          "i2c1": {
+            "hex": "2f6170622f693263403078313030353130303000",
+            "cells": [
+              794914914,
+              795423331,
+              1076918321,
+              808465713,
+              808464384
+            ],
+            "strings": [
+              "/apb/i2c@0x10051000"
+            ]
+          },
+          "i2c2": {
+            "hex": "2f6170622f693263403078313030353230303000",
+            "cells": [
+              794914914,
+              795423331,
+              1076918321,
+              808465714,
+              808464384
+            ],
+            "strings": [
+              "/apb/i2c@0x10052000"
+            ]
+          },
+          "i2c3": {
+            "hex": "2f6170622f693263403078313030353330303000",
+            "cells": [
+              794914914,
+              795423331,
+              1076918321,
+              808465715,
+              808464384
+            ],
+            "strings": [
+              "/apb/i2c@0x10053000"
+            ]
+          },
+          "i2c4": {
+            "hex": "2f6170622f693263403078313030353430303000",
+            "cells": [
+              794914914,
+              795423331,
+              1076918321,
+              808465716,
+              808464384
+            ],
+            "strings": [
+              "/apb/i2c@0x10054000"
+            ]
+          },
+          "i2c5": {
+            "hex": "2f6170622f693263403078313030353530303000",
+            "cells": [
+              794914914,
+              795423331,
+              1076918321,
+              808465717,
+              808464384
+            ],
+            "strings": [
+              "/apb/i2c@0x10055000"
+            ]
+          },
+          "uart0": {
+            "hex": "2f6170622f73657269616c403078313030333030303000",
+            "strings": [
+              "/apb/serial@0x10030000"
+            ]
+          },
+          "uart1": {
+            "hex": "2f6170622f73657269616c403078313030333130303000",
+            "strings": [
+              "/apb/serial@0x10031000"
+            ]
+          },
+          "uart2": {
+            "hex": "2f6170622f73657269616c403078313030333230303000",
+            "strings": [
+              "/apb/serial@0x10032000"
+            ]
+          },
+          "uart3": {
+            "hex": "2f6170622f73657269616c403078313030333330303000",
+            "strings": [
+              "/apb/serial@0x10033000"
+            ]
+          },
+          "uart4": {
+            "hex": "2f6170622f73657269616c403078313030333430303000",
+            "strings": [
+              "/apb/serial@0x10034000"
+            ]
+          },
+          "uart5": {
+            "hex": "2f6170622f73657269616c403078313030333530303000",
+            "strings": [
+              "/apb/serial@0x10035000"
+            ]
+          },
+          "uart6": {
+            "hex": "2f6170622f73657269616c403078313030333630303000",
+            "strings": [
+              "/apb/serial@0x10036000"
+            ]
+          },
+          "uart7": {
+            "hex": "2f6170622f73657269616c403078313030333730303000",
+            "strings": [
+              "/apb/serial@0x10037000"
+            ]
+          },
+          "uart8": {
+            "hex": "2f6170622f73657269616c403078313030333830303000",
+            "strings": [
+              "/apb/serial@0x10038000"
+            ]
+          },
+          "uart9": {
+            "hex": "2f6170622f73657269616c403078313030333930303000",
+            "strings": [
+              "/apb/serial@0x10039000"
+            ]
+          },
+          "mmc0": {
+            "hex": "2f616862322f6d7363403078313334353030303000",
+            "strings": [
+              "/ahb2/msc@0x13450000"
+            ]
+          },
+          "mmc1": {
+            "hex": "2f616862322f6d7363403078313334363030303000",
+            "strings": [
+              "/ahb2/msc@0x13460000"
+            ]
+          },
+          "mmc2": {
+            "hex": "2f616862322f6d7363403078313334393030303000",
+            "strings": [
+              "/ahb2/msc@0x13490000"
+            ]
+          },
+          "mac0": {
+            "hex": "2f616862322f6d6163403078313334623030303000",
+            "strings": [
+              "/ahb2/mac@0x134b0000"
+            ]
+          },
+          "mac1": {
+            "hex": "2f616862322f6d6163403078313334613030303000",
+            "strings": [
+              "/ahb2/mac@0x134a0000"
+            ]
+          },
+          "spi0": {
+            "hex": "2f6170622f737069403078313030343330303000",
+            "cells": [
+              794914914,
+              796094569,
+              1076918321,
+              808465459,
+              808464384
+            ],
+            "strings": [
+              "/apb/spi@0x10043000"
+            ]
+          },
+          "spi1": {
+            "hex": "2f6170622f737069403078313030343430303000",
+            "cells": [
+              794914914,
+              796094569,
+              1076918321,
+              808465460,
+              808464384
+            ],
+            "strings": [
+              "/apb/spi@0x10044000"
+            ]
+          },
+          "pwm": {
+            "hex": "2f616862322f70776d403078313334633030303000",
+            "strings": [
+              "/ahb2/pwm@0x134c0000"
+            ]
+          },
+          "pmu": {
+            "hex": "2f69326340302f706d7540333400",
+            "strings": [
+              "/i2c@0/pmu@34"
+            ]
+          },
+          "standby_param": {
+            "hex": "2f7374616e6462795f706172616d00",
+            "strings": [
+              "/standby_param"
+            ]
+          }
+        },
+        "/cpus": {
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/cpus/cpu@0": {
+          "device_type": {
+            "hex": "63707500",
+            "cells": [
+              1668314368
+            ],
+            "strings": [
+              "cpu"
+            ]
+          },
+          "compatible": {
+            "hex": "696e67656e69632c7862757273743200",
+            "cells": [
+              1768843109,
+              1852400428,
+              2019718514,
+              1936994816
+            ],
+            "strings": [
+              "ingenic,xburst2"
+            ]
+          },
+          "reg": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "clock-frequency": {
+            "hex": "2faf0800",
+            "cells": [
+              800000000
+            ]
+          },
+          "cpu-idle-states": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/cpus/cpu@1": {
+          "device_type": {
+            "hex": "63707500",
+            "cells": [
+              1668314368
+            ],
+            "strings": [
+              "cpu"
+            ]
+          },
+          "compatible": {
+            "hex": "696e67656e69632c7862757273743200",
+            "cells": [
+              1768843109,
+              1852400428,
+              2019718514,
+              1936994816
+            ],
+            "strings": [
+              "ingenic,xburst2"
+            ]
+          },
+          "reg": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "cpu-idle-states": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "clock-frequency": {
+            "hex": "2faf0800",
+            "cells": [
+              800000000
+            ]
+          }
+        },
+        "/cpus/idle-states": {},
+        "/cpus/idle-states/pd": {
+          "compatible": {
+            "hex": "696e67656e69632c69646c652d737461746500",
+            "strings": [
+              "ingenic,idle-state"
+            ]
+          },
+          "idle-state-name": {
+            "hex": "69646c6520706400",
+            "cells": [
+              1768189029,
+              544236544
+            ],
+            "strings": [
+              "idle pd"
+            ]
+          },
+          "entry-latency-us": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "exit-latency-us": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "min-residency-us": {
+            "hex": "0000000a",
+            "cells": [
+              10
+            ]
+          },
+          "phandle": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/cpufreq-dt": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6370756672657100",
+            "strings": [
+              "ingenic,x2000-cpufreq"
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "operating-points": {
+            "hex": "00124f80000dbba0000b71b0000dbba0000927c0000dbba00007a120000dbba000061a80000dbba00005b8d8000dbba0000493e0000dbba000030d40000dbba0",
+            "cells": [
+              1200000,
+              900000,
+              750000,
+              900000,
+              600000,
+              900000,
+              500000,
+              900000,
+              400000,
+              900000,
+              375000,
+              900000,
+              300000,
+              900000,
+              200000,
+              900000
+            ]
+          }
+        },
+        "/interrupt-controller": {
+          "#address-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "#interrupt-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "interrupt-controller": {
+            "hex": ""
+          },
+          "compatible": {
+            "hex": "696e67656e69632c6370752d696e746572727570742d636f6e74726f6c6c657200",
+            "strings": [
+              "ingenic,cpu-interrupt-controller"
+            ]
+          },
+          "phandle": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/core-intc@0x12300000": {
+          "compatible": {
+            "hex": "696e67656e69632c636f72652d696e746300",
+            "strings": [
+              "ingenic,core-intc"
+            ]
+          },
+          "reg": {
+            "hex": "12300000000010001000100000001000",
+            "cells": [
+              305135616,
+              4096,
+              268439552,
+              4096
+            ]
+          },
+          "interrupt-controller": {
+            "hex": ""
+          },
+          "#interrupt-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "cpu-intc-map": {
+            "hex": "00000000000000000000000100000100",
+            "cells": [
+              0,
+              0,
+              1,
+              256
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupts": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-names": {
+            "hex": "696e746300",
+            "strings": [
+              "intc"
+            ]
+          },
+          "phandle": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          }
+        },
+        "/core-ost@0x12000000": {
+          "compatible": {
+            "hex": "696e67656e69632c636f72652d6f737400",
+            "strings": [
+              "ingenic,core-ost"
+            ]
+          },
+          "reg": {
+            "hex": "12000000000100001210000000010000",
+            "cells": [
+              301989888,
+              65536,
+              303038464,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-names": {
+            "hex": "7379735f6f737400",
+            "cells": [
+              1937339231,
+              1869837312
+            ],
+            "strings": [
+              "sys_ost"
+            ]
+          },
+          "interrupts": {
+            "hex": "00000004",
+            "cells": [
+              4
+            ]
+          },
+          "cpu-ost-map": {
+            "hex": "00000000000000000000000100000100",
+            "cells": [
+              0,
+              0,
+              1,
+              256
+            ]
+          }
+        },
+        "/extclk": {
+          "compatible": {
+            "hex": "696e67656e69632c66697865642d636c6f636b00",
+            "cells": [
+              1768843109,
+              1852400428,
+              1718188133,
+              1680696172,
+              1868786432
+            ],
+            "strings": [
+              "ingenic,fixed-clock"
+            ]
+          },
+          "clock-output-names": {
+            "hex": "65787400",
+            "cells": [
+              1702392832
+            ],
+            "strings": [
+              "ext"
+            ]
+          },
+          "#clock-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "clock-frequency": {
+            "hex": "016e3600",
+            "cells": [
+              24000000
+            ]
+          },
+          "phandle": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/rtcclk": {
+          "compatible": {
+            "hex": "696e67656e69632c66697865642d636c6f636b00",
+            "cells": [
+              1768843109,
+              1852400428,
+              1718188133,
+              1680696172,
+              1868786432
+            ],
+            "strings": [
+              "ingenic,fixed-clock"
+            ]
+          },
+          "clock-output-names": {
+            "hex": "7274635f65787400",
+            "cells": [
+              1920230239,
+              1702392832
+            ],
+            "strings": [
+              "rtc_ext"
+            ]
+          },
+          "#clock-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "clock-frequency": {
+            "hex": "00008000",
+            "cells": [
+              32768
+            ]
+          },
+          "phandle": {
+            "hex": "00000004",
+            "cells": [
+              4
+            ]
+          }
+        },
+        "/apb": {
+          "compatible": {
+            "hex": "73696d706c652d62757300",
+            "strings": [
+              "simple-bus"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ranges": {
+            "hex": ""
+          }
+        },
+        "/apb/clock-controller@0x10000000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d636c6f636b7300",
+            "strings": [
+              "ingenic,x2000-clocks"
+            ]
+          },
+          "reg": {
+            "hex": "1000000000000100",
+            "cells": [
+              268435456,
+              256
+            ]
+          },
+          "clocks": {
+            "hex": "0000000300000004",
+            "cells": [
+              3,
+              4
+            ]
+          },
+          "clock-names": {
+            "hex": "657874007274635f65787400",
+            "cells": [
+              1702392832,
+              1920230239,
+              1702392832
+            ],
+            "strings": [
+              "ext",
+              "rtc_ext"
+            ]
+          },
+          "#clock-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "little-endian": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000010",
+            "cells": [
+              16
+            ]
+          }
+        },
+        "/apb/sadc@10070000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d7361646300",
+            "strings": [
+              "ingenic,x2000-sadc"
+            ]
+          },
+          "reg": {
+            "hex": "1007000000000032",
+            "cells": [
+              268894208,
+              50
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000000b",
+            "cells": [
+              11
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/apb/tcu@0x10002000": {
+          "compatible": {
+            "hex": "696e67656e69632c74637500",
+            "cells": [
+              1768843109,
+              1852400428,
+              1952675072
+            ],
+            "strings": [
+              "ingenic,tcu"
+            ]
+          },
+          "reg": {
+            "hex": "1000200000001000",
+            "cells": [
+              268443648,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-names": {
+            "hex": "64656661756c7400",
+            "cells": [
+              1684366945,
+              1970041856
+            ],
+            "strings": [
+              "default"
+            ]
+          },
+          "interrupts": {
+            "hex": "0000001b",
+            "cells": [
+              27
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/apb/watchdog@0x10002000": {
+          "compatible": {
+            "hex": "696e67656e69632c7761746368646f6700",
+            "strings": [
+              "ingenic,watchdog"
+            ]
+          },
+          "reg": {
+            "hex": "1000200000000040",
+            "cells": [
+              268443648,
+              64
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000001b",
+            "cells": [
+              27
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/apb/rtc@0x10003000": {
+          "compatible": {
+            "hex": "696e67656e69632c72746300",
+            "cells": [
+              1768843109,
+              1852400428,
+              1920230144
+            ],
+            "strings": [
+              "ingenic,rtc"
+            ]
+          },
+          "reg": {
+            "hex": "100030000000004c",
+            "cells": [
+              268447744,
+              76
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000020",
+            "cells": [
+              32
+            ]
+          },
+          "system-power-controller": {
+            "hex": ""
+          },
+          "power-on-press-ms": {
+            "hex": "000003e8",
+            "cells": [
+              1000
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d70696e6374726c00",
+            "strings": [
+              "ingenic,x2000-pinctrl"
+            ]
+          },
+          "reg": {
+            "hex": "1001000000001000",
+            "cells": [
+              268500992,
+              4096
+            ]
+          },
+          "ingenic,num-chips": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "ingenic,regs-offset": {
+            "hex": "00000100",
+            "cells": [
+              256
+            ]
+          },
+          "ingenic,gpa_voltage": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/gpa": {
+          "gpio-controller": {
+            "hex": ""
+          },
+          "#gpio-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pincfg-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pinmux-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupts": {
+            "hex": "00000011",
+            "cells": [
+              17
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-controller": {
+            "hex": ""
+          },
+          "#interrupt-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,gpio-sleep-pullup": {
+            "hex": "0000000000000001000000020000000300000004000000050000000600000007000000080000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f",
+            "cells": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "ingenic,gpio-sleep-pulldown": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-hiz": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-low": {
+            "hex": "00000009",
+            "cells": [
+              9
+            ]
+          },
+          "ingenic,gpio-sleep-high": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000008",
+            "cells": [
+              8
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/gpb": {
+          "gpio-controller": {
+            "hex": ""
+          },
+          "#gpio-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pincfg-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pinmux-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupts": {
+            "hex": "00000010",
+            "cells": [
+              16
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-controller": {
+            "hex": ""
+          },
+          "#interrupt-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,gpio-sleep-pullup": {
+            "hex": "00000000000000010000000400000005000000060000000700000008000000090000000d0000001000000011000000150000001600000017000000180000001a0000001b0000001c0000001d0000001e0000001f",
+            "cells": [
+              0,
+              1,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              13,
+              16,
+              17,
+              21,
+              22,
+              23,
+              24,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "ingenic,gpio-sleep-pulldown": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-hiz": {
+            "hex": "0000000b0000000c",
+            "cells": [
+              11,
+              12
+            ]
+          },
+          "ingenic,gpio-sleep-low": {
+            "hex": "0000000a0000000e0000000f0000001400000019",
+            "cells": [
+              10,
+              14,
+              15,
+              20,
+              25
+            ]
+          },
+          "ingenic,gpio-sleep-high": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000009",
+            "cells": [
+              9
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/gpc": {
+          "gpio-controller": {
+            "hex": ""
+          },
+          "#gpio-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pincfg-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pinmux-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupts": {
+            "hex": "0000000f",
+            "cells": [
+              15
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-controller": {
+            "hex": ""
+          },
+          "#interrupt-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,gpio-sleep-pullup": {
+            "hex": "00000002000000030000000400000005000000060000000700000008000000090000000c0000000f000000100000001100000012000000130000001700000018000000190000001a0000001b0000001c0000001d0000001e",
+            "cells": [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              12,
+              15,
+              16,
+              17,
+              18,
+              19,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30
+            ]
+          },
+          "ingenic,gpio-sleep-pulldown": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-hiz": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-low": {
+            "hex": "0000000000000001000000140000001500000016",
+            "cells": [
+              0,
+              1,
+              20,
+              21,
+              22
+            ]
+          },
+          "ingenic,gpio-sleep-high": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000007",
+            "cells": [
+              7
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/gpd": {
+          "gpio-controller": {
+            "hex": ""
+          },
+          "#gpio-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pincfg-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pinmux-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupts": {
+            "hex": "0000000e",
+            "cells": [
+              14
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-controller": {
+            "hex": ""
+          },
+          "#interrupt-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,gpio-sleep-pullup": {
+            "hex": "00000000000000010000000200000003000000040000000500000006000000070000000e0000000f000000100000001100000012000000130000001b0000001c0000001d0000001e0000001f",
+            "cells": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          },
+          "ingenic,gpio-sleep-pulldown": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-hiz": {
+            "hex": "00000008000000090000000c0000000d0000001700000018000000190000001a",
+            "cells": [
+              8,
+              9,
+              12,
+              13,
+              23,
+              24,
+              25,
+              26
+            ]
+          },
+          "ingenic,gpio-sleep-low": {
+            "hex": "000000140000001500000016",
+            "cells": [
+              20,
+              21,
+              22
+            ]
+          },
+          "ingenic,gpio-sleep-high": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000006",
+            "cells": [
+              6
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/gpe": {
+          "gpio-controller": {
+            "hex": ""
+          },
+          "#gpio-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pincfg-cells": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "#ingenic,pinmux-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupts": {
+            "hex": "0000000d",
+            "cells": [
+              13
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-controller": {
+            "hex": ""
+          },
+          "#interrupt-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,gpio-sleep-pullup": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-pulldown": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-hiz": {
+            "hex": ""
+          },
+          "ingenic,gpio-sleep-low": {
+            "hex": "00000000000000010000000200000003000000040000000500000018",
+            "cells": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              24
+            ]
+          },
+          "ingenic,gpio-sleep-high": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "0000000a",
+            "cells": [
+              10
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart0-pin": {},
+        "/apb/pinctrl@0x10010000/uart0-pin/uart0-pd": {
+          "ingenic,pinmux": {
+            "hex": "00000006000000170000001a",
+            "cells": [
+              6,
+              23,
+              26
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "phandle": {
+            "hex": "0000000b",
+            "cells": [
+              11
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart1-pin": {},
+        "/apb/pinctrl@0x10010000/uart1-pin/uart1-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000001500000018",
+            "cells": [
+              7,
+              21,
+              24
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart2-pin": {},
+        "/apb/pinctrl@0x10010000/uart2-pin/uart2-pd": {
+          "ingenic,pinmux": {
+            "hex": "000000060000001e0000001f",
+            "cells": [
+              6,
+              30,
+              31
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart3-pin": {},
+        "/apb/pinctrl@0x10010000/uart3-pin/uart3-pc": {
+          "ingenic,pinmux": {
+            "hex": "00000007000000190000001a",
+            "cells": [
+              7,
+              25,
+              26
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "phandle": {
+            "hex": "0000000c",
+            "cells": [
+              12
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart3-pin/uart3-pd": {
+          "ingenic,pinmux": {
+            "hex": "000000060000000000000003",
+            "cells": [
+              6,
+              0,
+              3
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart4-pin": {},
+        "/apb/pinctrl@0x10010000/uart4-pin/uart4-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000000000003",
+            "cells": [
+              8,
+              0,
+              3
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart4-pin/uart4-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000b0000000c",
+            "cells": [
+              7,
+              11,
+              12
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart5-pin": {},
+        "/apb/pinctrl@0x10010000/uart5-pin/uart5-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000400000005",
+            "cells": [
+              8,
+              4,
+              5
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart5-pin/uart5-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000500000006",
+            "cells": [
+              7,
+              5,
+              6
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart6-pin": {},
+        "/apb/pinctrl@0x10010000/uart6-pin/uart6-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000600000007",
+            "cells": [
+              8,
+              6,
+              7
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart6-pin/uart6-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000700000008",
+            "cells": [
+              7,
+              7,
+              8
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart7-pin": {},
+        "/apb/pinctrl@0x10010000/uart7-pin/uart7-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000800000009",
+            "cells": [
+              8,
+              8,
+              9
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart7-pin/uart7-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000100000002",
+            "cells": [
+              7,
+              1,
+              2
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart8-pin": {},
+        "/apb/pinctrl@0x10010000/uart8-pin/uart8-pb": {
+          "ingenic,pinmux": {
+            "hex": "000000090000001c0000001d",
+            "cells": [
+              9,
+              28,
+              29
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/uart9-pin": {},
+        "/apb/pinctrl@0x10010000/uart9-pin/uart9-pb": {
+          "ingenic,pinmux": {
+            "hex": "000000090000001e0000001f",
+            "cells": [
+              9,
+              30,
+              31
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c0-pin": {},
+        "/apb/pinctrl@0x10010000/i2c0-pin/i2c0-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000d0000000e",
+            "cells": [
+              7,
+              13,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c1-pin": {},
+        "/apb/pinctrl@0x10010000/i2c1-pin/i2c1-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000001700000018",
+            "cells": [
+              7,
+              23,
+              24
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c2-pin": {},
+        "/apb/pinctrl@0x10010000/i2c2-pin/i2c2-pb": {
+          "ingenic,pinmux": {
+            "hex": "000000090000001600000017",
+            "cells": [
+              9,
+              22,
+              23
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c3-pin": {},
+        "/apb/pinctrl@0x10010000/i2c3-pin/i2c3-pd": {
+          "ingenic,pinmux": {
+            "hex": "000000060000001e0000001f",
+            "cells": [
+              6,
+              30,
+              31
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c3-pin/i2c3-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000001000000011",
+            "cells": [
+              8,
+              16,
+              17
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c4-pin": {},
+        "/apb/pinctrl@0x10010000/i2c4-pin/i2c4-pc": {
+          "ingenic,pinmux": {
+            "hex": "00000007000000190000001a",
+            "cells": [
+              7,
+              25,
+              26
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c4-pin/i2c4-pd": {
+          "ingenic,pinmux": {
+            "hex": "000000060000000000000001",
+            "cells": [
+              6,
+              0,
+              1
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/i2c5-pin": {},
+        "/apb/pinctrl@0x10010000/i2c5-pin/i2c5-pd": {
+          "ingenic,pinmux": {
+            "hex": "000000060000000400000005",
+            "cells": [
+              6,
+              4,
+              5
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/msc0-pin": {},
+        "/apb/pinctrl@0x10010000/msc0-pin/msc0-4bit": {
+          "ingenic,pinmux": {
+            "hex": "000000060000001100000016",
+            "cells": [
+              6,
+              17,
+              22
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/msc0-pin/msc0-8bit": {
+          "ingenic,pinmux": {
+            "hex": "00000006000000110000001a",
+            "cells": [
+              6,
+              17,
+              26
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/msc1-pin": {},
+        "/apb/pinctrl@0x10010000/msc1-pin/msc1-4bit": {
+          "ingenic,pinmux": {
+            "hex": "00000006000000080000000d",
+            "cells": [
+              6,
+              8,
+              13
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/msc2-pin": {},
+        "/apb/pinctrl@0x10010000/msc2-pin/msc2-4bit": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000000000000005",
+            "cells": [
+              10,
+              0,
+              5
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-phy-clk": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000100000001",
+            "cells": [
+              7,
+              1,
+              1
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000010000000100040009",
+            "cells": [
+              7,
+              1,
+              1,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rmii-p0": {},
+        "/apb/pinctrl@0x10010000/mac0-rmii-p0/mac0-rmii-normal": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000600000007000000070000000b0000000b000000070000000f0000000f",
+            "cells": [
+              7,
+              6,
+              7,
+              7,
+              11,
+              11,
+              7,
+              15,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "0000000700000006000000070001000b000000070000000b0000000b0001000b000000070000000f0000000f0001000b",
+            "cells": [
+              7,
+              6,
+              7,
+              65547,
+              7,
+              11,
+              11,
+              65547,
+              7,
+              15,
+              15,
+              65547
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rmii-p0/mac0-rmii-p0-rst": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000600000007000000070000000b0000000b000000070000000f0000000f",
+            "cells": [
+              7,
+              6,
+              7,
+              7,
+              11,
+              11,
+              7,
+              15,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000006",
+            "cells": [
+              6
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000060000000700010002000000070000000b0000000b00010002000000070000000f0000000f00010002",
+            "cells": [
+              7,
+              6,
+              7,
+              65538,
+              7,
+              11,
+              11,
+              65538,
+              7,
+              15,
+              15,
+              65538
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rmii-p1": {},
+        "/apb/pinctrl@0x10010000/mac0-rmii-p1/mac0-rmii-p1-normal": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000200000003000000070000000a0000000a000000070000000c0000000d",
+            "cells": [
+              7,
+              2,
+              3,
+              7,
+              10,
+              10,
+              7,
+              12,
+              13
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000020000000300040009000000070000000a0000000a00040009000000070000000c0000000d00040009",
+            "cells": [
+              7,
+              2,
+              3,
+              262153,
+              7,
+              10,
+              10,
+              262153,
+              7,
+              12,
+              13,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rmii-p1/mac0-rmii-p1-nomdio": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000200000003000000070000000a0000000a",
+            "cells": [
+              7,
+              2,
+              3,
+              7,
+              10,
+              10
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000020000000300040009000000070000000a0000000a00040009",
+            "cells": [
+              7,
+              2,
+              3,
+              262153,
+              7,
+              10,
+              10,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rgmii-p0": {},
+        "/apb/pinctrl@0x10010000/mac0-rgmii-p0/mac0-rgmii-normal": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000600000009000000070000000b0000000b000000070000000f0000000f",
+            "cells": [
+              7,
+              6,
+              9,
+              7,
+              11,
+              11,
+              7,
+              15,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "0000000700000006000000090001000b000000070000000b0000000b0001000b000000070000000f0000000f0001000b",
+            "cells": [
+              7,
+              6,
+              9,
+              65547,
+              7,
+              11,
+              11,
+              65547,
+              7,
+              15,
+              15,
+              65547
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rgmii-p0/mac0-rgmii-p0-rst": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000600000009000000070000000b0000000b000000070000000f0000000f",
+            "cells": [
+              7,
+              6,
+              9,
+              7,
+              11,
+              11,
+              7,
+              15,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000006",
+            "cells": [
+              6
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000060000000900010002000000070000000b0000000b00010002000000070000000f0000000f00010002",
+            "cells": [
+              7,
+              6,
+              9,
+              65538,
+              7,
+              11,
+              11,
+              65538,
+              7,
+              15,
+              15,
+              65538
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rgmii-p1": {},
+        "/apb/pinctrl@0x10010000/mac0-rgmii-p1/mac0-rgmii-p1-normal": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000200000005000000070000000a0000000a000000070000000c0000000e",
+            "cells": [
+              7,
+              2,
+              5,
+              7,
+              10,
+              10,
+              7,
+              12,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000020000000500040009000000070000000a0000000a00040009000000070000000c0000000e00040009",
+            "cells": [
+              7,
+              2,
+              5,
+              262153,
+              7,
+              10,
+              10,
+              262153,
+              7,
+              12,
+              14,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac0-rgmii-p1/mac0-rgmii-p1-nomdio": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000200000005000000070000000a0000000a000000070000000e0000000e",
+            "cells": [
+              7,
+              2,
+              5,
+              7,
+              10,
+              10,
+              7,
+              14,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000020000000500040009000000070000000a0000000a00040009000000070000000e0000000e00040009",
+            "cells": [
+              7,
+              2,
+              5,
+              262153,
+              7,
+              10,
+              10,
+              262153,
+              7,
+              14,
+              14,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-phy-clk": {
+          "ingenic,pinmux": {
+            "hex": "000000090000001700000017",
+            "cells": [
+              9,
+              23,
+              23
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000007000000170000001700040009",
+            "cells": [
+              7,
+              23,
+              23,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rmii-p0": {},
+        "/apb/pinctrl@0x10010000/mac1-rmii-p0/mac1-rmii-normal": {
+          "ingenic,pinmux": {
+            "hex": "000000090000000c0000000d000000090000001200000012000000090000001600000016",
+            "cells": [
+              9,
+              12,
+              13,
+              9,
+              18,
+              18,
+              9,
+              22,
+              22
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "000000090000000c0000000d0001000b0000000900000012000000120001000b0000000900000016000000160001000b",
+            "cells": [
+              9,
+              12,
+              13,
+              65547,
+              9,
+              18,
+              18,
+              65547,
+              9,
+              22,
+              22,
+              65547
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rmii-p0/mac1-rmii-p0-rst": {
+          "ingenic,pinmux": {
+            "hex": "000000090000000c0000000d000000090000001200000012000000090000001600000016",
+            "cells": [
+              9,
+              12,
+              13,
+              9,
+              18,
+              18,
+              9,
+              22,
+              22
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000006",
+            "cells": [
+              6
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "000000090000000c0000000d000100020000000900000012000000120001000200000009000000160000001600010002",
+            "cells": [
+              9,
+              12,
+              13,
+              65538,
+              9,
+              18,
+              18,
+              65538,
+              9,
+              22,
+              22,
+              65538
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rmii-p1": {},
+        "/apb/pinctrl@0x10010000/mac1-rmii-p1/mac1-rmii-p1-normal": {
+          "ingenic,pinmux": {
+            "hex": "000000090000000800000009000000090000001100000011000000090000001300000014",
+            "cells": [
+              9,
+              8,
+              9,
+              9,
+              17,
+              17,
+              9,
+              19,
+              20
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "000000090000000800000009000400090000000900000011000000110004000900000009000000130000001400040009",
+            "cells": [
+              9,
+              8,
+              9,
+              262153,
+              9,
+              17,
+              17,
+              262153,
+              9,
+              19,
+              20,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rmii-p1/mac1-rmii-p1-nomdio": {
+          "ingenic,pinmux": {
+            "hex": "000000090000000800000009000000090000001100000011",
+            "cells": [
+              9,
+              8,
+              9,
+              9,
+              17,
+              17
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "0000000900000008000000090004000900000009000000110000001100040009",
+            "cells": [
+              9,
+              8,
+              9,
+              262153,
+              9,
+              17,
+              17,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rgmii-p0": {},
+        "/apb/pinctrl@0x10010000/mac1-rgmii-p0/mac1-rgmii-normal": {
+          "ingenic,pinmux": {
+            "hex": "000000090000000c0000000f000000090000001200000012000000090000001600000016",
+            "cells": [
+              9,
+              12,
+              15,
+              9,
+              18,
+              18,
+              9,
+              22,
+              22
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "000000090000000c0000000f0001000b0000000900000012000000120001000b0000000900000016000000160001000b",
+            "cells": [
+              9,
+              12,
+              15,
+              65547,
+              9,
+              18,
+              18,
+              65547,
+              9,
+              22,
+              22,
+              65547
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rgmii-p0/mac1-rgmii-p0-rst": {
+          "ingenic,pinmux": {
+            "hex": "000000090000000c0000000f000000090000001200000012000000090000001600000016",
+            "cells": [
+              9,
+              12,
+              15,
+              9,
+              18,
+              18,
+              9,
+              22,
+              22
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000006",
+            "cells": [
+              6
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "000000090000000c0000000f000100020000000900000012000000120001000200000009000000160000001600010002",
+            "cells": [
+              9,
+              12,
+              15,
+              65538,
+              9,
+              18,
+              18,
+              65538,
+              9,
+              22,
+              22,
+              65538
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rgmii-p1": {},
+        "/apb/pinctrl@0x10010000/mac1-rgmii-p1/mac1-rgmii-p1-normal": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000080000000b000000090000001100000011000000090000001300000015",
+            "cells": [
+              9,
+              8,
+              11,
+              9,
+              17,
+              17,
+              9,
+              19,
+              21
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000009000000080000000b000400090000000900000011000000110004000900000009000000130000001500040009",
+            "cells": [
+              9,
+              8,
+              11,
+              262153,
+              9,
+              17,
+              17,
+              262153,
+              9,
+              19,
+              21,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/mac1-rgmii-p1/mac1-rgmii-p1-nomdio": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000080000000b000000090000001100000011000000090000001500000015",
+            "cells": [
+              9,
+              8,
+              11,
+              9,
+              17,
+              17,
+              9,
+              21,
+              21
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000009000000080000000b000400090000000900000011000000110004000900000009000000150000001500040009",
+            "cells": [
+              9,
+              8,
+              11,
+              262153,
+              9,
+              17,
+              17,
+              262153,
+              9,
+              21,
+              21,
+              262153
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin": {},
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm0_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000000000000",
+            "cells": [
+              7,
+              0,
+              0
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm1_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000100000001",
+            "cells": [
+              7,
+              1,
+              1
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm2_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000200000002",
+            "cells": [
+              7,
+              2,
+              2
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm3_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000300000003",
+            "cells": [
+              7,
+              3,
+              3
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm4_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000400000004",
+            "cells": [
+              7,
+              4,
+              4
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm5_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000500000005",
+            "cells": [
+              7,
+              5,
+              5
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm6_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000600000006",
+            "cells": [
+              7,
+              6,
+              6
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm7_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000700000007",
+            "cells": [
+              7,
+              7,
+              7
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm8_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000800000008",
+            "cells": [
+              7,
+              8,
+              8
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm9_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000900000009",
+            "cells": [
+              7,
+              9,
+              9
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm10_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000a0000000a",
+            "cells": [
+              7,
+              10,
+              10
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm11_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000b0000000b",
+            "cells": [
+              7,
+              11,
+              11
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm12_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000c0000000c",
+            "cells": [
+              7,
+              12,
+              12
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm13_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000d0000000d",
+            "cells": [
+              7,
+              13,
+              13
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm14_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000e0000000e",
+            "cells": [
+              7,
+              14,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm15_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000f0000000f",
+            "cells": [
+              7,
+              15,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/pwm-pin/pwm0_pd": {
+          "ingenic,pinmux": {
+            "hex": "000000060000001e0000001e",
+            "cells": [
+              6,
+              30,
+              30
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/sfc-pin": {},
+        "/apb/pinctrl@0x10010000/sfc-pin/sfc-pd_8bit": {
+          "ingenic,pinmux": {
+            "hex": "00000006000000110000001a",
+            "cells": [
+              6,
+              17,
+              26
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/sfc-pin/sfc-pd_4bit": {
+          "ingenic,pinmux": {
+            "hex": "000000060000001100000016",
+            "cells": [
+              6,
+              17,
+              22
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/sfc-pin/sfc-pe": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001000000015",
+            "cells": [
+              10,
+              16,
+              21
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "phandle": {
+            "hex": "0000000e",
+            "cells": [
+              14
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/cim-pin": {},
+        "/apb/pinctrl@0x10010000/cim-pin/cim-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000000000007000000080000000c0000000f",
+            "cells": [
+              8,
+              0,
+              7,
+              8,
+              12,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/vic-pin": {},
+        "/apb/pinctrl@0x10010000/vic-pin/vic-pa-low-10bit": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000000000009000000080000000c0000000e",
+            "cells": [
+              8,
+              0,
+              9,
+              8,
+              12,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/vic-pin/vic-pa-high-10bit": {
+          "ingenic,pinmux": {
+            "hex": "00000008000000020000000e",
+            "cells": [
+              8,
+              2,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/vic-pin/vic-pa-12bit": {
+          "ingenic,pinmux": {
+            "hex": "00000008000000000000000e",
+            "cells": [
+              8,
+              0,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/cim-vic-mclk": {},
+        "/apb/pinctrl@0x10010000/cim-vic-mclk/cim-vic-mclk-pe-24M": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001800000018",
+            "cells": [
+              10,
+              24,
+              24
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/cim-vic-mclk/cim-vic-mclk-pe": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001800000018",
+            "cells": [
+              10,
+              24,
+              24
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/cim-vic-mclk/cim-vic-mclk-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000f0000000f",
+            "cells": [
+              7,
+              15,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins": {},
+        "/apb/pinctrl@0x10010000/lcd-pins/tft-lcd-pb-rgb888": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000000000001b",
+            "cells": [
+              9,
+              0,
+              27
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins/tft-lcd-pb-rgb565": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000000000000f00000009000000180000001b",
+            "cells": [
+              9,
+              0,
+              15,
+              9,
+              24,
+              27
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins/tft-lcd-pb-rgb666": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000000000001100000009000000180000001b",
+            "cells": [
+              9,
+              0,
+              17,
+              9,
+              24,
+              27
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins/smart-lcd-pb-16bit": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000000000000f00000009000000190000001b",
+            "cells": [
+              9,
+              0,
+              15,
+              9,
+              25,
+              27
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins/smart-lcd-pb-9bit": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000000000000800000009000000190000001b",
+            "cells": [
+              9,
+              0,
+              8,
+              9,
+              25,
+              27
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins/smart-lcd-pb-8bit": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000000000000700000009000000190000001b",
+            "cells": [
+              9,
+              0,
+              7,
+              9,
+              25,
+              27
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins/smart-lcd-pb-spi": {
+          "ingenic,pinmux": {
+            "hex": "00000009000000000000000000000009000000190000001a",
+            "cells": [
+              9,
+              0,
+              0,
+              9,
+              25,
+              26
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/lcd-pins/smart-lcd-pb-te": {
+          "ingenic,pinmux": {
+            "hex": "000000090000001b0000001b",
+            "cells": [
+              9,
+              27,
+              27
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic1-tmclk-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000800000008",
+            "cells": [
+              7,
+              8,
+              8
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic1-rmclk-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000100000001",
+            "cells": [
+              7,
+              1,
+              1
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic1-pin": {},
+        "/apb/pinctrl@0x10010000/baic1-pin/baic1-pin-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000200000007",
+            "cells": [
+              7,
+              2,
+              7
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic1-pin/baic1-cpin-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000400000007",
+            "cells": [
+              7,
+              4,
+              7
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic2-mclk-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000700000007",
+            "cells": [
+              8,
+              7,
+              7
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic2-pa": {
+          "ingenic,pinmux": {
+            "hex": "00000008000000090000000d000000080000001100000011",
+            "cells": [
+              8,
+              9,
+              13,
+              8,
+              17,
+              17
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic2-pa-tdm1": {
+          "ingenic,pinmux": {
+            "hex": "00000008000000090000000a000000080000001100000011",
+            "cells": [
+              8,
+              9,
+              10,
+              8,
+              17,
+              17
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic2-pa-tdm2": {
+          "ingenic,pinmux": {
+            "hex": "00000008000000090000000b000000080000001100000011",
+            "cells": [
+              8,
+              9,
+              11,
+              8,
+              17,
+              17
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic3-mclk-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000000000000",
+            "cells": [
+              8,
+              0,
+              0
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic3-pa": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000200000006000000080000001000000010",
+            "cells": [
+              8,
+              2,
+              6,
+              8,
+              16,
+              16
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic3-pa-tdm1": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000200000003000000080000001000000010",
+            "cells": [
+              8,
+              2,
+              3,
+              8,
+              16,
+              16
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic3-pa-tdm2": {
+          "ingenic,pinmux": {
+            "hex": "000000080000000200000004000000080000001000000010",
+            "cells": [
+              8,
+              2,
+              4,
+              8,
+              16,
+              16
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/baic4-pd": {
+          "ingenic,pinmux": {
+            "hex": "000000060000000200000005",
+            "cells": [
+              6,
+              2,
+              5
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "00000006000000040000000400010002",
+            "cells": [
+              6,
+              4,
+              4,
+              65538
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/spdif-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000d0000000e",
+            "cells": [
+              7,
+              13,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "000000070000000e0000000e00070009",
+            "cells": [
+              7,
+              14,
+              14,
+              458761
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/spdif-pc-in": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000d0000000d",
+            "cells": [
+              7,
+              13,
+              13
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/spdif-pc-out": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000e0000000e",
+            "cells": [
+              7,
+              14,
+              14
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "ingenic,pincfg": {
+            "hex": "000000070000000e0000000e00070009",
+            "cells": [
+              7,
+              14,
+              14,
+              458761
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/dmic-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000001400000018",
+            "cells": [
+              7,
+              20,
+              24
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/dmic-pc-2ch": {
+          "ingenic,pinmux": {
+            "hex": "000000070000001400000015",
+            "cells": [
+              7,
+              20,
+              21
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/dmic-pc-4ch": {
+          "ingenic,pinmux": {
+            "hex": "000000070000001400000016",
+            "cells": [
+              7,
+              20,
+              22
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/dmic-pc-6ch": {
+          "ingenic,pinmux": {
+            "hex": "000000070000001400000017",
+            "cells": [
+              7,
+              20,
+              23
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/spi0-pb": {
+          "ingenic,pinmux": {
+            "hex": "000000090000001c0000001f",
+            "cells": [
+              9,
+              28,
+              31
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/spi0-pc": {
+          "ingenic,pinmux": {
+            "hex": "00000007000000090000000c",
+            "cells": [
+              7,
+              9,
+              12
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin": {},
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu0_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000000000001",
+            "cells": [
+              7,
+              0,
+              1
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu1_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000200000003",
+            "cells": [
+              7,
+              2,
+              3
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu2_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000400000005",
+            "cells": [
+              7,
+              4,
+              5
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu3_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000600000007",
+            "cells": [
+              7,
+              6,
+              7
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu4_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000800000009",
+            "cells": [
+              7,
+              8,
+              9
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu5_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000a0000000b",
+            "cells": [
+              7,
+              10,
+              11
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu5_pe": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001000000011",
+            "cells": [
+              10,
+              16,
+              17
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu6_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000c0000000d",
+            "cells": [
+              7,
+              12,
+              13
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu6_pe": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001200000013",
+            "cells": [
+              10,
+              18,
+              19
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu7_pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000e0000000f",
+            "cells": [
+              7,
+              14,
+              15
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/tcu-pin/tcu7_pe": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001400000015",
+            "cells": [
+              10,
+              20,
+              21
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/scc-pc": {
+          "ingenic,pinmux": {
+            "hex": "000000070000000300000004",
+            "cells": [
+              7,
+              3,
+              4
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/rtc32k-pins": {},
+        "/apb/pinctrl@0x10010000/rtc32k-pins/rtc32k-enable": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001700000017",
+            "cells": [
+              10,
+              23,
+              23
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/apb/pinctrl@0x10010000/rtc32k-pins/rtc32k-disable": {
+          "ingenic,pinmux": {
+            "hex": "0000000a0000001700000017",
+            "cells": [
+              10,
+              23,
+              23
+            ]
+          },
+          "ingenic,pinmux-funcsel": {
+            "hex": "0000000c",
+            "cells": [
+              12
+            ]
+          }
+        },
+        "/apb/serial@0x10030000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003000000000100",
+            "cells": [
+              268632064,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000002f",
+            "cells": [
+              47
+            ]
+          },
+          "clocks": {
+            "hex": "0000000300000000",
+            "cells": [
+              3,
+              0
+            ]
+          },
+          "clock-names": {
+            "hex": "756172743000",
+            "strings": [
+              "uart0"
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "pinctrl-names": {
+            "hex": "64656661756c7400",
+            "cells": [
+              1684366945,
+              1970041856
+            ],
+            "strings": [
+              "default"
+            ]
+          },
+          "pinctrl-0": {
+            "hex": "0000000b",
+            "cells": [
+              11
+            ]
+          }
+        },
+        "/apb/serial@0x10031000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003100000000100",
+            "cells": [
+              268636160,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000002e",
+            "cells": [
+              46
+            ]
+          }
+        },
+        "/apb/serial@0x10032000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003200000000100",
+            "cells": [
+              268640256,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000002d",
+            "cells": [
+              45
+            ]
+          }
+        },
+        "/apb/serial@0x10033000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003300000000100",
+            "cells": [
+              268644352,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000002c",
+            "cells": [
+              44
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "pinctrl-names": {
+            "hex": "64656661756c7400",
+            "cells": [
+              1684366945,
+              1970041856
+            ],
+            "strings": [
+              "default"
+            ]
+          },
+          "pinctrl-0": {
+            "hex": "0000000c",
+            "cells": [
+              12
+            ]
+          }
+        },
+        "/apb/serial@0x10034000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003400000000100",
+            "cells": [
+              268648448,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000002b",
+            "cells": [
+              43
+            ]
+          }
+        },
+        "/apb/serial@0x10035000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003500000000100",
+            "cells": [
+              268652544,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000002a",
+            "cells": [
+              42
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/serial@0x10036000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003600000000100",
+            "cells": [
+              268656640,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000029",
+            "cells": [
+              41
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/serial@0x10037000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003700000000100",
+            "cells": [
+              268660736,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000028",
+            "cells": [
+              40
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/serial@0x10038000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003800000000100",
+            "cells": [
+              268664832,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000027",
+            "cells": [
+              39
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/serial@0x10039000": {
+          "compatible": {
+            "hex": "696e67656e69632c383235302d7561727400",
+            "strings": [
+              "ingenic,8250-uart"
+            ]
+          },
+          "reg": {
+            "hex": "1003900000000100",
+            "cells": [
+              268668928,
+              256
+            ]
+          },
+          "reg-shift": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000026",
+            "cells": [
+              38
+            ]
+          }
+        },
+        "/apb/i2c@0x10050000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69326300",
+            "strings": [
+              "ingenic,x2000-i2c"
+            ]
+          },
+          "reg": {
+            "hex": "1005000000001000",
+            "cells": [
+              268763136,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000003d",
+            "cells": [
+              61
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/i2c@0x10051000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69326300",
+            "strings": [
+              "ingenic,x2000-i2c"
+            ]
+          },
+          "reg": {
+            "hex": "1005100000001000",
+            "cells": [
+              268767232,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000003c",
+            "cells": [
+              60
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/i2c@0x10052000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69326300",
+            "strings": [
+              "ingenic,x2000-i2c"
+            ]
+          },
+          "reg": {
+            "hex": "1005200000001000",
+            "cells": [
+              268771328,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000003b",
+            "cells": [
+              59
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/i2c@0x10053000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69326300",
+            "strings": [
+              "ingenic,x2000-i2c"
+            ]
+          },
+          "reg": {
+            "hex": "1005300000001000",
+            "cells": [
+              268775424,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000003a",
+            "cells": [
+              58
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          }
+        },
+        "/apb/i2c@0x10054000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69326300",
+            "strings": [
+              "ingenic,x2000-i2c"
+            ]
+          },
+          "reg": {
+            "hex": "1005400000001000",
+            "cells": [
+              268779520,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000039",
+            "cells": [
+              57
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          }
+        },
+        "/apb/i2c@0x10055000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69326300",
+            "strings": [
+              "ingenic,x2000-i2c"
+            ]
+          },
+          "reg": {
+            "hex": "1005500000001000",
+            "cells": [
+              268783616,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000038",
+            "cells": [
+              56
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/spi@0x10043000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d73706900",
+            "strings": [
+              "ingenic,x2000-spi"
+            ]
+          },
+          "reg": {
+            "hex": "1004300000001000",
+            "cells": [
+              268709888,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000009",
+            "cells": [
+              9
+            ]
+          },
+          "dmas": {
+            "hex": "0000000d000000160000000d00000017",
+            "cells": [
+              13,
+              22,
+              13,
+              23
+            ]
+          },
+          "dma-names": {
+            "hex": "747800727800",
+            "strings": [
+              "tx",
+              "rx"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/spi@0x10044000": {
+          "compatible": {
+            "hex": "696e67656e69632c73706900",
+            "cells": [
+              1768843109,
+              1852400428,
+              1936746752
+            ],
+            "strings": [
+              "ingenic,spi"
+            ]
+          },
+          "reg": {
+            "hex": "1004400000001000",
+            "cells": [
+              268713984,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000008",
+            "cells": [
+              8
+            ]
+          },
+          "dmas": {
+            "hex": "0000000d000000180000000d00000019",
+            "cells": [
+              13,
+              24,
+              13,
+              25
+            ]
+          },
+          "dma-names": {
+            "hex": "747800727800",
+            "strings": [
+              "tx",
+              "rx"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/scc@0x10040000": {
+          "compatible": {
+            "hex": "696e67656e69632c73636300",
+            "cells": [
+              1768843109,
+              1852400428,
+              1935893248
+            ],
+            "strings": [
+              "ingenic,scc"
+            ]
+          },
+          "reg": {
+            "hex": "1004000000000100",
+            "cells": [
+              268697600,
+              256
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000023",
+            "cells": [
+              35
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/dtrng@0x10072000": {
+          "compatible": {
+            "hex": "696e67656e69632c6474726e6700",
+            "strings": [
+              "ingenic,dtrng"
+            ]
+          },
+          "reg": {
+            "hex": "1007200000000100",
+            "cells": [
+              268902400,
+              256
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000022",
+            "cells": [
+              34
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/apb/otg_phy": {
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "compatible": {
+            "hex": "696e67656e69632c7573627068792d783230303000",
+            "strings": [
+              "ingenic,usbphy-x2000"
+            ]
+          },
+          "reg": {
+            "hex": "10000000000001001007800000000110",
+            "cells": [
+              268435456,
+              256,
+              268926976,
+              272
+            ]
+          },
+          "#phy-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "phandle": {
+            "hex": "0000000f",
+            "cells": [
+              15
+            ]
+          }
+        },
+        "/apb/icodec@0x10020000": {
+          "compatible": {
+            "hex": "696e67656e69632c69636f64656300",
+            "strings": [
+              "ingenic,icodec"
+            ]
+          },
+          "reg": {
+            "hex": "1002000000001000",
+            "cells": [
+              268566528,
+              4096
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          }
+        },
+        "/ahb2": {
+          "compatible": {
+            "hex": "73696d706c652d62757300",
+            "strings": [
+              "simple-bus"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ranges": {
+            "hex": ""
+          }
+        },
+        "/ahb2/as": {
+          "compatible": {
+            "hex": "73696d706c652d62757300",
+            "strings": [
+              "simple-bus"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ranges": {
+            "hex": ""
+          }
+        },
+        "/ahb2/as/as-platform": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d706c6174666f726d00",
+            "cells": [
+              1768843109,
+              1852400428,
+              1634938224,
+              1818326118,
+              1869769984
+            ],
+            "strings": [
+              "ingenic,as-platform"
+            ]
+          },
+          "reg": {
+            "hex": "134d000000000114134d100000000100",
+            "cells": [
+              323813376,
+              276,
+              323817472,
+              256
+            ]
+          },
+          "reg-names": {
+            "hex": "646d61006669666f00",
+            "strings": [
+              "dma",
+              "fifo"
+            ]
+          },
+          "ingenic,fifo-size": {
+            "hex": "00001000",
+            "cells": [
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "ingenic,fth_quirk": {
+            "hex": ""
+          }
+        },
+        "/ahb2/as/as-virtual-fe": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d7669722d666500",
+            "strings": [
+              "ingenic,as-vir-fe"
+            ]
+          },
+          "reg": {
+            "hex": "0000000000000000",
+            "cells": [
+              0,
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "ingenic,cap-dai-bm": {
+            "hex": "0000000c",
+            "cells": [
+              12
+            ]
+          },
+          "ingenic,num-dais": {
+            "hex": "00000004",
+            "cells": [
+              4
+            ]
+          }
+        },
+        "/ahb2/as/as-fmtcov": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d666d74636f7600",
+            "strings": [
+              "ingenic,as-fmtcov"
+            ]
+          },
+          "reg": {
+            "hex": "134d200000000028",
+            "cells": [
+              323821568,
+              40
+            ]
+          }
+        },
+        "/ahb2/as/as-dsp": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d64737000",
+            "strings": [
+              "ingenic,as-dsp"
+            ]
+          },
+          "reg": {
+            "hex": "134d400000000030",
+            "cells": [
+              323829760,
+              48
+            ]
+          },
+          "ingenic,li-port": {
+            "hex": "0000000000000001000000020000000300000004000000060000000700000008000000090000000a0000000b0000000c",
+            "cells": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12
+            ]
+          },
+          "ingenic,lo-port": {
+            "hex": "000000000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b",
+            "cells": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ]
+          },
+          "ingenic,cap-dai-bm": {
+            "hex": "000003e0",
+            "cells": [
+              992
+            ]
+          },
+          "ingenic,num-dais": {
+            "hex": "0000000a",
+            "cells": [
+              10
+            ]
+          }
+        },
+        "/ahb2/as/as-baic": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d6261696300",
+            "cells": [
+              1768843109,
+              1852400428,
+              1634938210,
+              1634296576
+            ],
+            "strings": [
+              "ingenic,as-baic"
+            ]
+          },
+          "reg": {
+            "hex": "134d500000005000",
+            "cells": [
+              323833856,
+              20480
+            ]
+          },
+          "ingenic,num-dais": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "ingenic,dai-array": {
+            "hex": "0000000000000001000000020000000300000004",
+            "cells": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "ingenic,dai-mode": {
+            "hex": "0000073f0000073f00000fcf000017cf0000073f",
+            "cells": [
+              1855,
+              1855,
+              4047,
+              6095,
+              1855
+            ]
+          },
+          "ingenic,data-pin-num": {
+            "hex": "0000000100000001000000040000000400000001",
+            "cells": [
+              1,
+              1,
+              4,
+              4,
+              1
+            ]
+          },
+          "ingenic,clk-split": {
+            "hex": "0000000100000001000000010000000100000000",
+            "cells": [
+              1,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          "ingenic,clk-rname": {
+            "hex": "6469765f69327330006469765f69327330006469765f69327332006e6f5f636c6b006d75785f70636d00",
+            "strings": [
+              "div_i2s0",
+              "div_i2s0",
+              "div_i2s2",
+              "no_clk",
+              "mux_pcm"
+            ]
+          },
+          "ingenic,clk-tname": {
+            "hex": "6469765f69327331006469765f69327331006e6f5f636c6b006469765f69327333006d75785f70636d00",
+            "strings": [
+              "div_i2s1",
+              "div_i2s1",
+              "no_clk",
+              "div_i2s3",
+              "mux_pcm"
+            ]
+          },
+          "ingenic,pcm-clk-parent": {
+            "hex": "6469765f6932733200",
+            "strings": [
+              "div_i2s2"
+            ]
+          }
+        },
+        "/ahb2/as/as-dmic": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d646d696300",
+            "cells": [
+              1768843109,
+              1852400428,
+              1634938212,
+              1835623168
+            ],
+            "strings": [
+              "ingenic,as-dmic"
+            ]
+          },
+          "reg": {
+            "hex": "134da00000000010",
+            "cells": [
+              323854336,
+              16
+            ]
+          },
+          "ingenic,clk-name": {
+            "hex": "6d75785f646d696300",
+            "strings": [
+              "mux_dmic"
+            ]
+          },
+          "ingenic,clk-parent": {
+            "hex": "6469765f6932733300",
+            "strings": [
+              "div_i2s3"
+            ]
+          }
+        },
+        "/ahb2/as/as-mixer": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d6d6978657200",
+            "strings": [
+              "ingenic,as-mixer"
+            ]
+          },
+          "reg": {
+            "hex": "134dc00000000008",
+            "cells": [
+              323862528,
+              8
+            ]
+          },
+          "ingenic,num-mixers": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/ahb2/as/as-spdif": {
+          "compatible": {
+            "hex": "696e67656e69632c61732d737064696600",
+            "strings": [
+              "ingenic,as-spdif"
+            ]
+          },
+          "reg": {
+            "hex": "134db00000000014134db10000000014",
+            "cells": [
+              323858432,
+              20,
+              323858688,
+              20
+            ]
+          },
+          "reg-names": {
+            "hex": "6f757400696e00",
+            "strings": [
+              "out",
+              "in"
+            ]
+          },
+          "ingenic,clk-name": {
+            "hex": "6d75785f737064696600",
+            "strings": [
+              "mux_spdif"
+            ]
+          },
+          "ingenic,clk-parent": {
+            "hex": "6469765f6932733200",
+            "strings": [
+              "div_i2s2"
+            ]
+          }
+        },
+        "/ahb2/msc@0x13450000": {
+          "compatible": {
+            "hex": "696e67656e69632c736468636900",
+            "strings": [
+              "ingenic,sdhci"
+            ]
+          },
+          "reg": {
+            "hex": "1345000000010000",
+            "cells": [
+              323289088,
+              65536
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000025",
+            "cells": [
+              37
+            ]
+          }
+        },
+        "/ahb2/msc@0x13460000": {
+          "compatible": {
+            "hex": "696e67656e69632c736468636900",
+            "strings": [
+              "ingenic,sdhci"
+            ]
+          },
+          "reg": {
+            "hex": "1346000000010000",
+            "cells": [
+              323354624,
+              65536
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000024",
+            "cells": [
+              36
+            ]
+          }
+        },
+        "/ahb2/msc@0x13490000": {
+          "compatible": {
+            "hex": "696e67656e69632c736468636900",
+            "strings": [
+              "ingenic,sdhci"
+            ]
+          },
+          "reg": {
+            "hex": "1349000000010000",
+            "cells": [
+              323551232,
+              65536
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000030",
+            "cells": [
+              48
+            ]
+          }
+        },
+        "/ahb2/aes@0x13430000": {
+          "compatible": {
+            "hex": "696e67656e69632c61657300",
+            "cells": [
+              1768843109,
+              1852400428,
+              1634038528
+            ],
+            "strings": [
+              "ingenic,aes"
+            ]
+          },
+          "reg": {
+            "hex": "1343000000010000",
+            "cells": [
+              323158016,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000017",
+            "cells": [
+              23
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/ahb2/hash@0x13470000": {
+          "compatible": {
+            "hex": "696e67656e69632c6861736800",
+            "strings": [
+              "ingenic,hash"
+            ]
+          },
+          "reg": {
+            "hex": "1347000000010000",
+            "cells": [
+              323420160,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000016",
+            "cells": [
+              22
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/ahb2/rsa@0x13480000": {
+          "compatible": {
+            "hex": "696e67656e69632c72736100",
+            "cells": [
+              1768843109,
+              1852400428,
+              1920164096
+            ],
+            "strings": [
+              "ingenic,rsa"
+            ]
+          },
+          "reg": {
+            "hex": "1348000000010000",
+            "cells": [
+              323485696,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000018",
+            "cells": [
+              24
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/ahb2/mac@0x134b0000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6d616300",
+            "strings": [
+              "ingenic,x2000-mac"
+            ]
+          },
+          "reg": {
+            "hex": "134b000000002000",
+            "cells": [
+              323682304,
+              8192
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000037",
+            "cells": [
+              55
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          },
+          "ingenic,rst-ms": {
+            "hex": "0000000a",
+            "cells": [
+              10
+            ]
+          }
+        },
+        "/ahb2/mac@0x134a0000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6d616300",
+            "strings": [
+              "ingenic,x2000-mac"
+            ]
+          },
+          "reg": {
+            "hex": "134a000000002000",
+            "cells": [
+              323616768,
+              8192
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000035",
+            "cells": [
+              53
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          },
+          "ingenic,rst-ms": {
+            "hex": "0000000a",
+            "cells": [
+              10
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d73666300",
+            "strings": [
+              "ingenic,x2000-sfc"
+            ]
+          },
+          "reg": {
+            "hex": "1344000000010000",
+            "cells": [
+              323223552,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000007",
+            "cells": [
+              7
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "pinctrl-names": {
+            "hex": "64656661756c7400",
+            "cells": [
+              1684366945,
+              1970041856
+            ],
+            "strings": [
+              "default"
+            ]
+          },
+          "pinctrl-0": {
+            "hex": "0000000e",
+            "cells": [
+              14
+            ]
+          },
+          "ingenic,sfc-init-frequency": {
+            "hex": "0bebc200",
+            "cells": [
+              200000000
+            ]
+          },
+          "ingenic,sfc-max-frequency": {
+            "hex": "17d78400",
+            "cells": [
+              400000000
+            ]
+          },
+          "ingenic,use_ofpart_info": {
+            "hex": "00",
+            "strings": [
+              ""
+            ]
+          },
+          "ingenic,spiflash_param_offset": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/norflash@0": {},
+        "/ahb2/sfc@0x13440000/norflash@0/partitions": {
+          "compatible": {
+            "hex": "66697865642d706172746974696f6e7300",
+            "strings": [
+              "fixed-partitions"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/norflash@0/partitions/uboot@0": {
+          "label": {
+            "hex": "75626f6f7400",
+            "strings": [
+              "uboot"
+            ]
+          },
+          "reg": {
+            "hex": "0000000000040000",
+            "cells": [
+              0,
+              262144
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/norflash@0/partitions/kernel@40000": {
+          "label": {
+            "hex": "6b65726e656c00",
+            "strings": [
+              "kernel"
+            ]
+          },
+          "reg": {
+            "hex": "0004000000300000",
+            "cells": [
+              262144,
+              3145728
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/norflash@0/partitions/rootfs@360000": {
+          "label": {
+            "hex": "726f6f74667300",
+            "strings": [
+              "rootfs"
+            ]
+          },
+          "reg": {
+            "hex": "0036000000ca0000",
+            "cells": [
+              3538944,
+              13238272
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/nandflash@1": {},
+        "/ahb2/sfc@0x13440000/nandflash@1/partitions": {
+          "compatible": {
+            "hex": "66697865642d706172746974696f6e7300",
+            "strings": [
+              "fixed-partitions"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/nandflash@1/partitions/partition@0": {
+          "label": {
+            "hex": "75626f6f7400",
+            "strings": [
+              "uboot"
+            ]
+          },
+          "reg": {
+            "hex": "0000000000100000",
+            "cells": [
+              0,
+              1048576
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/nandflash@1/partitions/partition@100000": {
+          "label": {
+            "hex": "6b65726e656c00",
+            "strings": [
+              "kernel"
+            ]
+          },
+          "reg": {
+            "hex": "0010000000800000",
+            "cells": [
+              1048576,
+              8388608
+            ]
+          }
+        },
+        "/ahb2/sfc@0x13440000/nandflash@1/partitions/partition@900000": {
+          "label": {
+            "hex": "726f6f74667300",
+            "strings": [
+              "rootfs"
+            ]
+          },
+          "reg": {
+            "hex": "009000000f700000",
+            "cells": [
+              9437184,
+              258998272
+            ]
+          }
+        },
+        "/ahb2/dma@0x13420000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d70646d6100",
+            "strings": [
+              "ingenic,x2000-pdma"
+            ]
+          },
+          "reg": {
+            "hex": "1342000000010000",
+            "cells": [
+              323092480,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-names": {
+            "hex": "70646d610070646d616400",
+            "strings": [
+              "pdma",
+              "pdmad"
+            ]
+          },
+          "interrupts": {
+            "hex": "0000000300000004",
+            "cells": [
+              3,
+              4
+            ]
+          },
+          "#dma-channels": {
+            "hex": "00000020",
+            "cells": [
+              32
+            ]
+          },
+          "#dma-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ingenic,reserved-chs": {
+            "hex": "00000003",
+            "cells": [
+              3
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "phandle": {
+            "hex": "0000000d",
+            "cells": [
+              13
+            ]
+          }
+        },
+        "/ahb2/mcu@0x13420000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6d637500",
+            "strings": [
+              "ingenic,x2000-mcu"
+            ]
+          },
+          "reg": {
+            "hex": "1342000000010000",
+            "cells": [
+              323092480,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupt-names": {
+            "hex": "70646d616d00",
+            "strings": [
+              "pdmam"
+            ]
+          },
+          "interrupts": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "ingenic,tcsm_size": {
+            "hex": "00004000",
+            "cells": [
+              16384
+            ],
+            "strings": [
+              "",
+              "",
+              "@"
+            ]
+          }
+        },
+        "/ahb2/pwm@0x134c0000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d70776d00",
+            "strings": [
+              "ingenic,x2000-pwm"
+            ]
+          },
+          "#pwm-cells": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "reg": {
+            "hex": "134c000000010000",
+            "cells": [
+              323747840,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000006",
+            "cells": [
+              6
+            ]
+          }
+        },
+        "/ahb2/otg@0x13500000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d647763322d68736f746700",
+            "strings": [
+              "ingenic,x2000-dwc2-hsotg"
+            ]
+          },
+          "reg": {
+            "hex": "1350000000040000",
+            "cells": [
+              324009984,
+              262144
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "phys": {
+            "hex": "0000000f",
+            "cells": [
+              15
+            ]
+          },
+          "g-rx-fifo-size": {
+            "hex": "00000448",
+            "cells": [
+              1096
+            ]
+          },
+          "g-np-tx-fifo-size": {
+            "hex": "00000200",
+            "cells": [
+              512
+            ]
+          },
+          "g-tx-fifo-size": {
+            "hex": "0000001000000010000000100000008000000100000001000000020000000300",
+            "cells": [
+              16,
+              16,
+              16,
+              128,
+              256,
+              256,
+              512,
+              768
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "g-use-dma": {
+            "hex": ""
+          },
+          "dr_mode": {
+            "hex": "6f746700",
+            "cells": [
+              1869899520
+            ],
+            "strings": [
+              "otg"
+            ]
+          }
+        },
+        "/ahb2/efuse@0x13540000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d656675736500",
+            "cells": [
+              1768843109,
+              1852400428,
+              2016555056,
+              808281446,
+              1970496768
+            ],
+            "strings": [
+              "ingenic,x2000-efuse"
+            ]
+          },
+          "reg": {
+            "hex": "1354000000010000",
+            "cells": [
+              324272128,
+              65536
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          }
+        },
+        "/ahb1": {
+          "compatible": {
+            "hex": "73696d706c652d62757300",
+            "strings": [
+              "simple-bus"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ranges": {
+            "hex": ""
+          }
+        },
+        "/ahb0": {
+          "compatible": {
+            "hex": "73696d706c652d62757300",
+            "strings": [
+              "simple-bus"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ranges": {
+            "hex": ""
+          }
+        },
+        "/ahb0/cim@0x13060000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d63696d00",
+            "strings": [
+              "ingenic,x2000-cim"
+            ]
+          },
+          "reg": {
+            "hex": "1306000000010000",
+            "cells": [
+              319160320,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000001e",
+            "cells": [
+              30
+            ]
+          },
+          "clocks": {
+            "hex": "00000010000000300000001000000045000000100000005e",
+            "cells": [
+              16,
+              48,
+              16,
+              69,
+              16,
+              94
+            ]
+          },
+          "clock-names": {
+            "hex": "6469765f63696d00676174655f63696d00676174655f6d69706900",
+            "strings": [
+              "div_cim",
+              "gate_cim",
+              "gate_mipi"
+            ]
+          },
+          "status": {
+            "hex": "64697361626c6500",
+            "cells": [
+              1684632417,
+              1651270912
+            ],
+            "strings": [
+              "disable"
+            ]
+          }
+        },
+        "/ahb0/isp-camera@0": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6973702d63616d65726100",
+            "strings": [
+              "ingenic,x2000-isp-camera"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ranges": {
+            "hex": ""
+          }
+        },
+        "/ahb0/isp-camera@0/port": {},
+        "/ahb0/isp-camera@0/port/endpoint@0": {},
+        "/ahb0/isp-camera@0/csi@0x10074000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d63736900",
+            "strings": [
+              "ingenic,x2000-csi"
+            ]
+          },
+          "reg": {
+            "hex": "1007400000001000",
+            "cells": [
+              268910592,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000000c",
+            "cells": [
+              12
+            ]
+          },
+          "clocks": {
+            "hex": "000000100000005e",
+            "cells": [
+              16,
+              94
+            ]
+          },
+          "clock-names": {
+            "hex": "676174655f63736900",
+            "strings": [
+              "gate_csi"
+            ]
+          }
+        },
+        "/ahb0/isp-camera@0/vic@0x13710000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d76696300",
+            "strings": [
+              "ingenic,x2000-vic"
+            ]
+          },
+          "reg": {
+            "hex": "1371000000010000",
+            "cells": [
+              326172672,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000013",
+            "cells": [
+              19
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/ahb0/isp-camera@0/isp@0x13700000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69737000",
+            "strings": [
+              "ingenic,x2000-isp"
+            ]
+          },
+          "reg": {
+            "hex": "1370000000002300",
+            "cells": [
+              326107136,
+              8960
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000015",
+            "cells": [
+              21
+            ]
+          },
+          "clocks": {
+            "hex": "00000010000000320000001000000076000000100000007e",
+            "cells": [
+              16,
+              50,
+              16,
+              118,
+              16,
+              126
+            ]
+          },
+          "clock-names": {
+            "hex": "6469765f69737000676174655f6973703000706f7765725f6973703000",
+            "strings": [
+              "div_isp",
+              "gate_isp0",
+              "power_isp0"
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          },
+          "ingenic,cpm_reset": {
+            "hex": "b00000c4",
+            "cells": [
+              2952790212
+            ]
+          },
+          "ingenic,bit_sr": {
+            "hex": "00000019",
+            "cells": [
+              25
+            ]
+          },
+          "ingenic,bit_stp": {
+            "hex": "00000018",
+            "cells": [
+              24
+            ]
+          },
+          "ingenic,bit_ack": {
+            "hex": "00000017",
+            "cells": [
+              23
+            ]
+          }
+        },
+        "/ahb0/isp-camera@0/mscaler@0x13702300": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6d7363616c657200",
+            "strings": [
+              "ingenic,x2000-mscaler"
+            ]
+          },
+          "reg": {
+            "hex": "1370230000000400",
+            "cells": [
+              326116096,
+              1024
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/ahb0/isp-camera@1": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6973702d63616d65726100",
+            "strings": [
+              "ingenic,x2000-isp-camera"
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "ranges": {
+            "hex": ""
+          }
+        },
+        "/ahb0/isp-camera@1/port": {},
+        "/ahb0/isp-camera@1/port/endpoint@0": {},
+        "/ahb0/isp-camera@1/csi@0x10073000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d63736900",
+            "strings": [
+              "ingenic,x2000-csi"
+            ]
+          },
+          "reg": {
+            "hex": "1007300000001000",
+            "cells": [
+              268906496,
+              4096
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000001c",
+            "cells": [
+              28
+            ]
+          },
+          "clocks": {
+            "hex": "000000100000005e",
+            "cells": [
+              16,
+              94
+            ]
+          },
+          "clock-names": {
+            "hex": "676174655f63736900",
+            "strings": [
+              "gate_csi"
+            ]
+          }
+        },
+        "/ahb0/isp-camera@1/vic@0x13810000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d76696300",
+            "strings": [
+              "ingenic,x2000-vic"
+            ]
+          },
+          "reg": {
+            "hex": "1381000000010000",
+            "cells": [
+              327221248,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000012",
+            "cells": [
+              18
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/ahb0/isp-camera@1/isp@0x13800000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d69737000",
+            "strings": [
+              "ingenic,x2000-isp"
+            ]
+          },
+          "reg": {
+            "hex": "1380000000002300",
+            "cells": [
+              327155712,
+              8960
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "00000014",
+            "cells": [
+              20
+            ]
+          },
+          "clocks": {
+            "hex": "00000010000000320000001000000075000000100000007f",
+            "cells": [
+              16,
+              50,
+              16,
+              117,
+              16,
+              127
+            ]
+          },
+          "clock-names": {
+            "hex": "6469765f69737000676174655f6973703100706f7765725f6973703100",
+            "strings": [
+              "div_isp",
+              "gate_isp1",
+              "power_isp1"
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          },
+          "ingenic,cpm_reset": {
+            "hex": "b00000c4",
+            "cells": [
+              2952790212
+            ]
+          },
+          "ingenic,bit_sr": {
+            "hex": "00000016",
+            "cells": [
+              22
+            ]
+          },
+          "ingenic,bit_stp": {
+            "hex": "00000015",
+            "cells": [
+              21
+            ]
+          },
+          "ingenic,bit_ack": {
+            "hex": "00000014",
+            "cells": [
+              20
+            ]
+          }
+        },
+        "/ahb0/isp-camera@1/mscaler@0x13802300": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d6d7363616c657200",
+            "strings": [
+              "ingenic,x2000-mscaler"
+            ]
+          },
+          "reg": {
+            "hex": "1380230000000400",
+            "cells": [
+              327164672,
+              1024
+            ]
+          },
+          "status": {
+            "hex": "6f6b00",
+            "strings": [
+              "ok"
+            ]
+          }
+        },
+        "/ahb0/dpu@0x13050000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d64707500",
+            "strings": [
+              "ingenic,x2000-dpu"
+            ]
+          },
+          "reg": {
+            "hex": "1305000000010000",
+            "cells": [
+              319094784,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000001f",
+            "cells": [
+              31
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/ahb0/rotate@0x13070000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d726f7461746500",
+            "strings": [
+              "ingenic,x2000-rotate"
+            ]
+          },
+          "reg": {
+            "hex": "1307000000010000",
+            "cells": [
+              319225856,
+              65536
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000001d",
+            "cells": [
+              29
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          }
+        },
+        "/ahb0/helix@0x13200000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d68656c697800",
+            "cells": [
+              1768843109,
+              1852400428,
+              2016555056,
+              808282213,
+              1818851328
+            ],
+            "strings": [
+              "ingenic,x2000-helix"
+            ]
+          },
+          "reg": {
+            "hex": "1320000000100000",
+            "cells": [
+              320864256,
+              1048576
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000003e",
+            "cells": [
+              62
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/ahb0/felix@0x13300000": {
+          "compatible": {
+            "hex": "696e67656e69632c78323030302d66656c697800",
+            "cells": [
+              1768843109,
+              1852400428,
+              2016555056,
+              808281701,
+              1818851328
+            ],
+            "strings": [
+              "ingenic,x2000-felix"
+            ]
+          },
+          "reg": {
+            "hex": "1330000000100000",
+            "cells": [
+              321912832,
+              1048576
+            ]
+          },
+          "interrupt-parent": {
+            "hex": "00000005",
+            "cells": [
+              5
+            ]
+          },
+          "interrupts": {
+            "hex": "0000003f",
+            "cells": [
+              63
+            ]
+          },
+          "status": {
+            "hex": "64697361626c656400",
+            "strings": [
+              "disabled"
+            ]
+          }
+        },
+        "/i2c@0": {
+          "compatible": {
+            "hex": "6932632d6770696f00",
+            "strings": [
+              "i2c-gpio"
+            ]
+          },
+          "gpios": {
+            "hex": "0000000900000017000000000000000000000009000000160000000000000000",
+            "cells": [
+              9,
+              23,
+              0,
+              0,
+              9,
+              22,
+              0,
+              0
+            ]
+          },
+          "i2c-gpio,sda-open-drain": {
+            "hex": ""
+          },
+          "i2c-gpio,scl-open-drain": {
+            "hex": ""
+          },
+          "i2c-gpio,delay-us": {
+            "hex": "00000002",
+            "cells": [
+              2
+            ]
+          },
+          "#address-cells": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          }
+        },
+        "/i2c@0/pmu@34": {
+          "compatible": {
+            "hex": "782d706f776572732c6178703231303100",
+            "strings": [
+              "x-powers,axp2101"
+            ]
+          },
+          "reg": {
+            "hex": "00000034",
+            "cells": [
+              52
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "wakeup-source": {
+            "hex": ""
+          }
+        },
+        "/i2c@0/pmu@34/charger@0": {
+          "compatible": {
+            "hex": "782d706f776572732c617870323130312d706f7765722d737570706c7900",
+            "strings": [
+              "x-powers,axp2101-power-supply"
+            ]
+          },
+          "param": {
+            "hex": "00000011",
+            "cells": [
+              17
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "pmu_chg_ic_temp": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "pmu_runtime_chgcur": {
+            "hex": "000003e8",
+            "cells": [
+              1000
+            ]
+          },
+          "pmu_suspend_chgcur": {
+            "hex": "000003e8",
+            "cells": [
+              1000
+            ]
+          },
+          "pmu_shutdown_chgcur": {
+            "hex": "000003e8",
+            "cells": [
+              1000
+            ]
+          },
+          "pmu_iterm_limit": {
+            "hex": "00000064",
+            "cells": [
+              100
+            ]
+          },
+          "pmu_init_chgvol": {
+            "hex": "000010fe",
+            "cells": [
+              4350
+            ]
+          },
+          "pmu_usbpc_cur": {
+            "hex": "000007d0",
+            "cells": [
+              2000
+            ]
+          },
+          "pmu_battery_warning_level1": {
+            "hex": "0000000f",
+            "cells": [
+              15
+            ]
+          },
+          "pmu_battery_warning_level2": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "pmu_chgled_type": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "wakeup_usb_in": {
+            "hex": ""
+          },
+          "wakeup_usb_out": {
+            "hex": ""
+          },
+          "wakeup_bat_out": {
+            "hex": ""
+          }
+        },
+        "/i2c@0/pmu@34/powerkey@0": {
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          },
+          "compatible": {
+            "hex": "782d706f776572732c617870323130312d70656b00",
+            "strings": [
+              "x-powers,axp2101-pek"
+            ]
+          },
+          "pmu_powkey_off_time": {
+            "hex": "00002710",
+            "cells": [
+              10000
+            ]
+          },
+          "pmu_powkey_off_func": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "pmu_powkey_off_en": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "pmu_powkey_long_time": {
+            "hex": "000005dc",
+            "cells": [
+              1500
+            ]
+          },
+          "pmu_powkey_on_time": {
+            "hex": "000001fe",
+            "cells": [
+              510
+            ]
+          },
+          "wakeup_rising": {
+            "hex": ""
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0": {},
+        "/i2c@0/pmu@34/regulators@0/dcdc1": {
+          "regulator-name": {
+            "hex": "617870323130312d646364633100",
+            "strings": [
+              "axp2101-dcdc1"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "0016e360",
+            "cells": [
+              1500000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "0033e140",
+            "cells": [
+              3400000
+            ]
+          },
+          "regulator-boot-on": {
+            "hex": ""
+          },
+          "regulator-always-on": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000012",
+            "cells": [
+              18
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/dcdc2": {
+          "regulator-name": {
+            "hex": "617870323130312d646364633200",
+            "strings": [
+              "axp2101-dcdc2"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "00124f80",
+            "cells": [
+              1200000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "00124f80",
+            "cells": [
+              1200000
+            ]
+          },
+          "regulator-boot-on": {
+            "hex": ""
+          },
+          "regulator-always-on": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000013",
+            "cells": [
+              19
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/dcdc3": {
+          "regulator-name": {
+            "hex": "617870323130312d646364633300",
+            "strings": [
+              "axp2101-dcdc3"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "0007a120",
+            "cells": [
+              500000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "0033e140",
+            "cells": [
+              3400000
+            ]
+          },
+          "regulator-boot-on": {
+            "hex": ""
+          },
+          "regulator-always-on": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000014",
+            "cells": [
+              20
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/dcdc4": {
+          "regulator-name": {
+            "hex": "617870323130312d646364633400",
+            "strings": [
+              "axp2101-dcdc4"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "000e7ef0",
+            "cells": [
+              950000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "000e7ef0",
+            "cells": [
+              950000
+            ]
+          },
+          "regulator-boot-on": {
+            "hex": ""
+          },
+          "regulator-always-on": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "00000015",
+            "cells": [
+              21
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/dcdc5": {
+          "regulator-name": {
+            "hex": "617870323130312d646364633500",
+            "strings": [
+              "axp2101-dcdc5"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "00124f80",
+            "cells": [
+              1200000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "00387520",
+            "cells": [
+              3700000
+            ]
+          },
+          "phandle": {
+            "hex": "00000016",
+            "cells": [
+              22
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/rtcldo": {
+          "regulator-name": {
+            "hex": "617870323130312d7274636c646f00",
+            "strings": [
+              "axp2101-rtcldo"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "001b7740",
+            "cells": [
+              1800000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "001b7740",
+            "cells": [
+              1800000
+            ]
+          },
+          "regulator-boot-on": {
+            "hex": ""
+          },
+          "regulator-always-on": {
+            "hex": ""
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/rtcldo1": {
+          "regulator-name": {
+            "hex": "617870323130312d7274636c646f3100",
+            "cells": [
+              1635282994,
+              825241901,
+              1920230252,
+              1685008640
+            ],
+            "strings": [
+              "axp2101-rtcldo1"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "001b7740",
+            "cells": [
+              1800000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "001b7740",
+            "cells": [
+              1800000
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/aldo1": {
+          "regulator-name": {
+            "hex": "617870323130312d616c646f3100",
+            "strings": [
+              "axp2101-aldo1"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "0007a120",
+            "cells": [
+              500000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "003567e0",
+            "cells": [
+              3500000
+            ]
+          },
+          "phandle": {
+            "hex": "00000017",
+            "cells": [
+              23
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/aldo2": {
+          "regulator-name": {
+            "hex": "617870323130312d616c646f3200",
+            "strings": [
+              "axp2101-aldo2"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "0007a120",
+            "cells": [
+              500000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "003567e0",
+            "cells": [
+              3500000
+            ]
+          },
+          "phandle": {
+            "hex": "00000018",
+            "cells": [
+              24
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/aldo3": {
+          "regulator-name": {
+            "hex": "617870323130312d616c646f3300",
+            "strings": [
+              "axp2101-aldo3"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "00325aa0",
+            "cells": [
+              3300000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "00325aa0",
+            "cells": [
+              3300000
+            ]
+          },
+          "phandle": {
+            "hex": "00000019",
+            "cells": [
+              25
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/aldo4": {
+          "regulator-name": {
+            "hex": "617870323130312d616c646f3400",
+            "strings": [
+              "axp2101-aldo4"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "00325aa0",
+            "cells": [
+              3300000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "00325aa0",
+            "cells": [
+              3300000
+            ]
+          },
+          "regulator-boot-on": {
+            "hex": ""
+          },
+          "regulator-always-on": {
+            "hex": ""
+          },
+          "phandle": {
+            "hex": "0000001a",
+            "cells": [
+              26
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/bldo1": {
+          "regulator-name": {
+            "hex": "617870323130312d626c646f3100",
+            "strings": [
+              "axp2101-bldo1"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "002ab980",
+            "cells": [
+              2800000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "002ab980",
+            "cells": [
+              2800000
+            ]
+          },
+          "phandle": {
+            "hex": "0000001b",
+            "cells": [
+              27
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/bldo2": {
+          "regulator-name": {
+            "hex": "617870323130312d626c646f3200",
+            "strings": [
+              "axp2101-bldo2"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "00325aa0",
+            "cells": [
+              3300000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "00325aa0",
+            "cells": [
+              3300000
+            ]
+          },
+          "phandle": {
+            "hex": "0000001c",
+            "cells": [
+              28
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/dldo1": {
+          "regulator-name": {
+            "hex": "617870323130312d646c646f3100",
+            "strings": [
+              "axp2101-dldo1"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "0007a120",
+            "cells": [
+              500000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "003567e0",
+            "cells": [
+              3500000
+            ]
+          },
+          "phandle": {
+            "hex": "0000001d",
+            "cells": [
+              29
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/dldo2": {
+          "regulator-name": {
+            "hex": "617870323130312d646c646f3200",
+            "strings": [
+              "axp2101-dldo2"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "0007a120",
+            "cells": [
+              500000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "00155cc0",
+            "cells": [
+              1400000
+            ]
+          },
+          "phandle": {
+            "hex": "0000001e",
+            "cells": [
+              30
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/regulators@0/cpusldo": {
+          "regulator-name": {
+            "hex": "617870323130312d637075736c646f00",
+            "cells": [
+              1635282994,
+              825241901,
+              1668314483,
+              1818521344
+            ],
+            "strings": [
+              "axp2101-cpusldo"
+            ]
+          },
+          "regulator-min-microvolt": {
+            "hex": "0007a120",
+            "cells": [
+              500000
+            ]
+          },
+          "regulator-max-microvolt": {
+            "hex": "00155cc0",
+            "cells": [
+              1400000
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-dcdc1": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c646364633100",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511907,
+              1684222208
+            ],
+            "strings": [
+              "xpower-vregulator,dcdc1"
+            ]
+          },
+          "dcdc1-supply": {
+            "hex": "00000012",
+            "cells": [
+              18
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-dcdc2": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c646364633200",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511907,
+              1684222464
+            ],
+            "strings": [
+              "xpower-vregulator,dcdc2"
+            ]
+          },
+          "dcdc2-supply": {
+            "hex": "00000013",
+            "cells": [
+              19
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-dcdc3": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c646364633300",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511907,
+              1684222720
+            ],
+            "strings": [
+              "xpower-vregulator,dcdc3"
+            ]
+          },
+          "dcdc3-supply": {
+            "hex": "00000014",
+            "cells": [
+              20
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-dcdc4": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c646364633400",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511907,
+              1684222976
+            ],
+            "strings": [
+              "xpower-vregulator,dcdc4"
+            ]
+          },
+          "dcdc4-supply": {
+            "hex": "00000015",
+            "cells": [
+              21
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-dcdc5": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c646364633500",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511907,
+              1684223232
+            ],
+            "strings": [
+              "xpower-vregulator,dcdc5"
+            ]
+          },
+          "dcdc5-supply": {
+            "hex": "00000016",
+            "cells": [
+              22
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-aldo1": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c616c646f3100",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511148,
+              1685008640
+            ],
+            "strings": [
+              "xpower-vregulator,aldo1"
+            ]
+          },
+          "aldo1-supply": {
+            "hex": "00000017",
+            "cells": [
+              23
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-aldo2": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c616c646f3200",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511148,
+              1685008896
+            ],
+            "strings": [
+              "xpower-vregulator,aldo2"
+            ]
+          },
+          "aldo2-supply": {
+            "hex": "00000018",
+            "cells": [
+              24
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-aldo3": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c616c646f3300",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511148,
+              1685009152
+            ],
+            "strings": [
+              "xpower-vregulator,aldo3"
+            ]
+          },
+          "aldo3-supply": {
+            "hex": "00000019",
+            "cells": [
+              25
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-aldo4": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c616c646f3400",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511148,
+              1685009408
+            ],
+            "strings": [
+              "xpower-vregulator,aldo4"
+            ]
+          },
+          "aldo4-supply": {
+            "hex": "0000001a",
+            "cells": [
+              26
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-bldo1": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c626c646f3100",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511404,
+              1685008640
+            ],
+            "strings": [
+              "xpower-vregulator,bldo1"
+            ]
+          },
+          "bldo1-supply": {
+            "hex": "0000001b",
+            "cells": [
+              27
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-bldo2": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c626c646f3200",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511404,
+              1685008896
+            ],
+            "strings": [
+              "xpower-vregulator,bldo2"
+            ]
+          },
+          "bldo2-supply": {
+            "hex": "0000001c",
+            "cells": [
+              28
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-dldo1": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c646c646f3100",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511916,
+              1685008640
+            ],
+            "strings": [
+              "xpower-vregulator,dldo1"
+            ]
+          },
+          "dldo1-supply": {
+            "hex": "0000001d",
+            "cells": [
+              29
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/virtual-dldo2": {
+          "compatible": {
+            "hex": "78706f7765722d76726567756c61746f722c646c646f3200",
+            "cells": [
+              2020634487,
+              1701981558,
+              1919248245,
+              1818326127,
+              1915511916,
+              1685008896
+            ],
+            "strings": [
+              "xpower-vregulator,dldo2"
+            ]
+          },
+          "dldo2-supply": {
+            "hex": "0000001e",
+            "cells": [
+              30
+            ]
+          }
+        },
+        "/i2c@0/pmu@34/axp_gpio@0": {
+          "gpio-controller": {
+            "hex": ""
+          },
+          "#size-cells": {
+            "hex": "00000000",
+            "cells": [
+              0
+            ],
+            "strings": [
+              ""
+            ]
+          },
+          "#gpio-cells": {
+            "hex": "00000006",
+            "cells": [
+              6
+            ]
+          },
+          "status": {
+            "hex": "6f6b617900",
+            "strings": [
+              "okay"
+            ]
+          }
+        },
+        "/standby_param": {
+          "vdd-cpu": {
+            "hex": "00000004",
+            "cells": [
+              4
+            ]
+          },
+          "vdd-sys": {
+            "hex": "00000004",
+            "cells": [
+              4
+            ]
+          },
+          "vcc-io": {
+            "hex": "00000001",
+            "cells": [
+              1
+            ]
+          },
+          "vcc-pll": {
+            "hex": "00000080",
+            "cells": [
+              128
+            ]
+          }
+        },
+        "/axp2101-parameter": {
+          "select": {
+            "hex": "626174746572792d6d6f64656c00",
+            "strings": [
+              "battery-model"
+            ]
+          },
+          "phandle": {
+            "hex": "00000011",
+            "cells": [
+              17
+            ]
+          }
+        },
+        "/axp2101-parameter/battery-model": {
+          "parameter": {
+            "hex": "01f50000fb0000fb001e32011404d80474fd580bb3103ffbc800be034e063f06020ad30f740f3109e50eb90ec004be04bb09b40ea00e9209790e4c0e2703fc03d508bc0d9c0d5506b82e242e2e242e24c5987e664e44381a120af60000f600f600fb0000fb0000fb0000f60000f600f600fb0000fb0000fb0000f60000f600f6",
+            "cells": [
+              32833536,
+              4211081467,
+              1978881,
+              335861764,
+              1962760203,
+              3004186619,
+              3355491843,
+              1309032198,
+              34263823,
+              1947152649,
+              3842947342,
+              3221536260,
+              3137975310,
+              2685309449,
+              2030980110,
+              654572547,
+              3574119437,
+              2618119430,
+              3090031662,
+              774123044,
+              3315105382,
+              1313093658,
+              302708224,
+              16122102,
+              16449536,
+              4211081467,
+              62976,
+              16122102,
+              16449536,
+              4211081467,
+              62976,
+              16122102
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "boot_argument_strings": [
+    {
+      "offset": 11974799,
+      "offset_hex": "0xb6b88f",
+      "text": "rootfstype="
+    }
+  ],
+  "interpretation_sources": [
+    {
+      "url": "https://gitee.com/ingenic-dev/ingenic-linux-docs/blob/ingenic-master/zh-cn/X26XX/x2670-halley/kernel/SFC%E6%8E%A7%E5%88%B6%E5%99%A8.md",
+      "description": "Ingenic official SFC documentation: MTD partition table normally supplied by burner; use_ofpart_info=1 selects DT partitions; zero parameter offset uses0x5800 default. Different board generation, same driver/property vocabulary; corroborates interpretation, does not prove device geometry."
+    }
+  ]
+}

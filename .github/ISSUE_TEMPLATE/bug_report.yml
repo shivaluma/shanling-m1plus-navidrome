@@ -1,0 +1,23 @@
+name: Bug report
+description: Report a reproducible source, build or runtime problem.
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and observed behavior
+      description: Include the exact step and error. Remove credentials and private metadata.
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Commit and firmware SHA-256
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and reproduction
+      description: Host OS, tool versions, commands and whether this is host, QEMU or hardware.
+    validations:
+      required: true
