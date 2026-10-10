@@ -2,6 +2,14 @@
 
 [English](README.md) · [Build](docs/build.md) · [Cài đặt và kiểm thử](docs/installation.md)
 
+<p align="center">
+  <img src="docs/images/device-home.jpg" width="250" alt="Trang Navidrome trên Shanling M1 Plus">
+  &nbsp;&nbsp;
+  <img src="docs/images/device-search.jpg" width="250" alt="Màn hình tìm kiếm Navidrome trên Shanling M1 Plus">
+</p>
+
+Ảnh chụp trên máy thật của chủ máy (2026-10-10): trang Navidrome trên màn hình home và màn hình tìm kiếm.
+
 Dự án reverse engineering độc lập cho **Shanling M1 Plus V2.1**, bổ sung duyệt nghệ sĩ/album/playlist và tìm kiếm server Navidrome ngay trong giao diện native Shanling. Bài được chuyển vào hàng đợi của trình phát gốc. Giao diện dùng lại widget, style theme và icon gốc của Shanling; bản build có thể ghép font Be Vietnam Pro vào font hệ thống để hiển thị tiếng Việt trên toàn máy.
 
 **Đã chạy trên M1 Plus thật, theo xác nhận của chủ máy.** Ngày 2026-10-10, chủ máy xác nhận flash thành công, duyệt Navidrome được và phát nhạc có tiếng. Backend MIPS cũng đã chạy dưới QEMU và thử với Navidrome thật. Tìm kiếm/T9, seek, nút điều khiển và sleep/resume còn cần kiểm tra riêng; xem [báo cáo thiết bị](docs/validation/hardware-owner-report.md). Đây vẫn là bản thử nghiệm; repo chưa phát hành firmware sẵn để flash. Báo cáo đó áp dụng cho giao diện `V2.1-ND-dev2`; giao diện kiểu gốc mới và font tiếng Việt mới chỉ được kiểm thử trên host, giả lập và đóng gói offline.

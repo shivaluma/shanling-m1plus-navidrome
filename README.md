@@ -6,11 +6,26 @@
 
 Browse your own music server through a native Shanling interface and hand playback to the stock player.
 
+<p align="center">
+  <a href="#on-the-player"><img src="docs/images/device-home.jpg" width="250" alt="Navidrome home page on a Shanling M1 Plus: Artists, Albums, Playlists, Search, Downloads and Update library tiles"></a>
+  &nbsp;&nbsp;
+  <a href="#on-the-player"><img src="docs/images/device-search.jpg" width="250" alt="Navidrome search on a Shanling M1 Plus with Songs, Albums and Artists tabs"></a>
+</p>
+
 An independent reverse-engineering project for **Shanling M1 Plus firmware V2.1**. It combines a native C/AWTK extension, a small Go Subsonic proxy and a guarded startup hook. The interface is built from the stock Shanling widgets, theme styles and icons, and the build can merge Be Vietnam Pro into the system font so Vietnamese renders throughout the player.
 
-**Working on an M1 Plus, reported by the device owner.** On 2026-10-10, the owner confirmed a successful firmware update, Navidrome browsing and audible music playback. Host and MIPS emulation checks also pass. Search/T9, seek, hardware controls and sleep/resume still need individual device checks; see the [hardware report](docs/validation/hardware-owner-report.md). This remains experimental, with no ready-to-flash firmware release distributed here. That report covers the `V2.1-ND-dev2` interface; the redesigned stock-style interface and Vietnamese font described below have host, emulation and offline packaging evidence only.
+**Working on an M1 Plus, reported by the device owner.** On 2026-10-10, the owner confirmed a successful firmware update, Navidrome browsing and audible music playback. Host and MIPS emulation checks also pass. Search/T9, seek, hardware controls and sleep/resume still need individual device checks; see the [hardware report](docs/validation/hardware-owner-report.md). This remains experimental, with no ready-to-flash firmware release distributed here. The owner has since flashed `V2.1-ND-dev3`: the Vietnamese system font works and the photos above show the stock-style home page and search screen running on the player. Downloads, the latest responsiveness changes and the other new screens still need device checks.
 
 [Tiếng Việt](README.vi.md) · [Build](docs/build.md) · [Installation and device testing](docs/installation.md) · [Architecture](docs/architecture.md) · [Validation](docs/validation.md) · [Research](docs/research/README.md)
+
+## On the player
+
+Photos from the device owner's M1 Plus (2026-10-10), not mock-ups:
+
+| Navidrome home page | Search |
+| --- | --- |
+| <img src="docs/images/device-home.jpg" width="320" alt="Home page with six Navidrome tiles above the stock now-playing bar"> | <img src="docs/images/device-search.jpg" width="320" alt="Search screen with the stock search box, T9 entry and Songs, Albums and Artists tabs"> |
+| A swipe-in home page beside the stock pages: Artists, Albums, Playlists, Search, Downloads and Update library, with the stock now-playing bar below. | Search with the stock search box and T9 keyboard, and Songs, Albums and Artists result tabs. |
 
 ## Features implemented
 
@@ -52,7 +67,7 @@ Only the init-script reference, a launcher and (unless `--stock-font` is chosen)
 | MIPS execution | 19 backend checks (incl. batched preparation and an offline download) and original-library plugin loading | Passed under QEMU P5600 |
 | Real Navidrome | Local full-FLAC integration incl. downloads and a server with downloads disabled; authenticated live MIPS browse/search and two audio ranges | Passed in the documented scope |
 | Firmware packaging | 3,016 file hashes, 494 symlinks, 208 hardlink groups; unchanged kernel | Passed offline; with the merged font, rootfs 262,144 bytes smaller than stock |
-| M1 Plus hardware | Successful update, Navidrome browsing and audible playback (`dev2` interface, stock font) | **Owner-reported success on one player**; remaining checks in the [hardware report](docs/validation/hardware-owner-report.md) |
+| M1 Plus hardware | `dev2`: update, browsing and audible playback. `dev3`: Vietnamese font, home page and search screen photographed on the player | **Owner-reported success on one player**; remaining checks in the [hardware report](docs/validation/hardware-owner-report.md) |
 
 See [validation details and retained reports](docs/validation.md). Passing emulation tests does not establish device compatibility or recovery.
 

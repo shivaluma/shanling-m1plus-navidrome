@@ -12,7 +12,7 @@ Reference observations were recorded on **2026-10-10**. The device owner has now
 | Live server transport | 10 authenticated checks using the actual SD MIPS binary, audio/mp4 HEAD and two byte ranges | Decoding, audible sound, DAC and hardware controls |
 | Packaging integrity | Complete inode/content/link audit and unchanged kernel | Updater acceptance, signatures, flash behavior and boot |
 | Fallback/diagnostics | Host launcher and diagnostic tests | All hardware failure modes and recovery |
-| M1 Plus device | Owner reports successful flash, Navidrome browsing and audible playback | Search/T9, seek, queues, controls, sleep/resume and resource measurements have no individual device results yet |
+| M1 Plus device | Owner reports dev2 flash, browsing and audible playback; dev3 flashed with working Vietnamese font; photos of the home page and search screen; one boot snapshot | Downloads, library update, T9 searching, seek, queues, controls, sleep/resume and resource measurements have no individual device results yet |
 
 ## Retained reports
 
