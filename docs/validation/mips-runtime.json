@@ -9,8 +9,8 @@
   "cpu": "P5600",
   "kernel_emulation": "Linux user-mode syscall translation, not the supplied device kernel",
   "adjustment": {
-    "original_sha256": "031967e473e51fc31dd0ab6d70e2bcf5c44d96af95cb4c2f2bc1dad0b59236c8",
-    "adjusted_sha256": "d8f945d93335433cbd17c94b30a65f9f14fe7502eaa3f5de323315ebd9d7f4f0",
+    "original_sha256": "31748a3ac0269e44595550cea7064203b2239da8696b7890330f680ce17e450d",
+    "adjusted_sha256": "8f587ff2f2fd09586fcc4872c8b52d9c8dd4a211c101b220585305bff7531ffa",
     "old_flags": "0x50001004",
     "new_flags": "0x50001404",
     "only_changed_range": [
@@ -34,6 +34,7 @@
     "Unicode search and pagination",
     "playlist browsing",
     "track preparation produces opaque local URL",
+    "batched preparation for a queue chunk",
     "full 1 MiB stream byte equality",
     "Range 206 forwarding and exact bytes",
     "HEAD preserves length with empty body",
@@ -52,11 +53,11 @@
     "search3": 1,
     "getPlaylists": 1,
     "getPlaylist": 1,
-    "stream": 5,
+    "stream": 6,
     "download": 1,
     "getCoverArt": 1
   },
-  "unique_auth_salts": 19,
+  "unique_auth_salts": 20,
   "fixture_errors": [],
   "stream_payload_size": 1048580,
   "stream_payload_sha256": "a3d66c607a15a21a6ce5a1baf212e6466c3bb9cfb2a423154ebd3a13caa528e8",
@@ -70,7 +71,7 @@
     "No live Navidrome server credentials used"
   ],
   "native_plugin_probe": {
-    "plugin_sha256": "54d121ca5a3742af14ee74265e3421ef3f45a154b873f816002addaf8704b552",
+    "plugin_sha256": "8e98c51563cdfaf0e1a76e338067f238094b5074836596fe7d3407c33adc6a82",
     "startup_interception_passed": true,
     "preload_exit_status": 0,
     "passed": true,

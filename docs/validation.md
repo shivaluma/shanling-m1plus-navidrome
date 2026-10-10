@@ -5,7 +5,7 @@ Reference observations were recorded on **2026-10-10**. The device owner has now
 | Requirement | Evidence | What remains unproven |
 | --- | --- | --- |
 | Subsonic browsing, auth and errors | Go unit/race tests; real local Navidrome FLAC integration | Behavior of other server implementations |
-| Native navigation and queue ownership | 20 host scenarios with UBSAN/ASAN; Unicode, cancellation, deep copy, queue, back-to-player and download-state checks | Stock-style list rendering, scrolling, keyboard and Now Playing switch on the player |
+| Native navigation and queue ownership | 22 host scenarios with UBSAN/ASAN; Unicode, cancellation, deep copy, queue, back-to-player, instant Back, superseding taps and download-state checks | Stock-style list rendering, scrolling, keyboard and Now Playing switch on the player |
 | Offline downloads | 11 Go tests (resume, retry, cancel, full card, refused downloads, name safety, ownership, restart); real Navidrome download/playlist/removal/`EnableDownloads=false`; MIPS QEMU download; 5 host UI scenarios | Wi-Fi/sleep during long downloads, FAT32 write speed and the stock scan picking up the folder on the player |
 | Vietnamese UI font | Merge unit tests; stb_truetype 1.26 host render of every Vietnamese letter; packaged font hash checked after repacking | Rendering and memory use of the replaced font on the player |
 | Executable acceptance in emulation | QEMU P5600 MIPS backend and original-library plugin/startup probes | Live kernel/CPU policy and memory use |
@@ -18,7 +18,7 @@ Reference observations were recorded on **2026-10-10**. The device owner has now
 
 - [M1 Plus owner report](validation/hardware-owner-report.md): successful update, browsing and audible playback; self-reported, without device logs or a post-flash image hash.
 - [Local Navidrome E2E](validation/local-navidrome-e2e.json): generated valid FLAC and byte equality, paging/search/playlists, range semantics, and offline downloads including a server with downloads disabled.
-- [MIPS fixture runtime](validation/mips-runtime.json): 18 backend checks, including an offline download, and original-userland plugin loading.
+- [MIPS fixture runtime](validation/mips-runtime.json): 19 backend checks, including batched preparation and an offline download, and original-userland plugin loading.
 - [Authenticated live MIPS probe](validation/live-server-mips.json): aggregate evidence only. Playlist detail was not exercised live because the account had no playlists; local fixtures cover it.
 - [Reference dev2 packaging](validation/reference-firmware-validation.json): 3,741 paths, 3,016 regular-file hashes, 494 symlinks and 208 hardlink groups.
 - [Reference dev3 packaging](validation/reference-firmware-validation-dev3.json): the same full audit with the merged UI font replacing `default.ttf`; rootfs 55,476,224 bytes (stock 55,738,368), package SHA-256 `b2eba661c6f745ec9631887bd50775db6f9f3fec690c5772d0d90fd7ea108fda`.

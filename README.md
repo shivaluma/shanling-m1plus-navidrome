@@ -15,7 +15,7 @@ An independent reverse-engineering project for **Shanling M1 Plus firmware V2.1*
 ## Features implemented
 
 - A stock-style home page with Artists, Albums, Playlists and Search tiles.
-- Scrolling lists that reuse the stock navigation bar, 60 px rows, round icons and format badges, 50 rows at a time.
+- Scrolling lists that reuse the stock navigation bar, 60 px rows, round icons and format badges, 50 rows at a time, with instant press feedback and an instant Back that keeps your scroll position.
 - Search across songs, albums and artists using the native T9 keyboard and accent-colored result tabs.
 - Album and playlist queues with "Play all", up to 128 tracks per chunk, then a jump to the stock Now Playing page.
 - Offline downloads of albums and playlists to `Navidrome/` on the SD card (original files and covers, resumable, with a free-space reserve), a Downloads page, and a shortcut to the stock library update so they play without Wi-Fi.
@@ -47,9 +47,9 @@ Only the init-script reference, a launcher and (unless `--stock-font` is chosen)
 | Layer | Evidence | Status |
 | --- | --- | --- |
 | Go backend | Unit/race tests, TLS, streaming and offline-download fixtures | Passed |
-| Native C interface | 20 host scenarios, Darwin UBSAN and Linux ASAN/UBSAN | Passed with mocked toolkit/player |
+| Native C interface | 22 host scenarios, Darwin UBSAN and Linux ASAN/UBSAN | Passed with mocked toolkit/player |
 | UI font | Merge unit tests; every Vietnamese letter rendered through stb_truetype 1.26 | Passed on host; device rendering not yet observed |
-| MIPS execution | 18 backend checks (incl. an offline download) and original-library plugin loading | Passed under QEMU P5600 |
+| MIPS execution | 19 backend checks (incl. batched preparation and an offline download) and original-library plugin loading | Passed under QEMU P5600 |
 | Real Navidrome | Local full-FLAC integration incl. downloads and a server with downloads disabled; authenticated live MIPS browse/search and two audio ranges | Passed in the documented scope |
 | Firmware packaging | 3,016 file hashes, 494 symlinks, 208 hardlink groups; unchanged kernel | Passed offline; with the merged font, rootfs 262,144 bytes smaller than stock |
 | M1 Plus hardware | Successful update, Navidrome browsing and audible playback (`dev2` interface, stock font) | **Owner-reported success on one player**; remaining checks in the [hardware report](docs/validation/hardware-owner-report.md) |

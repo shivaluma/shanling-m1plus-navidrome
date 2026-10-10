@@ -501,6 +501,8 @@ func (s *service) withOffline(kind, id string, out map[string]any, songs []wireT
 	return out
 }
 
+// prepare mints loopback stream capabilities: {"id": "..."} returns one "url";
+// {"ids": [...]} (1–128 songs, one queue chunk) returns "urls" in the same order.
 func (s *service) prepare(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.Header().Set("Allow", "POST")
@@ -512,22 +514,41 @@ func (s *service) prepare(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var input struct {
-		ID string `json:"id"`
+		ID  string   `json:"id"`
+		IDs []string `json:"ids"`
 	}
-	d := json.NewDecoder(http.MaxBytesReader(w, r.Body, 2048))
+	d := json.NewDecoder(http.MaxBytesReader(w, r.Body, 96*1024))
 	d.DisallowUnknownFields()
-	if d.Decode(&input) != nil || !validID(input.ID) {
-		fail(w, bad("valid song id required"))
+	if d.Decode(&input) != nil || (input.ID == "") == (input.IDs == nil) {
+		fail(w, bad("valid song id or ids required"))
 		return
 	}
 	if d.Decode(&struct{}{}) != io.EOF {
 		fail(w, bad("one JSON object required"))
 		return
 	}
-	token, err := randomToken()
-	if err != nil {
-		fail(w, errors.New("random source unavailable"))
+	ids := input.IDs
+	if input.ID != "" {
+		ids = []string{input.ID}
+	}
+	if len(ids) == 0 || len(ids) > 128 {
+		fail(w, bad("between 1 and 128 song ids required"))
 		return
+	}
+	for _, id := range ids {
+		if !validID(id) {
+			fail(w, bad("valid song id or ids required"))
+			return
+		}
+	}
+	urls := make([]string, 0, len(ids))
+	for range ids {
+		token, err := randomToken()
+		if err != nil {
+			fail(w, errors.New("random source unavailable"))
+			return
+		}
+		urls = append(urls, "http://"+listenAddr+"/stream/"+token)
 	}
 	now := s.now()
 	s.mu.Lock()
@@ -536,19 +557,26 @@ func (s *service) prepare(w http.ResponseWriter, r *http.Request) {
 			delete(s.sessions, k)
 		}
 	}
-	if len(s.sessions) >= maxSessions {
-		var oldest string
-		var at time.Time
-		for k, v := range s.sessions {
-			if oldest == "" || v.created.Before(at) {
-				oldest, at = k, v.created
+	for i, id := range ids {
+		if len(s.sessions) >= maxSessions {
+			var oldest string
+			var at time.Time
+			for k, v := range s.sessions {
+				if oldest == "" || v.created.Before(at) {
+					oldest, at = k, v.created
+				}
 			}
+			delete(s.sessions, oldest)
 		}
-		delete(s.sessions, oldest)
+		// Later songs in a batch are slightly newer, so a full table evicts older batches first.
+		s.sessions[strings.TrimPrefix(urls[i], "http://"+listenAddr+"/stream/")] = capability{id, now.Add(12 * time.Hour), now.Add(time.Duration(i))}
 	}
-	s.sessions[token] = capability{input.ID, now.Add(12 * time.Hour), now}
 	s.mu.Unlock()
-	jsonResponse(w, 200, map[string]any{"url": "http://" + listenAddr + "/stream/" + token, "expires_in": 43200})
+	if input.ID != "" {
+		jsonResponse(w, 200, map[string]any{"url": urls[0], "expires_in": 43200})
+		return
+	}
+	jsonResponse(w, 200, map[string]any{"urls": urls, "expires_in": 43200})
 }
 
 func (s *service) stream(w http.ResponseWriter, r *http.Request) {

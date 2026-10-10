@@ -38,6 +38,7 @@ messages and authenticated URLs are withheld. Empty lists are `[]`, never null.
 | `GET /v1/playlists` | `playlists` |
 | `GET /v1/playlist?id=...` | `playlist`, `tracks` |
 | `POST /v1/prepare` with JSON `{"id":"song-id"}` | `url`, `expires_in` |
+| `POST /v1/prepare` with JSON `{"ids":["song-id", …]}` (1–128) | `urls` in the same order, `expires_in` |
 | `GET` or `HEAD /stream/<capability>` | audio, forwarded range semantics |
 | `GET /v1/downloads` | `jobs` (newest first), `free_bytes`, `reserve_bytes`, `folder`, `downloaded_tracks` |
 | `POST /v1/downloads` with JSON `{"kind":"album"\|"playlist","id":"..."}` | 202, `job` |

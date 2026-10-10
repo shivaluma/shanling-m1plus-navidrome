@@ -392,3 +392,36 @@ func TestDisplayTextComposedToNFC(t *testing.T) {
 		}
 	}
 }
+
+func TestBatchPrepare(t *testing.T) {
+	var mu sync.Mutex
+	seen := map[string]bool{}
+	s, _ := testService(t, func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		seen[r.URL.Query().Get("id")] = true
+		mu.Unlock()
+		w.Header().Set("Content-Type", "audio/flac")
+		_, _ = io.WriteString(w, r.URL.Query().Get("id"))
+	})
+	w := localRequest(s, http.MethodPost, "/v1/prepare", `{"ids":["a","b","c"]}`)
+	var out struct {
+		URLs []string `json:"urls"`
+	}
+	if w.Code != 200 || json.Unmarshal(w.Body.Bytes(), &out) != nil || len(out.URLs) != 3 {
+		t.Fatalf("batch prepare: %d %s", w.Code, w.Body)
+	}
+	for i, want := range []string{"a", "b", "c"} {
+		if got := localRequest(s, http.MethodGet, strings.TrimPrefix(out.URLs[i], "http://"+listenAddr), "").Body.String(); got != want {
+			t.Fatalf("url %d streams %q, want %q", i, got, want)
+		}
+	}
+	many := make([]string, 129)
+	for i := range many {
+		many[i] = `"x"`
+	}
+	for _, body := range []string{`{"ids":[]}`, `{"id":"a","ids":["b"]}`, `{"ids":["ok","bad\u0001"]}`, `{"ids":[` + strings.Join(many, ",") + `]}`, `{}`} {
+		if w := localRequest(s, http.MethodPost, "/v1/prepare", body); w.Code != 400 {
+			t.Errorf("accepted %s: %d", body[:min(len(body), 40)], w.Code)
+		}
+	}
+}

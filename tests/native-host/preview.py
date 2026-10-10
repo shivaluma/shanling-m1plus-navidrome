@@ -129,7 +129,9 @@ class Renderer:
         bg = color(props.get('bg_color'))
         if bg and node['kind'] not in ('window',):
             radius = int(props.get('round_radius', 0) or 0)
-            bottom = h - (int(props.get('border_width', 0) or 0) if node['kind'] == 'list_item' else 0)
+            # list_item_style uses a bottom border (8); rows set "bottom" inline.
+            gap = props.get('border') in (8, 'bottom') or node['kind'] == 'list_item'
+            bottom = h - (int(props.get('border_width', 0) or 0) if gap else 0)
             draw.rounded_rectangle((x, y, x + w - 1, y + bottom - 1), radius=radius, fill=bg)
         canvas.alpha_composite(layer)
         if props.get('bg_image') and self.image(props['bg_image']):

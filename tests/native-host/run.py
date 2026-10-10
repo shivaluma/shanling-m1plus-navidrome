@@ -21,7 +21,7 @@ def main():
         artists=[{"id":f"ar{i}","name":"宇多田 Test" if i==0 else f"Artist {i}","album_count":2} for i in range(6)]
         albums=[{"id":f"al{i}","name":"Requiem café" if i==0 else f"Album {i}","artist":"宇多田 Test","artist_id":"ar0","song_count":6} for i in range(6)]
         tracks=[{"id":f"s{i}","title":f"Track {i}","album":"Requiem café","artist":"宇多田 Test","track":i+1,"disc":2,"duration":120} for i in range(6)]
-        jobs={};saved=set()
+        jobs={};saved=set();prepare_batches=[]
         def offline_summary(key,items):
             j=jobs.get(key,{})
             return {"downloaded":sum(t["id"] in saved for t in items),"total":len(items),"state":"" if j.get("state")=="removed" else j.get("state",""),"done":j.get("done",0),"error":j.get("error","")}
@@ -58,7 +58,7 @@ def main():
                 elif u.path=="/v1/playlist":self.respond({"playlist":{"id":"pl","name":"Fixture Mix"},"tracks":[dict(t,downloaded=t["id"] in saved) for t in tracks[:3]],"offline":offline_summary("playlist:pl",tracks[:3])})
                 else:self.respond({},404)
             def do_POST(self):
-                data=json.loads(self.rfile.read(int(self.headers.get("Content-Length","0"))));requests.append((self.path,{"id":[data["id"]]}))
+                data=json.loads(self.rfile.read(int(self.headers.get("Content-Length","0"))));requests.append((self.path,{"id":data["ids"] if "ids" in data else [data["id"]]}))
                 if self.path in ("/v1/downloads","/v1/downloads/cancel","/v1/offline/remove"):
                     assert data["kind"] in ("album","playlist") and set(data)=={"kind","id"},"bad download request"
                     key=data["kind"]+":"+data["id"]
@@ -75,9 +75,10 @@ def main():
                         self.respond({"removed_files":n})
                     return
                 if state.read_text()=="delay_prepare":Path(str(state)+".inflight").touch();time.sleep(1)
-                if state.read_text()=="badurl":self.respond({"url":"https://user:secret@foreign.invalid/track"});return
-                token=("%032x" % (int(data["id"][1:])+1))
-                self.respond({"url":"http://127.0.0.1:17831/stream/"+token})
+                assert set(data)=={"ids"} and 1<=len(data["ids"])<=128,"plugin must batch prepare"
+                if state.read_text()=="badurl":self.respond({"urls":["https://user:secret@foreign.invalid/track"]*len(data["ids"])});return
+                prepare_batches.append(list(data["ids"]))
+                self.respond({"urls":["http://127.0.0.1:17831/stream/"+("%032x" % (int(i[1:])+1)) for i in data["ids"]]})
         http.server.ThreadingHTTPServer.allow_reuse_address=True
         server=http.server.ThreadingHTTPServer(("127.0.0.1",17831),Fixture)
         threading.Thread(target=server.serve_forever,daemon=True).start()
@@ -96,6 +97,7 @@ def main():
             if result.stderr:print(result.stderr,end="")
             assert any(p=="/v1/search" and q.get("offset")==["4"] for p,q in requests)
             assert any(p=="/v1/prepare" for p,q in requests)
+            assert prepare_batches and prepare_batches[0]==["s0","s1","s2","s3","s4","s5"],"album queue prepared in one request"
             (HERE/"requests.json").write_text(json.dumps(requests,ensure_ascii=False,indent=2)+"\n")
         except subprocess.CalledProcessError as err:
             print(err.stdout or "",end="");print(err.stderr or "",end="");raise

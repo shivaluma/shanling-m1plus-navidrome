@@ -123,6 +123,10 @@ font, `default`. `default.ttf` (SHA-256
 Microsoft YaHei + Arial merge at 256 units/em with no TrueType instructions and
 lacks 49 Vietnamese letters. See [architecture](../architecture.md#ui-font).
 
+## Touch feedback
+
+The firmware's `list_item` pointer-down handler (code at `0x60bbe0`–`0x60bc58`) grabs the pointer and calls `timer_add(…, 30)`; only that timer sets the `pressed` state (`widget_set_state(…, "pressed")` at `0x60baf4`). A tap shorter than 30 ms emits the click without ever drawing the pressed colour. Stock table rows instead use a `button` with `btn_tablerow_style`, which is pressed on touch-down; the extension's rows follow that pattern.
+
 ## Library scanning (offline downloads)
 
 | Function | Address | Observed behavior |

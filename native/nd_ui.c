@@ -44,6 +44,8 @@ typedef struct view_state {
   unsigned int offset;
   char param[768];
   char title[192];
+  cJSON *cache;  /* loaded JSON kept while a deeper view is open, so Back is instant */
+  int yoffset;   /* list scroll position to restore with the cache */
 } view_state;
 typedef struct job {
   struct job *next;
@@ -284,32 +286,38 @@ done:
   free(body.data);
   return parsed;
 }
+/* One batched request mints a loopback capability for every song in the queue chunk. */
 static void prepare_tracks(job *j, result *r) {
   unsigned int i;
   const size_t prefix_size = sizeof(ND_BRIDGE_ORIGIN "/stream/") - 1;
+  cJSON *payload, *ids, *reply, *urls;
+  char *post;
   r->tracks = j->tracks;
   j->tracks = NULL;
   r->count = (unsigned int)cJSON_GetArraySize(r->tracks);
-  r->urls = (char **)calloc(r->count, sizeof(char *));
-  if (!r->urls) { copy_text(r->error, 160, "Not enough memory"); return; }
+  r->urls = (char **)calloc(r->count ? r->count : 1, sizeof(char *));
+  payload = cJSON_CreateObject();
+  ids = cJSON_AddArrayToObject(payload, "ids");
+  if (!r->urls || !ids) { cJSON_Delete(payload); copy_text(r->error, 160, "Not enough memory"); return; }
   for (i = 0; i < r->count; ++i) {
-    cJSON *track = cJSON_GetArrayItem(r->tracks, (int)i);
-    cJSON *payload = cJSON_CreateObject(), *reply;
-    char *post;
-    const char *url;
-    if (request_progress(j, 0, 0, 0, 0)) {
-      copy_text(r->error, 160, "Preparation cancelled or timed out"); return;
+    cJSON *id = cJSON_CreateString(json_string(cJSON_GetArrayItem(r->tracks, (int)i), "id"));
+    if (!id || !cJSON_AddItemToArray(ids, id)) {
+      cJSON_Delete(id); cJSON_Delete(payload); copy_text(r->error, 160, "Not enough memory"); return;
     }
-    if (!payload || !cJSON_AddStringToObject(payload, "id", json_string(track, "id"))) {
-      cJSON_Delete(payload); copy_text(r->error, 160, "Not enough memory"); return;
-    }
-    post = cJSON_PrintUnformatted(payload);
-    cJSON_Delete(payload);
-    if (!post) { copy_text(r->error, 160, "Not enough memory"); return; }
-    reply = request_json(j, "/v1/prepare", post, r->error);
-    free(post);
-    if (!reply) return;
-    url = json_string(reply, "url");
+  }
+  post = cJSON_PrintUnformatted(payload);
+  cJSON_Delete(payload);
+  if (!post) { copy_text(r->error, 160, "Not enough memory"); return; }
+  reply = request_json(j, "/v1/prepare", post, r->error);
+  free(post);
+  if (!reply) return;
+  urls = cJSON_GetObjectItemCaseSensitive(reply, "urls");
+  if (!cJSON_IsArray(urls) || cJSON_GetArraySize(urls) != (int)r->count) {
+    cJSON_Delete(reply); copy_text(r->error, 160, "Invalid bridge response"); return;
+  }
+  for (i = 0; i < r->count; ++i) {
+    const cJSON *item = cJSON_GetArrayItem(urls, (int)i);
+    const char *url = cJSON_IsString(item) && item->valuestring ? item->valuestring : "";
     /* Player gets a loopback capability only; never server credentials/URLs. */
     if (strncmp(url, ND_BRIDGE_ORIGIN "/stream/", prefix_size) ||
         strlen(url) >= 1024 || strlen(url + prefix_size) != 32 ||
@@ -317,9 +325,9 @@ static void prepare_tracks(job *j, result *r) {
       cJSON_Delete(reply); copy_text(r->error, 160, "Invalid stream address"); return;
     }
     r->urls[i] = strdup(url);
-    cJSON_Delete(reply);
-    if (!r->urls[i]) { copy_text(r->error, 160, "Not enough memory"); return; }
+    if (!r->urls[i]) { cJSON_Delete(reply); copy_text(r->error, 160, "Not enough memory"); return; }
   }
+  cJSON_Delete(reply);
 }
 static void *network_worker(void *unused) {
   (void)unused;
@@ -578,7 +586,7 @@ static ret_t on_row(void *ctx, event_t *event) {
   char id[768], title[192];
   enum kind kind;
   (void)event;
-  if (!win || busy || row->list != list_serial) return ND_OK;
+  if (!win || row->list != list_serial) return ND_OK;
   kind = history[depth].kind;
   item = cJSON_GetArrayItem(items(), row->index);
   if (!item) return ND_OK;
@@ -592,15 +600,26 @@ static ret_t on_row(void *ctx, event_t *event) {
   else navigate(R_LIST, K_TRACKS, id, title, 0);
   return ND_OK;
 }
+/* Rows are buttons like stock table rows (btn_tablerow_style): list_item only shows
+   its pressed colour 30 ms after touch-down, so quick taps gave no feedback. */
+static widget_t *make_row_button(const char *name) {
+  widget_t *row = api.button_create(rows_box, 0, 0, ND_LIST_W, ND_ROW_H);
+  if (!row) return NULL;
+  api.widget_set_name(row, name);
+  if (!native_style(row, "btn_tablerow_style")) state_props(row, "bg_color", "#131313");
+  /* A brighter press colour than stock and the stock 4px black row gap. */
+  prop(row, "style:pressed:bg_color", "#4A2C22");
+  state_props(row, "border_color", "#000000");
+  state_props(row, "border_width", "4");
+  state_props(row, "border", "bottom");
+  state_props(row, "round_radius", "0");
+  return row;
+}
 static widget_t *make_row(const char *name, int index, const char *icon, const char *title,
                           const char *detail, int arrow, int saved) {
-  widget_t *row = make("list_item", rows_box, 0, 0, ND_LIST_W, ND_ROW_H, name);
+  widget_t *row = make_row_button(name);
   row_context *context;
   if (!row) return NULL;
-  if (!native_style(row, "list_item_style")) {
-    prop(row, "style:normal:bg_color", "#131313");
-    prop(row, "style:pressed:bg_color", "#362221");
-  }
   if (!strcmp(icon, "albumcover_s")) make_image(row, 10, 8, 44, 44, NULL, icon, "scale_auto");
   else make_image(row, 12, 10, 40, 40, NULL, icon, "icon");
   make_text(row, 64, detail[0] ? 6 : 17, arrow || saved || index < 0 ? 206 : 234, 26, NULL, title,
@@ -622,9 +641,8 @@ static widget_t *make_row(const char *name, int index, const char *icon, const c
   return row;
 }
 static widget_t *make_more_row(const char *name, const char *text, enum action action) {
-  widget_t *row = make("list_item", rows_box, 0, 0, ND_LIST_W, ND_ROW_H, name);
+  widget_t *row = make_row_button(name);
   if (!row) return NULL;
-  if (!native_style(row, "list_item_style")) prop(row, "style:pressed:bg_color", "#362221");
   if (!make_label(row, 0, 0, ND_LIST_W, ND_ROW_H - 4, NULL, text, "label_centergray20_white", "#AAAAAA", "18") ||
       !api.widget_on(row, ND_EVT_CLICK, on_action, (void *)(uintptr_t)action)) return NULL;
   return row;
@@ -686,6 +704,8 @@ static int make_header(void) {
   header_summary = make_text(header, 112, 15, 146, 26, "nd_summary", "", "srlabel_leftgray16_style", "#AAAAAA", "16");
   header_download = make_button(header, 262, 6, 44, 44, "nd_download", NULL, "btn_nottablerow_style", A_DOWNLOAD);
   if (!header_summary || !header_download) return -1;
+  prop(header_download, "style:pressed:bg_color", "#FFFFFF26");
+  prop(header_download, "style:pressed:round_radius", "22");
   update_header();
   return 0;
 }
@@ -713,7 +733,7 @@ static void open_library(void) {
 static void on_download_button(void) {
   const char *kind, *id;
   int count = cJSON_GetArraySize(items());
-  if (busy || !collection(&kind, &id)) return;
+  if (!collection(&kind, &id)) return;
   if (offline_busy()) {
     post_action("/v1/downloads/cancel", kind, id);
   } else if (count && offline_now.downloaded >= count) {
@@ -767,7 +787,7 @@ static ret_t on_job_row(void *ctx, event_t *event) {
   char kind[16], id[768], name[192];
   const char *state;
   (void)event;
-  if (!win || busy || row->list != list_serial) return ND_OK;
+  if (!win || row->list != list_serial) return ND_OK;
   job = cJSON_GetArrayItem(items(), row->index);
   if (!job) return ND_OK;
   state = json_string(job, "state");
@@ -1026,6 +1046,13 @@ static void fetch_current(void) {
   submit(j);
   show_status("Loading…", 0, 1);
 }
+static void drop_caches(unsigned int from) {
+  unsigned int i;
+  for (i = from; i < ND_HISTORY_MAX; ++i) {
+    cJSON_Delete(history[i].cache);
+    history[i].cache = NULL;
+  }
+}
 static void navigate(enum route route, enum kind kind, const char *param, const char *title, int root) {
   view_state next;
   memset(&next, 0, sizeof(next));
@@ -1033,11 +1060,42 @@ static void navigate(enum route route, enum kind kind, const char *param, const 
   next.kind = kind;
   copy_text(next.param, sizeof(next.param), param);
   copy_text(next.title, sizeof(next.title), title);
-  if (root) depth = 0;
-  else if (depth + 1 < ND_HISTORY_MAX) ++depth;
-  else { notify("Go back to open another item", 3); return; }
+  if (root) {
+    drop_caches(0);
+    depth = 0;
+  } else if (depth + 1 < ND_HISTORY_MAX) {
+    /* Keep the current list (data and scroll position) for an instant Back. */
+    drop_caches(depth);
+    history[depth].cache = current_json;
+    history[depth].yoffset = rows_box ? api.widget_get_prop_int(rows_box, "yoffset", 0) : 0;
+    current_json = NULL;
+    ++depth;
+  } else { notify("Go back to open another item", 3); return; }
   history[depth] = next;
   fetch_current();
+}
+/* Back: show the previous list from memory at its old scroll position, without a request. */
+static void go_back(void) {
+  view_state *v;
+  char offset[16];
+  drop_caches(depth);
+  --depth;
+  v = &history[depth];
+  if (!v->cache) { fetch_current(); return; }
+  cancel_previous();
+  busy = 0;
+  update_chrome();
+  if (v->route == R_SEARCH) api.widget_set_text_utf8(search_edit, v->param);
+  reset_content();
+  memset(&offline_now, 0, sizeof(offline_now));
+  remove_armed = 0;
+  current_json = v->cache;
+  v->cache = NULL;
+  render_rows();
+  if (rows_box && v->yoffset > 0) {
+    snprintf(offset, sizeof(offset), "%d", v->yoffset);
+    prop(rows_box, "yoffset", offset);
+  }
 }
 static void prepare_playback(int index) {
   cJSON *all = items();
@@ -1045,7 +1103,7 @@ static void prepare_playback(int index) {
   unsigned int first = ((unsigned int)index / ND_QUEUE_MAX) * ND_QUEUE_MAX;
   unsigned int end = first + ND_QUEUE_MAX;
   job *j;
-  if (index < 0 || (unsigned int)index >= n || busy) return;
+  if (index < 0 || (unsigned int)index >= n) return;
   if (end > n) end = n;
   j = (job *)calloc(1, sizeof(*j));
   if (!j) { notify("Not enough memory", 3); return; }
@@ -1176,6 +1234,7 @@ static ret_t deliver_results(const idle_info_t *unused) {
 /* ---- Window. ---- */
 static void release_window(void) {
   cancel_previous();
+  drop_caches(0);
   cJSON_Delete(current_json);
   current_json = NULL;
   win = content = list = rows_box = NULL;
@@ -1219,7 +1278,7 @@ static ret_t on_action(void *ctx, event_t *event) {
   if (!win) return ND_OK;
   switch (action) {
     case A_BACK:
-      if (depth) { --depth; fetch_current(); }
+      if (depth) go_back();
       else close_window();
       break;
     case A_SEARCH_OPEN: navigate(R_SEARCH, K_TRACKS, "", "Search", 0); break;
@@ -1234,13 +1293,12 @@ static ret_t on_action(void *ctx, event_t *event) {
       break;
     }
     case A_PREV: case A_NEXT:
-      if (busy) break;
       if (action == A_PREV) v->offset = v->offset >= ND_PAGE ? v->offset - ND_PAGE : 0;
       else v->offset += ND_PAGE;
       if (remote_paging()) fetch_current();
       else render_rows();
       break;
-    case A_PLAY_ALL: if (!busy) prepare_playback(0); break;
+    case A_PLAY_ALL: prepare_playback(0); break;
     case A_DOWNLOAD: on_download_button(); break;
     case A_LIBRARY: open_library(); break;
     case A_RETRY: fetch_current(); break;
@@ -1354,6 +1412,9 @@ static int make_tile(widget_t *page, int index, const char *name, const char *te
   snprintf(id, sizeof(id), "nd_open_%s", name);
   button = make_button(tile, 0, 0, 154, 118, id, NULL, "btn_nottablerow_style", 0);
   if (!art || !label || !button) return -1;
+  /* Visible touch-down feedback on the whole tile. */
+  prop(button, "style:pressed:bg_color", "#FFFFFF1A");
+  prop(button, "style:pressed:round_radius", "16");
   return api.widget_on(button, ND_EVT_CLICK, callback, (void *)(uintptr_t)section) ? 0 : -1;
 }
 static void install_home_page(void) {

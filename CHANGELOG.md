@@ -9,6 +9,7 @@
 - Offline approximate renderer for harness widget trees (`tests/native-host/preview.py`).
 - Offline downloads: album/playlist download button, Downloads page and home tiles; backend queue writing original files (or optional transcodes) to `/mnt/mmc/Navidrome` with FAT32-safe names, `.part` resume, retries, free-space reserve, covers, `.m3u8` playlists, ownership-aware removal and a restart-safe manifest. The UI opens the stock "Update music library" page, because the stock folder-only scan drops the song table.
 - Boot diagnostics also report SD writability and free space.
+- Responsiveness: rows are instant-press buttons (stock `list_item` delays its pressed state by 30 ms), icon buttons and tiles show a pressed tint, taps supersede running requests instead of being ignored, Back redraws the cached list at its scroll position without a request, and a queue chunk is prepared with one batched `/v1/prepare` request.
 - Host, sanitizer, MIPS, real-Navidrome and packaging evidence only; no device result yet for this interface, font or downloads.
 
 ## Experimental source publication
