@@ -2,20 +2,22 @@
 
 [English](README.md) · [Build](docs/build.md) · [Cài đặt và kiểm thử](docs/installation.md)
 
-Dự án reverse engineering độc lập cho **Shanling M1 Plus V2.1**, bổ sung duyệt nghệ sĩ/album/playlist và tìm kiếm server Navidrome ngay trong giao diện native Shanling. Bài được chuyển vào hàng đợi của trình phát gốc; giữ widget, theme và cỡ chữ hiện có.
+Dự án reverse engineering độc lập cho **Shanling M1 Plus V2.1**, bổ sung duyệt nghệ sĩ/album/playlist và tìm kiếm server Navidrome ngay trong giao diện native Shanling. Bài được chuyển vào hàng đợi của trình phát gốc. Giao diện dùng lại widget, style theme và icon gốc của Shanling; bản build có thể ghép font Be Vietnam Pro vào font hệ thống để hiển thị tiếng Việt trên toàn máy.
 
-**Đã chạy trên M1 Plus thật, theo xác nhận của chủ máy.** Ngày 2026-10-10, chủ máy xác nhận flash thành công, duyệt Navidrome được và phát nhạc có tiếng. Backend MIPS cũng đã chạy dưới QEMU và thử với Navidrome thật. Tìm kiếm/T9, seek, nút điều khiển và sleep/resume còn cần kiểm tra riêng; xem [báo cáo thiết bị](docs/validation/hardware-owner-report.md). Đây vẫn là bản thử nghiệm; repo chưa phát hành firmware sẵn để flash.
+**Đã chạy trên M1 Plus thật, theo xác nhận của chủ máy.** Ngày 2026-10-10, chủ máy xác nhận flash thành công, duyệt Navidrome được và phát nhạc có tiếng. Backend MIPS cũng đã chạy dưới QEMU và thử với Navidrome thật. Tìm kiếm/T9, seek, nút điều khiển và sleep/resume còn cần kiểm tra riêng; xem [báo cáo thiết bị](docs/validation/hardware-owner-report.md). Đây vẫn là bản thử nghiệm; repo chưa phát hành firmware sẵn để flash. Báo cáo đó áp dụng cho giao diện `V2.1-ND-dev2`; giao diện kiểu gốc mới và font tiếng Việt mới chỉ được kiểm thử trên host, giả lập và đóng gói offline.
 
 ## Đã triển khai
 
-- Artists / Albums / Playlists, bốn dòng mỗi trang.
-- Tìm nghệ sĩ, album và bài hát bằng bàn phím T9 native.
-- Hàng đợi album/playlist theo nhóm tối đa 128 bài.
+- Trang home kiểu gốc với 4 ô: Nghệ sĩ, Album, Playlist, Tìm kiếm.
+- Danh sách cuộn giống trang gốc: thanh điều hướng, dòng 60 px, icon tròn, 50 dòng mỗi lần tải.
+- Tìm bài hát, album, nghệ sĩ bằng bàn phím T9 native với tab màu cam.
+- Hàng đợi album/playlist theo nhóm tối đa 128 bài, nút "Play all", rồi chuyển sang màn hình Now Playing gốc.
+- Hiển thị tiếng Việt trên toàn máy: font Be Vietnam Pro ghép vào font CJK gốc, chuẩn hóa NFC cho metadata.
 - HTTPS có xác minh chứng chỉ; stream theo từng phần và HTTP Range để seek.
 - Helper nhập mật khẩu cục bộ, marker bật/tắt và chẩn đoán boot qua thẻ.
 - Launcher dùng ứng dụng gốc khi thiếu payload, service lỗi sớm hoặc ứng dụng mở rộng thoát lỗi.
 
-Payload nằm trên thẻ. Rootfs chỉ thêm launcher và thay tham chiếu khởi động; kernel và chương trình Shanling gốc được giữ nguyên. Cơ chế fallback không phải cách cứu máy không boot.
+Payload nằm trên thẻ. Rootfs chỉ thêm launcher, thay tham chiếu khởi động và (trừ khi dùng `--stock-font`) thay font giao diện; kernel và chương trình Shanling gốc được giữ nguyên. Cơ chế fallback không phải cách cứu máy không boot.
 
 ## Bắt đầu
 

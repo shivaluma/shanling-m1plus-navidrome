@@ -59,7 +59,7 @@ def main():
         common=["clang","-g","-O1","-fsanitize="+sanitizers,"-fno-omit-frame-pointer","-Wno-deprecated-declarations"]
         darwin=platform.system()=="Darwin"
         plugin=work/("native-host.dylib" if darwin else "native-host.so");harness=work/"harness"
-        subprocess.run(common+(["-dynamiclib"] if darwin else ["-shared","-fPIC"])+["-DND_HOST_TEST","-fvisibility=hidden",str(ROOT/"native/nd_ui.c"),str(ROOT/"native/startup.c"),str(ROOT/"vendor/cJSON.c"),"-lcurl","-lpthread","-o",str(plugin)],check=True)
+        subprocess.run(common+(["-dynamiclib"] if darwin else ["-shared","-fPIC"])+["-DND_HOST_TEST","-DND_PAGE=4","-fvisibility=hidden",str(ROOT/"native/nd_ui.c"),str(ROOT/"native/startup.c"),str(ROOT/"vendor/cJSON.c"),"-lcurl","-lpthread","-o",str(plugin)],check=True)
         subprocess.run(common+[str(HERE/"harness.c")]+(["-Wl,-export_dynamic"] if darwin else ["-rdynamic","-ldl"])+["-lpthread","-o",str(harness)],check=True)
         env=dict(os.environ,ASAN_OPTIONS="detect_leaks=0:abort_on_error=1",UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1")
         try:

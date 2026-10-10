@@ -6,17 +6,19 @@
 
 Browse your own music server through a native Shanling interface and hand playback to the stock player.
 
-An independent reverse-engineering project for **Shanling M1 Plus firmware V2.1**. It combines a native C/AWTK extension, a small Go Subsonic proxy and a guarded startup hook. Existing Shanling widgets, theme and font sizes remain the basis of the interface.
+An independent reverse-engineering project for **Shanling M1 Plus firmware V2.1**. It combines a native C/AWTK extension, a small Go Subsonic proxy and a guarded startup hook. The interface is built from the stock Shanling widgets, theme styles and icons, and the build can merge Be Vietnam Pro into the system font so Vietnamese renders throughout the player.
 
-**Working on an M1 Plus, reported by the device owner.** On 2026-10-10, the owner confirmed a successful firmware update, Navidrome browsing and audible music playback. Host and MIPS emulation checks also pass. Search/T9, seek, hardware controls and sleep/resume still need individual device checks; see the [hardware report](docs/validation/hardware-owner-report.md). This remains experimental, with no ready-to-flash firmware release distributed here.
+**Working on an M1 Plus, reported by the device owner.** On 2026-10-10, the owner confirmed a successful firmware update, Navidrome browsing and audible music playback. Host and MIPS emulation checks also pass. Search/T9, seek, hardware controls and sleep/resume still need individual device checks; see the [hardware report](docs/validation/hardware-owner-report.md). This remains experimental, with no ready-to-flash firmware release distributed here. That report covers the `V2.1-ND-dev2` interface; the redesigned stock-style interface and Vietnamese font described below have host, emulation and offline packaging evidence only.
 
 [Tiếng Việt](README.vi.md) · [Build](docs/build.md) · [Installation and device testing](docs/installation.md) · [Architecture](docs/architecture.md) · [Validation](docs/validation.md) · [Research](docs/research/README.md)
 
 ## Features implemented
 
-- Artists, albums and playlists, with four readable rows per page.
-- Search across artists, albums and tracks using the native T9 keyboard.
-- Album and playlist playback queues, up to 128 tracks per selected chunk.
+- A stock-style home page with Artists, Albums, Playlists and Search tiles.
+- Scrolling lists that reuse the stock navigation bar, 60 px rows, round icons and format badges, 50 rows at a time.
+- Search across songs, albums and artists using the native T9 keyboard and accent-colored result tabs.
+- Album and playlist queues with "Play all", up to 128 tracks per chunk, then a jump to the stock Now Playing page.
+- Vietnamese text in the whole player: Be Vietnam Pro merged into the stock CJK font, plus NFC composition of decomposed metadata.
 - HTTPS to your Navidrome server, with certificate and hostname verification.
 - Incremental audio streaming with GET/HEAD, Range and If-Range support.
 - Local credential setup, an explicit enable marker and optional SD boot diagnostics.
@@ -37,18 +39,19 @@ flowchart LR
     Player -->|Temporary loopback stream URL| Proxy
 ```
 
-Only the init-script reference and a launcher enter the rebuilt rootfs. The backend, plugin and CA bundle stay on the SD card. The original kernel and stock application bytes are preserved.
+Only the init-script reference, a launcher and (unless `--stock-font` is chosen) the merged UI font enter the rebuilt rootfs. The backend, plugin and CA bundle stay on the SD card. The original kernel and stock application bytes are preserved.
 
 ## Current evidence
 
 | Layer | Evidence | Status |
 | --- | --- | --- |
 | Go backend | Unit/race tests, TLS and streaming fixtures | Passed |
-| Native C interface | 13 host scenarios, Darwin UBSAN and Linux ASAN/UBSAN | Passed with mocked toolkit/player |
+| Native C interface | 15 host scenarios, Darwin UBSAN and Linux ASAN/UBSAN | Passed with mocked toolkit/player |
+| UI font | Merge unit tests; every Vietnamese letter rendered through stb_truetype 1.26 | Passed on host; device rendering not yet observed |
 | MIPS execution | 17 backend checks and original-library plugin loading | Passed under QEMU P5600 |
 | Real Navidrome | Local full-FLAC integration; authenticated live MIPS browse/search and two audio ranges | Passed in the documented scope |
-| Firmware packaging | 3,016 file hashes, 494 symlinks, 208 hardlink groups; unchanged kernel | Passed offline; rootfs 36,864 bytes smaller than stock |
-| M1 Plus hardware | Successful update, Navidrome browsing and audible playback | **Owner-reported success on one player**; remaining checks in the [hardware report](docs/validation/hardware-owner-report.md) |
+| Firmware packaging | 3,016 file hashes, 494 symlinks, 208 hardlink groups; unchanged kernel | Passed offline; with the merged font, rootfs 262,144 bytes smaller than stock |
+| M1 Plus hardware | Successful update, Navidrome browsing and audible playback (`dev2` interface, stock font) | **Owner-reported success on one player**; remaining checks in the [hardware report](docs/validation/hardware-owner-report.md) |
 
 See [validation details and retained reports](docs/validation.md). Passing emulation tests does not establish device compatibility or recovery.
 

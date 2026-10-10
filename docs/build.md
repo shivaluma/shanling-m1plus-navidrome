@@ -53,19 +53,23 @@ For another compatible toolchain, set `CROSS_COMPILE` to its full executable pre
 ```sh
 python scripts/build.py
 python packaging/rebuild.py --overlay dist/rootfs \
-  --output dist/firmware-V2.1-ND-dev2 --version V2.1-ND-dev2
+  --output dist/firmware-V2.1-ND-dev3 --version V2.1-ND-dev3
 ```
 
-Choose a new output directory for each rebuild. The commands produce:
+Choose a new output directory for each rebuild.
+
+`scripts/build.py` also builds the UI font. `scripts/build_font.py` merges the vendored Be Vietnam Pro Medium (Latin, Vietnamese and punctuation) into your firmware's own `default.ttf` (Microsoft YaHei + Arial), keeping its CJK/Cyrillic/Thai glyphs and vertical metrics. Use `--font-weight regular` for the lighter weight or `--stock-font` to leave the system font untouched. The merged font is built locally from your firmware and must not be published.
+
+The commands produce:
 
 | Output | Purpose |
 | --- | --- |
 | `dist/sdcard/navidrome/` | Backend, native plugin, CA bundle and diagnostics collector |
-| `dist/rootfs/` | Minimal guarded startup overlay |
+| `dist/rootfs/` | Guarded startup overlay and merged UI font |
 | `dist/elf-audit.json` | Imports, library versions and MIPS ABI checks |
 | `dist/build-report.json` | Checksums used by the SD setup helper |
-| `dist/firmware-V2.1-ND-dev2/validation.json` | Full filesystem/container validation |
-| `dist/firmware-V2.1-ND-dev2/update-…-EXPERIMENTAL.bin` | Experimental update container |
+| `dist/firmware-V2.1-ND-dev3/validation.json` | Full filesystem/container validation |
+| `dist/firmware-V2.1-ND-dev3/update-…-EXPERIMENTAL.bin` | Experimental update container |
 
 The backend is a static `CGO_ENABLED=0`, `GOMIPS=softfloat` Go executable. A constrained audit adjusts only ELF `e_flags` to declare NaN2008; it does not change machine code or make arbitrary MIPS binaries compatible. See [MIPS evidence](research/mips-runtime.md).
 

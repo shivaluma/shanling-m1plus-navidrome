@@ -11,9 +11,11 @@ python -m unittest discover -s packaging -p 'test_rebuild.py' -v
 python tests/native-host/run.py
 ```
 
+`tests/test_font.py` checks the font merge against a synthetic 256 units/em stand-in font: Vietnamese coverage, preserved CJK/Cyrillic glyphs and metrics, shared-glyph protection, combining-mark placement, dropped tables and reproducible output.
+
 The configuration suite uses a built/audited payload when available; CI uses explicitly non-executable fixture bytes to exercise local HTTP authentication, checksum/copy ordering, failure preservation and marker handling. This does not replace MIPS binary validation. The native harness uses the real extension code with exported toolkit/player mocks and disposable loopback HTTP fixtures.
 
-On Ubuntu, install `clang libcurl4-openssl-dev` for the native harness. Set `ND_SANITIZERS=address,undefined` for ASAN+UBSAN; macOS reference results use UBSAN. Native mock images are generated test layouts, not device screenshots.
+On Ubuntu, install `clang libcurl4-openssl-dev` for the native harness. Set `ND_SANITIZERS=address,undefined` for ASAN+UBSAN; macOS reference results use UBSAN. Native mock images are generated test layouts, not device screenshots. With `ND_PREVIEW_DIR` set, the harness also exports widget trees; `tests/native-host/preview.py` (needs Pillow) draws them with your extracted stock theme, icons and a chosen font for an approximate local preview. Previews contain proprietary firmware images and must stay local.
 
 ## MIPS emulation
 

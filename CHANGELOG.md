@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — experimental source publication
+## Unreleased — stock-style interface and Vietnamese font (`V2.1-ND-dev3`)
+
+- Native interface rebuilt from stock pages: 2×2 home tiles, navigation bar with return/search/back-to-player icons, scrolling 60 px rows with stock icons and format badges, "Play all" headers, accent search tabs, spinner, Retry and toast.
+- Lists load 50 rows at a time; playback no longer rebuilds or rescrolls the list and opens the stock Now Playing page.
+- Be Vietnam Pro merged into the stock YaHei/Arial system font (`scripts/build_font.py`, `--font-weight`, `--stock-font`); CJK and other scripts kept.
+- Backend composes decomposed (NFD) display metadata to NFC for the unshaped device renderer.
+- Offline approximate renderer for harness widget trees (`tests/native-host/preview.py`).
+- Host, sanitizer, MIPS and packaging evidence only; no device result yet for this interface or font.
+
+## Experimental source publication
 
 - Native artist/album/playlist browsing, category search and stock T9 input.
 - Recovered O32 playback queue integration with bounded chunks and deep-copied metadata.

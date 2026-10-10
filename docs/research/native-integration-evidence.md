@@ -94,6 +94,35 @@ The extension likewise sets the indicator maximum from exported
 dynamic children automatically update the manually assigned maximum. Device
 validation must still confirm gesture behavior after dynamic page insertion.
 
+## Stock page construction reused by the interface
+
+Decoded `ui/*.bin` (AWTK UI binary: magic `0x11221212`, 32-byte type, four
+int32 rectangle fields, NUL-separated properties) and `styles/default.bin`
+(theme magic `0xFAFBFCFD`, 100-byte index entries) give the stock page shapes:
+a 320×50 `navigationbar_view`, then a list view at y=50 with 60 px items and a
+10 px `scroll_bar_m`. Builders confirm how rows are filled at runtime:
+
+| Function | Address | Observed construction |
+| --- | --- | --- |
+| `playlist_listitem_layout` | `0x53e44c` | `list_item_style`; `icon_playlist` image; `hscroll_label` with `srlabel_item_white_style`, ellipses and speed; `right_arrow` image. |
+| `album_listitem_layout` | `0x524228` | `albumcover_s` cover image; `btn_rightarrow_style`; `list_item_style`. |
+| `music_create_tablerow` | `0x528560` | `btn_tablerow_style` row; `img_icon`; title `srlabel_item_white_style`; detail `srlabel_item_gray26_style`. |
+| `tidal_tidal_top_init` | `0x4c6808` | Navigation bar: search button (224,0,60,50) `search_style`; back-to-player (270,0,60,50) `navbar_btnbackplayer_style`; title `hscroll_label` (36,14,200,22) `srlabel_leftwhite22_style`; return button (0,0,80,50) `navbar_btnreturn_style`, created last. |
+| unnamed home tile builder | `0x533d8c` | 154×118 tile views; 66×66 image at (44,20) styled `home_%s_style`; label (0,92,154,36) `label_centerwhitehome_white`. |
+| `on_backtoplayer_onclick` | `0x4cd58c` | Stack context `{0, 0, 255, 2}`; direct call to `navigator_switch_to_with_context("playing_page", &context, 0)` at `0x4d1f4c`. |
+
+`navigator_switch_to_with_context` switches to an open `playing_page` window or
+otherwise opens it through `navigator_to_with_context` (`0x4d1d48`). The
+extension issues the identical request after queueing; the stock Now Playing
+page is therefore the same page the stock button opens. Its behavior over a
+non-navigator extension window is a device-test item.
+
+The stock executable imports `font_loader_stb` and the theme names only one
+font, `default`. `default.ttf` (SHA-256
+`9a16af0aead992a2ad64f86d0de8d38bea60d6f605d42ffd0501684666161872`) is a
+Microsoft YaHei + Arial merge at 256 units/em with no TrueType instructions and
+lacks 49 Vietnamese letters. See [architecture](../architecture.md#ui-font).
+
 ## Playback insertion ABI
 
 Recovered C ABI, limited to the arguments and effects used here:

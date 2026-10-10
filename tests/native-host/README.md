@@ -2,7 +2,7 @@
 
 This compiles the actual `native/nd_ui.c`, `native/startup.c` (`ND_HOST_TEST`), and vendored cJSON into a dynamic library, then loads it with `dlopen` into a harness that exports the recovered toolkit and playback ABI. The firmware executables are not run. A separate HTTP fixture serves normalized backend responses on loopback port 17831. It uses no user server or credentials.
 
-The harness supplies opaque widgets, hierarchy, names, text, enabled/visible state, events, edit factory, slide indicator, timers, and a worker-safe idle queue. Idle callbacks and timers run only while the main GUI thread pumps events. Every toolkit and player operation asserts the GUI thread. Destroyed widgets remain tombstones, so subsequent use fails immediately. Playlist and deque mocks deep-copy strings independently; the test checks metadata after the plugin releases its temporary queue and JSON.
+The harness supplies opaque widgets, hierarchy, names, text, string properties and styles, enabled/visible state, events, widget factory, slide indicator, timers, and a worker-safe idle queue. Idle callbacks and timers run only while the main GUI thread pumps events. Every toolkit and player operation asserts the GUI thread. Destroyed widgets remain tombstones, so subsequent use fails immediately. Playlist and deque mocks deep-copy strings independently; the test checks metadata after the plugin releases its temporary queue and JSON.
 
 ## Reproduce
 
@@ -27,20 +27,22 @@ docker run --rm -v "$PWD:/work" m1plus-native-asan:local
 
 ## Observed results (2026-10-10)
 
-Both Darwin arm64 UBSAN and Linux arm64 ASAN+UBSAN passed 13 integration scenarios with 30 worker idle posts. No enabled sanitizer reported an error. Exact output is saved in `results-darwin.txt` and `results-linux.txt`.
+Darwin arm64 UBSAN and Linux arm64 ASAN+UBSAN passed 15 integration scenarios with 31 worker idle posts after the stock-style redesign. No enabled sanitizer reported an error. The harness builds the plugin with `-DND_PAGE=4`, so six-item fixtures exercise windowed lists.
 
-- Actual plugin symbol resolution, one home page injection, and slide indicator count updated from two stock slides to three, without duplicate insertion after timer dispatch.
-- Artists asynchronously delivered to GUI; local artist Next/Previous paging.
-- Artist → album → selected track playback: six queue entries, selected index 1, zero seek, URL capability shape, title/album/artist/track/disc/source kind. All queue IDs are negative, exclude -1, and are distinct within the chunk.
-- Unicode search (`宇多田 & café`), encoded request query, remote offset 4, search kind tabs, and Back restoring the album page.
-- Playlists → playlist tracks → playback.
-- Empty results and disabled paging.
+- Actual plugin symbol resolution, one 2×2 tile home page and slide indicator count updated from two stock slides to three, without duplicate insertion after timer dispatch.
+- Artists delivered to the GUI as stock-styled rows; local Show more/Previous windows.
+- Artist → album → selected track playback: six queue entries, selected index 1, zero seek, URL capability shape, title/album/artist/track/disc/source kind, negative distinct IDs. The stock back-to-player request (`playing_page`, `{NULL, 0, 255, 2}`) follows, and the list stays in place.
+- Album "Play all" and the navigation-bar player button.
+- Unicode search (`宇多田 & café`), encoded request query, remote offset 4, accent tab state, and Back restoring the album page.
+- Playlist tile → playlist tracks → playback.
+- Back at the root closes the window; empty results message.
 - Malformed JSON syntax and valid JSON with invalid schema both show errors; Retry recovers.
 - HTTP 503, Retry, alphabetical album remote paging.
 - Host widget geometry SVG capture.
 - Close after the fixture confirms an HTTP request is in flight: late result discarded and clean reopen.
 - Close after prepare is confirmed in flight: no stale playback starts.
-- Foreign credential-bearing stream URL rejected; rows remain usable for successful subsequent prepare.
+- Search tile opens an empty search; an empty query is rejected; Back closes.
+- Foreign credential-bearing stream URL rejected; rows remain usable for a successful subsequent prepare.
 
 The invalid URL contains a synthetic fixture value only. The request trace in `requests.json` contains fixture IDs, search text, and pagination, with no user secrets.
 

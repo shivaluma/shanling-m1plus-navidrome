@@ -116,14 +116,15 @@ type envelope struct {
 	} `json:"subsonic-response"`
 }
 
-func artist(w wireArtist) Artist { return Artist{w.ID, w.Name, w.AlbumCount} }
+// Display text is composed to NFC; IDs stay byte-for-byte opaque.
+func artist(w wireArtist) Artist { return Artist{w.ID, nfc(w.Name), w.AlbumCount} }
 func album(w wireAlbum) Album {
-	return Album{w.ID, w.Name, w.Artist, w.ArtistID, w.SongCount, w.Year, w.Duration}
+	return Album{w.ID, nfc(w.Name), nfc(w.Artist), w.ArtistID, w.SongCount, w.Year, w.Duration}
 }
 func track(w wireTrack) Track {
-	return Track{w.ID, w.Title, w.Artist, w.Album, w.ArtistID, w.AlbumID, w.Duration, w.Track, w.DiscNumber, w.ContentType}
+	return Track{w.ID, nfc(w.Title), nfc(w.Artist), nfc(w.Album), w.ArtistID, w.AlbumID, w.Duration, w.Track, w.DiscNumber, w.ContentType}
 }
-func playlist(w wirePlaylist) Playlist { return Playlist{w.ID, w.Name, w.SongCount, w.Duration} }
+func playlist(w wirePlaylist) Playlist { return Playlist{w.ID, nfc(w.Name), w.SongCount, w.Duration} }
 func artists(ws []wireArtist) []Artist {
 	a := make([]Artist, 0, len(ws))
 	for _, w := range ws {

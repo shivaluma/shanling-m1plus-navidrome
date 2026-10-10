@@ -13,16 +13,25 @@
 #ifndef ND_BRIDGE_ORIGIN
 #define ND_BRIDGE_ORIGIN "http://127.0.0.1:17831"
 #endif
-#define ND_ROWS 4
+/* Rows per rendered window; the host harness lowers it to exercise paging. */
+#ifndef ND_PAGE
+#define ND_PAGE 50
+#endif
 #define ND_QUEUE_MAX 128
 #define ND_BODY_MAX (2U * 1024U * 1024U)
 #define ND_HISTORY_MAX 32
+/* Geometry and colors follow the stock V2.1 pages (album_page.bin, search_page.bin). */
+#define ND_NAV_H 50
+#define ND_TAB_H 48
+#define ND_ROW_H 60
+#define ND_LIST_W 310
+#define ND_ACCENT "#FE7E40"
 
 enum route { R_ARTISTS, R_ARTIST, R_ALBUMS, R_ALBUM, R_SEARCH, R_LISTS, R_LIST };
 enum kind { K_ARTISTS, K_ALBUMS, K_TRACKS, K_LISTS };
-enum action { A_BACK = 1, A_CLOSE, A_ARTISTS, A_ALBUMS, A_LISTS, A_SEARCH,
-              A_PREV, A_NEXT, A_RETRY, A_SEARCH_ARTISTS, A_SEARCH_ALBUMS,
-              A_SEARCH_TRACKS };
+enum action { A_BACK = 1, A_SEARCH_OPEN, A_SEARCH_GO, A_PLAYER, A_PREV, A_NEXT,
+              A_RETRY, A_TAB_TRACKS, A_TAB_ALBUMS, A_TAB_ARTISTS, A_PLAY_ALL };
+enum section { S_ARTISTS = 1, S_ALBUMS, S_LISTS, S_SEARCH };
 typedef struct view_state {
   enum route route;
   enum kind kind;
@@ -51,7 +60,7 @@ typedef struct result {
   char error[160];
 } result;
 typedef struct row_context {
-  unsigned long generation;
+  unsigned long list;
   int index;
 } row_context;
 typedef struct buffer { char *data; size_t size; } buffer;
@@ -64,14 +73,16 @@ static unsigned long generation = 1;
 static job *pending_job;
 static result *results_head, *results_tail;
 /* The fields below are accessed by GUI callbacks only. */
-static widget_t *win, *title_label, *status_label, *rows_box, *search_edit;
-static widget_t *prev_button, *next_button, *page_label, *retry_button;
-static widget_t *search_tabs[3];
+static widget_t *win, *content, *list, *rows_box;
+static widget_t *title_label, *search_open_button, *player_button;
+static widget_t *search_box, *search_edit, *search_go_button, *search_tabs[3];
+static widget_t *status_label, *spinner, *retry_button, *toast;
 static view_state history[ND_HISTORY_MAX];
 static unsigned int depth;
 static cJSON *current_json;
-static int busy;
-static time_t busy_deadline;
+static int busy, spinning, spin_frame;
+static time_t busy_deadline, toast_deadline;
+static unsigned long list_serial;
 
 static ret_t timer_tick(const timer_info_t *unused);
 static ret_t deliver_results(const idle_info_t *unused);
@@ -129,6 +140,10 @@ static int resolve_api(void) {
     if (!p) { fputs("Navidrome: required firmware symbol missing: " name "\n", stderr); return -1; } \
     memcpy(&api.field, &p, sizeof(api.field)); \
   } while (0)
+#define OPTIONAL(field, name) do { \
+    void *p = dlsym(RTLD_DEFAULT, name); \
+    memcpy(&api.field, &p, sizeof(api.field)); \
+  } while (0)
   if (symbols_resolved) return 0;
   LOAD(main_loop, "main_loop");
   LOAD(idle_queue, "idle_queue");
@@ -166,9 +181,12 @@ static int resolve_api(void) {
   LOAD(mclLoadPlayList, "mclLoadPlayList");
   LOAD(mclSetStartSeekTime, "mclSetStartSeekTime");
   LOAD(start_playqueue, "start_playqueue");
+  OPTIONAL(widget_layout, "widget_layout");
+  OPTIONAL(navigator_switch_to_with_context, "navigator_switch_to_with_context");
   symbols_resolved = 1;
   return 0;
 #undef LOAD
+#undef OPTIONAL
 }
 
 static size_t receive_body(char *data, size_t size, size_t count, void *ctx) {
@@ -316,33 +334,121 @@ static void *network_worker(void *unused) {
   return NULL;
 }
 
-static void status_text(const char *text, int retry) {
-  if (!win) return;
-  api.widget_set_text_utf8(status_label, text);
-  api.widget_set_visible(retry_button, retry);
+
+/* ---- Widgets: stock V2.1 styles, with inline fallbacks for missing theme entries. ---- */
+static void prop(widget_t *w, const char *key, const char *value) {
+  if (w) api.widget_set_prop_str(w, key, value);
 }
-static void native_style(widget_t *w, const char *name) {
-  if (w && api.widget_is_style_exist(w, name, "normal")) api.widget_use_style(w, name);
+static void state_props(widget_t *w, const char *key, const char *value) {
+  static const char *states[] = {"normal", "pressed", "over", "focused", "disable",
+                                 "empty", "empty_focus", "empty_over", "changed", "error"};
+  char name[64];
+  size_t i;
+  for (i = 0; i < sizeof(states) / sizeof(states[0]); ++i) {
+    snprintf(name, sizeof(name), "style:%s:%s", states[i], key);
+    prop(w, name, value);
+  }
+}
+static int native_style(widget_t *w, const char *name) {
+  if (!w || !name || !api.widget_is_style_exist(w, name, "normal")) return 0;
+  api.widget_use_style(w, name);
+  return 1;
+}
+static void text_style(widget_t *w, const char *name, const char *color, const char *size) {
+  if (native_style(w, name)) return;
+  prop(w, "style:normal:text_color", color);
+  prop(w, "style:normal:font_size", size);
+}
+static widget_t *make(const char *type, widget_t *parent, int x, int y, int width, int height,
+                      const char *name) {
+  widget_t *w = api.widget_factory_create_widget(api.widget_factory(), type, parent, x, y, width, height);
+  if (w && name) api.widget_set_name(w, name);
+  return w;
 }
 static widget_t *make_button(widget_t *parent, int x, int y, int width, int height,
-                             const char *name, const char *text, enum action action) {
+                             const char *name, const char *text, const char *style,
+                             enum action action) {
   widget_t *w = api.button_create(parent, x, y, width, height);
   if (!w) return NULL;
   api.widget_set_name(w, name);
-  api.widget_set_text_utf8(w, text);
-  native_style(w, "list_itemsort_style");
+  if (text) api.widget_set_text_utf8(w, text);
+  if (!native_style(w, style)) {
+    state_props(w, "bg_color", "#131313");
+    state_props(w, "border_color", "#00000000");
+    state_props(w, "text_color", "#FFFFFF");
+  }
   if (action && !api.widget_on(w, ND_EVT_CLICK, on_action, (void *)(uintptr_t)action)) return NULL;
   return w;
 }
-static widget_t *make_label(widget_t *parent, int x, int y, int width, int height,
-                            const char *name, const char *text) {
-  widget_t *w = api.label_create(parent, x, y, width, height);
+/* Single-line text: ellipsized, scrolls only when focused, like stock list rows. */
+static widget_t *make_text(widget_t *parent, int x, int y, int width, int height, const char *name,
+                           const char *text, const char *style, const char *color, const char *size) {
+  widget_t *w = make("hscroll_label", parent, x, y, width, height, name);
   if (!w) return NULL;
-  api.widget_set_name(w, name);
+  text_style(w, style, color, size);
+  prop(w, "ellipses", "true");
+  prop(w, "only_focus", "true");
   api.widget_set_text_utf8(w, text);
-  native_style(w, "srlabel_leftwhite20_style");
   return w;
 }
+static widget_t *make_label(widget_t *parent, int x, int y, int width, int height, const char *name,
+                            const char *text, const char *style, const char *color, const char *size) {
+  widget_t *w = api.label_create(parent, x, y, width, height);
+  if (!w) return NULL;
+  if (name) api.widget_set_name(w, name);
+  text_style(w, style, color, size);
+  api.widget_set_text_utf8(w, text);
+  return w;
+}
+static widget_t *make_image(widget_t *parent, int x, int y, int width, int height, const char *name,
+                            const char *image, const char *draw_type) {
+  widget_t *w = make("image", parent, x, y, width, height, name);
+  if (!w) return NULL;
+  prop(w, "image", image);
+  prop(w, "draw_type", draw_type);
+  return w;
+}
+
+/* ---- Status, spinner and toast. ---- */
+static int spin_timer;
+static void hide_status(void) {
+  api.widget_set_visible(status_label, 0);
+  api.widget_set_visible(spinner, 0);
+  api.widget_set_visible(retry_button, 0);
+  spinning = 0;
+}
+static ret_t spin_tick(const timer_info_t *unused) {
+  char frame[24];
+  (void)unused;
+  if (!win || !spinning) { spin_timer = 0; return ND_REMOVE; }
+  spin_frame = spin_frame % 12 + 1;
+  snprintf(frame, sizeof(frame), "imge_wait%d", spin_frame);
+  prop(spinner, "image", frame);
+  return ND_REPEAT;
+}
+static void show_status(const char *text, int retry, int spin) {
+  if (!win) return;
+  api.widget_set_text_utf8(status_label, text);
+  api.widget_set_visible(status_label, 1);
+  api.widget_set_visible(retry_button, retry);
+  api.widget_set_visible(spinner, spin);
+  spinning = spin;
+  if (spin && !spin_timer && api.timer_add(spin_tick, NULL, 90)) spin_timer = 1;
+}
+static void notify(const char *text, int seconds) {
+  if (!win) return;
+  api.widget_set_text_utf8(toast, text);
+  api.widget_set_visible(toast, 1);
+  toast_deadline = time(NULL) + seconds;
+}
+static void show_player(void) {
+  nd_player_context context = {NULL, 0, 255, 2};
+  /* Same request as the stock navigation-bar "back to player" button. */
+  if (api.navigator_switch_to_with_context)
+    api.navigator_switch_to_with_context("playing_page", &context, 0);
+}
+
+/* ---- Content. ---- */
 static cJSON *items(void) {
   const char *keys[] = {"artists", "albums", "tracks", "playlists"};
   cJSON *a = cJSON_GetObjectItemCaseSensitive(current_json, keys[history[depth].kind]);
@@ -351,24 +457,198 @@ static cJSON *items(void) {
 static int remote_paging(void) {
   return history[depth].route == R_ALBUMS || history[depth].route == R_SEARCH;
 }
-static void update_paging(void) {
-  view_state *v = &history[depth];
-  int n = cJSON_GetArraySize(items());
-  char text[80];
-  unsigned int shown = remote_paging() ? (unsigned int)n :
-    (v->offset < (unsigned int)n ? (unsigned int)n - v->offset : 0);
-  if (shown > ND_ROWS) shown = ND_ROWS;
-  if (shown) snprintf(text, sizeof(text), "%u–%u", v->offset + 1, v->offset + shown);
-  else copy_text(text, sizeof(text), "No results");
-  api.widget_set_text_utf8(page_label, text);
-  api.widget_set_enable(prev_button, !busy && v->offset > 0);
-  api.widget_set_enable(next_button, !busy && (remote_paging() ? n >= ND_ROWS : v->offset + ND_ROWS < (unsigned int)n));
+static void destroy_list(void) {
+  if (list) api.widget_destroy(list);
+  list = rows_box = NULL;
+  ++list_serial;
+}
+static int new_list(void) {
+  int top = history[depth].route == R_SEARCH ? ND_NAV_H + ND_TAB_H : ND_NAV_H;
+  int height = 450 - top;
+  destroy_list();
+  list = make("list_view", content, 0, top, 320, height, "nd_list");
+  if (!list) return -1;
+  prop(list, "default_item_height", "60");
+  state_props(list, "bg_color", "#000000");
+  state_props(list, "border_color", "#00000000");
+  prop(list, "style:normal:border_width", "0");
+  rows_box = make("scroll_view", list, 0, 0, ND_LIST_W, height, "nd_rows");
+  if (!rows_box || !make("scroll_bar_m", list, ND_LIST_W, 0, 320 - ND_LIST_W, height, "nd_scroll")) {
+    destroy_list();
+    return -1;
+  }
+  return 0;
 }
 static void reset_content(void) {
-  api.widget_destroy_children(rows_box);
+  destroy_list();
   cJSON_Delete(current_json);
   current_json = NULL;
 }
+static void format_duration(char *out, size_t size, int seconds) {
+  if (seconds <= 0) copy_text(out, size, "");
+  else if (seconds >= 3600) snprintf(out, size, "%d:%02d:%02d", seconds / 3600, seconds / 60 % 60, seconds % 60);
+  else snprintf(out, size, "%d:%02d", seconds / 60, seconds % 60);
+}
+static const char *format_icon(const char *content_type) {
+  static const char *map[][2] = {
+    {"audio/flac", "icon_flac"}, {"audio/x-flac", "icon_flac"}, {"audio/mpeg", "icon_mp3"},
+    {"audio/mp3", "icon_mp3"}, {"audio/aac", "icon_aac"}, {"audio/mp4", "icon_m4a"},
+    {"audio/x-m4a", "icon_m4a"}, {"audio/m4a", "icon_m4a"}, {"audio/x-alac", "icon_alac"},
+    {"audio/wav", "icon_wav"}, {"audio/x-wav", "icon_wav"}, {"audio/ogg", "icon_ogg"},
+    {"audio/opus", "icon_opus"}, {"audio/ape", "icon_ape"}, {"audio/x-ape", "icon_ape"},
+    {"audio/aiff", "icon_aiff"}, {"audio/x-aiff", "icon_aiff"}, {"audio/dsf", "icon_dsf"},
+    {"audio/x-dsf", "icon_dsf"}, {"audio/x-dff", "icon_dff"}, {"audio/x-ms-wma", "icon_wma"},
+  };
+  size_t i;
+  for (i = 0; i < sizeof(map) / sizeof(map[0]); ++i)
+    if (!strcmp(content_type, map[i][0])) return map[i][1];
+  return "icon_playlist";
+}
+/* Title and grey detail line, matching stock list rows. */
+static void describe(const cJSON *item, enum kind kind, char *title, size_t title_size,
+                     char *detail, size_t detail_size, const char **icon) {
+  char time_text[24];
+  const char *artist = json_string(item, "artist"), *album = json_string(item, "album");
+  int count;
+  copy_text(title, title_size, json_string(item, kind == K_TRACKS ? "title" : "name"));
+  if (!title[0]) copy_text(title, title_size, "Untitled");
+  detail[0] = 0;
+  switch (kind) {
+    case K_ARTISTS:
+      *icon = "icon_artist";
+      count = json_int(item, "album_count");
+      if (count) snprintf(detail, detail_size, "%d album%s", count, count == 1 ? "" : "s");
+      break;
+    case K_ALBUMS:
+      *icon = "albumcover_s";
+      if (json_int(item, "year") > 0) snprintf(detail, detail_size, "%s%s%d", artist, artist[0] ? " · " : "", json_int(item, "year"));
+      else copy_text(detail, detail_size, artist);
+      break;
+    case K_LISTS:
+      *icon = "icon_playlist";
+      count = json_int(item, "song_count");
+      format_duration(time_text, sizeof(time_text), json_int(item, "duration"));
+      snprintf(detail, detail_size, "%d song%s%s%s", count, count == 1 ? "" : "s", time_text[0] ? " · " : "", time_text);
+      break;
+    case K_TRACKS:
+      *icon = format_icon(json_string(item, "content_type"));
+      format_duration(time_text, sizeof(time_text), json_int(item, "duration"));
+      if (history[depth].route == R_SEARCH && album[0])
+        snprintf(detail, detail_size, "%s%s%s", artist, artist[0] ? " · " : "", album);
+      else snprintf(detail, detail_size, "%s%s%s", artist, artist[0] && time_text[0] ? " · " : "", time_text);
+      break;
+  }
+}
+static ret_t free_row(void *ctx, event_t *event) {
+  (void)event;
+  free(ctx);
+  return ND_OK;
+}
+static void prepare_playback(int index);
+static void navigate(enum route route, enum kind kind, const char *param, const char *title, int root);
+static ret_t on_row(void *ctx, event_t *event) {
+  const row_context *row = (const row_context *)ctx;
+  cJSON *item;
+  char id[768], title[192];
+  enum kind kind;
+  (void)event;
+  if (!win || busy || row->list != list_serial) return ND_OK;
+  kind = history[depth].kind;
+  item = cJSON_GetArrayItem(items(), row->index);
+  if (!item) return ND_OK;
+  if (kind == K_TRACKS) { prepare_playback(row->index); return ND_OK; }
+  copy_text(id, sizeof(id), json_string(item, "id"));
+  copy_text(title, sizeof(title), json_string(item, "name"));
+  if (!id[0]) { notify("Item has no server ID", 3); return ND_OK; }
+  /* Copy all context before navigation synchronously destroys this row. */
+  if (kind == K_ARTISTS) navigate(R_ARTIST, K_ALBUMS, id, title, 0);
+  else if (kind == K_ALBUMS) navigate(R_ALBUM, K_TRACKS, id, title, 0);
+  else navigate(R_LIST, K_TRACKS, id, title, 0);
+  return ND_OK;
+}
+static widget_t *make_row(const char *name, int index, const char *icon, const char *title,
+                          const char *detail, int arrow) {
+  widget_t *row = make("list_item", rows_box, 0, 0, ND_LIST_W, ND_ROW_H, name);
+  row_context *context;
+  if (!row) return NULL;
+  if (!native_style(row, "list_item_style")) {
+    prop(row, "style:normal:bg_color", "#131313");
+    prop(row, "style:pressed:bg_color", "#362221");
+  }
+  if (!strcmp(icon, "albumcover_s")) make_image(row, 10, 8, 44, 44, NULL, icon, "scale_auto");
+  else make_image(row, 12, 10, 40, 40, NULL, icon, "icon");
+  make_text(row, 64, detail[0] ? 6 : 17, arrow ? 212 : 234, 26, NULL, title,
+            "srlabel_item_white_style", "#FFFFFF", "20");
+  if (detail[0])
+    make_text(row, 64, 33, arrow ? 212 : 234, 20, NULL, detail, "srlabel_item_gray18_style", "#AAAAAA", "16");
+  if (arrow) make_image(row, 284, 19, 13, 22, NULL, "right_arrow", "icon");
+  if (index < 0) return row;
+  context = (row_context *)calloc(1, sizeof(*context));
+  if (!context) return NULL;
+  context->list = list_serial;
+  context->index = index;
+  /* Destroy owns row context. Click callback never outlives its widget. */
+  if (!api.widget_on(row, ND_EVT_DESTROY, free_row, context)) { free(context); return NULL; }
+  api.widget_on(row, ND_EVT_CLICK, on_row, context);
+  return row;
+}
+static widget_t *make_more_row(const char *name, const char *text, enum action action) {
+  widget_t *row = make("list_item", rows_box, 0, 0, ND_LIST_W, ND_ROW_H, name);
+  if (!row) return NULL;
+  if (!native_style(row, "list_item_style")) prop(row, "style:pressed:bg_color", "#362221");
+  if (!make_label(row, 0, 0, ND_LIST_W, ND_ROW_H - 4, NULL, text, "label_centergray20_white", "#AAAAAA", "18") ||
+      !api.widget_on(row, ND_EVT_CLICK, on_action, (void *)(uintptr_t)action)) return NULL;
+  return row;
+}
+/* Album and playlist header: stock "Play all" pill plus a track summary. */
+static int make_header(int count) {
+  widget_t *header = api.view_create(rows_box, 0, 0, ND_LIST_W, 56);
+  char text[96], time_text[24];
+  int seconds = json_int(cJSON_GetObjectItemCaseSensitive(current_json, history[depth].route == R_ALBUM ? "album" : "playlist"), "duration");
+  if (!header) return -1;
+  api.widget_set_name(header, "nd_header");
+  if (!make_button(header, 12, 14, 90, 28, "nd_play_all", NULL, "Play_all_style", A_PLAY_ALL)) return -1;
+  format_duration(time_text, sizeof(time_text), seconds);
+  snprintf(text, sizeof(text), "%d song%s%s%s", count, count == 1 ? "" : "s", time_text[0] ? " · " : "", time_text);
+  return make_text(header, 114, 15, 190, 26, "nd_summary", text, "srlabel_leftgray16_style", "#AAAAAA", "16") ? 0 : -1;
+}
+static void render_rows(void) {
+  view_state *v = &history[depth];
+  cJSON *array = items();
+  int n = cJSON_GetArraySize(array), i, remote = remote_paging();
+  int first = remote ? 0 : (int)v->offset, end = remote ? n : (int)v->offset + ND_PAGE;
+  int more = remote ? n >= ND_PAGE : end < n;
+  char text[64];
+  if (end > n) end = n;
+  if (new_list()) { show_status("Not enough memory", 1, 0); return; }
+  if (first >= end && !v->offset) {
+    show_status(v->route == R_SEARCH ? "No results" : "Nothing here yet", 0, 0);
+    return;
+  }
+  hide_status();
+  if (v->kind == K_TRACKS && v->route != R_SEARCH && !v->offset && make_header(n)) goto failed;
+  if (v->offset) {
+    snprintf(text, sizeof(text), "Previous %d", ND_PAGE);
+    if (!make_more_row("nd_more_prev", text, A_PREV)) goto failed;
+  }
+  for (i = first; i < end; ++i) {
+    char name[32], title[512], detail[512];
+    const char *icon = "icon_playlist";
+    describe(cJSON_GetArrayItem(array, i), v->kind, title, sizeof(title), detail, sizeof(detail), &icon);
+    snprintf(name, sizeof(name), "nd_row_%d", i - first);
+    if (!make_row(name, i, icon, title, detail, v->kind != K_TRACKS)) goto failed;
+  }
+  if (more && !make_more_row("nd_more_next", "Show more", A_NEXT)) goto failed;
+  snprintf(text, sizeof(text), "%u–%u", v->offset + 1, v->offset + (unsigned int)(end - first));
+  api.widget_set_text_utf8(status_label, text);
+  if (api.widget_layout) api.widget_layout(list);
+  return;
+failed:
+  destroy_list();
+  show_status("Not enough memory", 1, 0);
+}
+
+/* ---- Navigation and requests. ---- */
 static int encode_query(char *out, size_t capacity, const char *s) {
   static const char hex[] = "0123456789ABCDEF";
   size_t p = 0;
@@ -383,7 +663,7 @@ static int encode_query(char *out, size_t capacity, const char *s) {
   out[p] = 0;
   return 0;
 }
-static void submit(job *j, const char *status) {
+static void submit(job *j) {
   j->generation = cancel_previous();
   j->deadline = time(NULL) + (j->play ? 30 : 15);
   busy_deadline = j->deadline;
@@ -392,36 +672,56 @@ static void submit(job *j, const char *status) {
   pthread_cond_signal(&wake_worker);
   pthread_mutex_unlock(&lock);
   busy = 1;
-  status_text(status, 0);
-  update_paging();
+}
+static void update_chrome(void) {
+  const view_state *v = &history[depth];
+  static const enum kind tab_kinds[3] = {K_TRACKS, K_ALBUMS, K_ARTISTS};
+  int search = v->route == R_SEARCH, i;
+  api.widget_set_visible(title_label, !search);
+  api.widget_set_visible(search_open_button, !search);
+  api.widget_set_visible(player_button, !search);
+  api.widget_set_visible(search_box, search);
+  api.widget_set_visible(search_go_button, search);
+  if (!search) api.widget_set_text_utf8(title_label, v->title);
+  for (i = 0; i < 3; ++i) {
+    int active = search && v->kind == tab_kinds[i];
+    api.widget_set_visible(search_tabs[i], search);
+    state_props(search_tabs[i], "bg_color", active ? ND_ACCENT : "#131313");
+    prop(search_tabs[i], "style:pressed:bg_color", active ? ND_ACCENT : "#362221");
+  }
 }
 static void fetch_current(void) {
   view_state *v = &history[depth];
-  job *j = (job *)calloc(1, sizeof(*j));
+  job *j;
   char encoded[2304];
-  int n = 0, i;
+  int n = 0;
+  update_chrome();
+  reset_content();
+  if (v->route == R_SEARCH) api.widget_set_text_utf8(search_edit, v->param);
+  if (v->route == R_SEARCH && !v->param[0]) {
+    cancel_previous();
+    busy = 0;
+    show_status("Search artists, albums and songs", 0, 0);
+    return;
+  }
+  j = (job *)calloc(1, sizeof(*j));
   if (!j || encode_query(encoded, sizeof(encoded), v->param)) {
-    free_job(j); busy = 0; status_text("Request too long or no memory", 1); return;
+    free_job(j); busy = 0; show_status("Request too long or no memory", 1, 0); return;
   }
   switch (v->route) {
     case R_ARTISTS: n = snprintf(j->path, sizeof(j->path), "/v1/artists"); break;
     case R_ARTIST: n = snprintf(j->path, sizeof(j->path), "/v1/artist?id=%s", encoded); break;
-    case R_ALBUMS: n = snprintf(j->path, sizeof(j->path), "/v1/albums?offset=%u&size=%u", v->offset, ND_ROWS); break;
+    case R_ALBUMS: n = snprintf(j->path, sizeof(j->path), "/v1/albums?offset=%u&size=%u", v->offset, ND_PAGE); break;
     case R_ALBUM: n = snprintf(j->path, sizeof(j->path), "/v1/album?id=%s", encoded); break;
-    case R_SEARCH: n = snprintf(j->path, sizeof(j->path), "/v1/search?q=%s&offset=%u&size=%u", encoded, v->offset, ND_ROWS); break;
+    case R_SEARCH: n = snprintf(j->path, sizeof(j->path), "/v1/search?q=%s&offset=%u&size=%u", encoded, v->offset, ND_PAGE); break;
     case R_LISTS: n = snprintf(j->path, sizeof(j->path), "/v1/playlists"); break;
     case R_LIST: n = snprintf(j->path, sizeof(j->path), "/v1/playlist?id=%s", encoded); break;
   }
   if (n < 0 || n >= (int)sizeof(j->path)) {
-    free_job(j); busy = 0; status_text("Request is too long", 1); return;
+    free_job(j); busy = 0; show_status("Request is too long", 1, 0); return;
   }
-  api.widget_set_text_utf8(title_label, v->title);
-  for (i = 0; i < 3; ++i) {
-    api.widget_set_visible(search_tabs[i], v->route == R_SEARCH);
-    api.widget_set_enable(search_tabs[i], v->kind != (enum kind)i);
-  }
-  reset_content();
-  submit(j, "Loading…");
+  submit(j);
+  show_status("Loading…", 0, 1);
 }
 static void navigate(enum route route, enum kind kind, const char *param, const char *title, int root) {
   view_state next;
@@ -432,7 +732,7 @@ static void navigate(enum route route, enum kind kind, const char *param, const 
   copy_text(next.title, sizeof(next.title), title);
   if (root) depth = 0;
   else if (depth + 1 < ND_HISTORY_MAX) ++depth;
-  else { status_text("Use Back to open another item", 0); return; }
+  else { notify("Go back to open another item", 3); return; }
   history[depth] = next;
   fetch_current();
 }
@@ -445,73 +745,20 @@ static void prepare_playback(int index) {
   if (index < 0 || (unsigned int)index >= n || busy) return;
   if (end > n) end = n;
   j = (job *)calloc(1, sizeof(*j));
-  if (!j) { status_text("Not enough memory", 1); return; }
+  if (!j) { notify("Not enough memory", 3); return; }
   j->play = 1;
   j->selected = index - (int)first;
   j->first_track = first + (remote_paging() ? history[depth].offset : 0);
   j->tracks = cJSON_CreateArray();
-  if (!j->tracks) { free_job(j); status_text("Not enough memory", 1); return; }
+  if (!j->tracks) { free_job(j); notify("Not enough memory", 3); return; }
   for (i = first; i < end; ++i) {
     cJSON *t = cJSON_Duplicate(cJSON_GetArrayItem(all, (int)i), 1);
     if (!t || !cJSON_AddItemToArray(j->tracks, t)) {
-      cJSON_Delete(t); free_job(j); status_text("Not enough memory", 1); return;
+      cJSON_Delete(t); free_job(j); notify("Not enough memory", 3); return;
     }
   }
-  submit(j, "Preparing playback…");
-}
-static ret_t free_row(void *ctx, event_t *event) {
-  (void)event;
-  free(ctx);
-  return ND_OK;
-}
-static ret_t on_row(void *ctx, event_t *event) {
-  const row_context *row = (const row_context *)ctx;
-  cJSON *item;
-  char id[768], title[192];
-  enum kind kind;
-  int index;
-  (void)event;
-  if (!win || busy || row->generation != epoch()) return ND_OK;
-  index = row->index;
-  kind = history[depth].kind;
-  item = cJSON_GetArrayItem(items(), index);
-  if (!item) return ND_OK;
-  if (kind == K_TRACKS) { prepare_playback(index); return ND_OK; }
-  copy_text(id, sizeof(id), json_string(item, "id"));
-  copy_text(title, sizeof(title), json_string(item, "name"));
-  if (!id[0]) { status_text("Item has no server ID", 0); return ND_OK; }
-  /* Copy all context before fetch_current synchronously destroys this row. */
-  if (kind == K_ARTISTS) navigate(R_ARTIST, K_ALBUMS, id, title, 0);
-  else if (kind == K_ALBUMS) navigate(R_ALBUM, K_TRACKS, id, title, 0);
-  else navigate(R_LIST, K_TRACKS, id, title, 0);
-  return ND_OK;
-}
-static void render_rows(void) {
-  unsigned int i, first = remote_paging() ? 0 : history[depth].offset;
-  cJSON *array = items();
-  int n = cJSON_GetArraySize(array);
-  api.widget_destroy_children(rows_box);
-  for (i = 0; i < ND_ROWS && first + i < (unsigned int)n; ++i) {
-    cJSON *item = cJSON_GetArrayItem(array, (int)(first + i));
-    row_context *row = (row_context *)calloc(1, sizeof(*row));
-    widget_t *button;
-    char name[32], text[512];
-    const char *main_text = json_string(item, history[depth].kind == K_TRACKS ? "title" : "name");
-    const char *artist = json_string(item, "artist");
-    if (!row) { status_text("Not enough memory", 1); break; }
-    snprintf(name, sizeof(name), "nd_row_%u", i);
-    if ((history[depth].kind == K_ALBUMS || history[depth].route == R_SEARCH) && artist[0])
-      snprintf(text, sizeof(text), "%s · %s", main_text[0] ? main_text : "Untitled", artist);
-    else copy_text(text, sizeof(text), main_text[0] ? main_text : "Untitled");
-    button = make_button(rows_box, 0, (int)i * 44, 308, 42, name, text, 0);
-    if (!button) { free(row); status_text("Not enough memory", 1); break; }
-    row->generation = epoch();
-    row->index = (int)(first + i);
-    /* Destroy owns row context. Click callback never outlives its widget. */
-    if (!api.widget_on(button, ND_EVT_DESTROY, free_row, row)) { free(row); continue; }
-    api.widget_on(button, ND_EVT_CLICK, on_row, row);
-  }
-  update_paging();
+  submit(j);
+  notify("Preparing playback…", 30);
 }
 static int apply_playback(result *r) {
   unsigned int i;
@@ -576,48 +823,63 @@ static ret_t deliver_results(const idle_info_t *unused) {
     if (!r) break;
     if (win && r->generation == epoch()) {
       busy = 0;
-      if (r->error[0]) {
-        status_text(r->error, 1);
-        if (current_json) render_rows();
-      }
-      else if (r->play) {
-        if (apply_playback(r)) status_text("Could not create playback queue", 1);
+      if (r->play) {
+        if (r->error[0]) notify(r->error, 4);
+        else if (apply_playback(r)) notify("Could not create playback queue", 4);
         else {
           char text[160];
           snprintf(text, sizeof(text), "Queued tracks %u–%u", r->first_track + 1, r->first_track + r->count);
-          status_text(text, 0);
+          notify(text, 3);
+          show_player();
         }
-        /* New generation was used for playback; refresh row callback generations. */
-        render_rows();
+      } else if (r->error[0]) {
+        show_status(r->error, 1, 0);
       } else {
         current_json = r->json;
         r->json = NULL;
-        if (!items()) status_text("Invalid bridge response", 1);
-        else {
-          status_text(cJSON_GetArraySize(items()) ? "Select to browse or play" : "No results", 0);
-          render_rows();
-        }
+        if (!items()) show_status("Invalid bridge response", 1, 0);
+        else render_rows();
       }
-      update_paging();
     }
     free_result(r);
   }
   return ND_REMOVE;
 }
+
+/* ---- Window. ---- */
 static void release_window(void) {
   cancel_previous();
   cJSON_Delete(current_json);
   current_json = NULL;
-  win = title_label = status_label = rows_box = search_edit = NULL;
-  prev_button = next_button = page_label = retry_button = NULL;
+  win = content = list = rows_box = NULL;
+  title_label = search_open_button = player_button = NULL;
+  search_box = search_edit = search_go_button = NULL;
+  status_label = spinner = retry_button = toast = NULL;
   memset(search_tabs, 0, sizeof(search_tabs));
+  ++list_serial;
   depth = 0;
-  busy = 0;
+  busy = spinning = 0;
+  toast_deadline = 0;
 }
 static ret_t on_window_destroy(void *ctx, event_t *event) {
   (void)event;
   if (win == (widget_t *)ctx) release_window();
   return ND_OK;
+}
+static void close_window(void) {
+  widget_t *closing = win;
+  release_window();
+  api.window_close(closing);
+}
+static void submit_search(void) {
+  char query[768] = {0};
+  view_state *v = &history[depth];
+  api.widget_get_text_utf8(search_edit, query, sizeof(query));
+  if (!query[0]) { notify("Enter an artist, album or song", 3); return; }
+  /* Searching again replaces the current search instead of growing history. */
+  copy_text(v->param, sizeof(v->param), query);
+  v->offset = 0;
+  fetch_current();
 }
 static ret_t on_action(void *ctx, event_t *event) {
   enum action action = (enum action)(uintptr_t)ctx;
@@ -625,48 +887,56 @@ static ret_t on_action(void *ctx, event_t *event) {
   (void)event;
   if (!win) return ND_OK;
   switch (action) {
-    case A_CLOSE: {
-      widget_t *closing = win;
-      release_window();
-      api.window_close(closing);
-      break;
-    }
     case A_BACK:
       if (depth) { --depth; fetch_current(); }
-      else navigate(R_ARTISTS, K_ARTISTS, "", "Artists", 1);
+      else close_window();
       break;
-    case A_ARTISTS: navigate(R_ARTISTS, K_ARTISTS, "", "Artists", 1); break;
-    case A_ALBUMS: navigate(R_ALBUMS, K_ALBUMS, "", "Albums", 1); break;
-    case A_LISTS: navigate(R_LISTS, K_LISTS, "", "Playlists", 1); break;
-    case A_SEARCH: {
-      char query[768] = {0};
-      api.widget_get_text_utf8(search_edit, query, sizeof(query));
-      if (query[0]) navigate(R_SEARCH, K_TRACKS, query, "Search", 0);
-      else status_text("Enter an artist, album or song", 0);
+    case A_SEARCH_OPEN: navigate(R_SEARCH, K_TRACKS, "", "Search", 0); break;
+    case A_SEARCH_GO: if (v->route == R_SEARCH) submit_search(); break;
+    case A_PLAYER: show_player(); break;
+    case A_TAB_TRACKS: case A_TAB_ALBUMS: case A_TAB_ARTISTS: {
+      static const enum kind kinds[] = {K_TRACKS, K_ALBUMS, K_ARTISTS};
+      if (v->route != R_SEARCH) break;
+      v->kind = kinds[action - A_TAB_TRACKS];
+      v->offset = 0;
+      fetch_current();
       break;
     }
-    case A_SEARCH_ARTISTS: case A_SEARCH_ALBUMS: case A_SEARCH_TRACKS:
-      if (v->route == R_SEARCH) {
-        v->kind = (enum kind)(action - A_SEARCH_ARTISTS);
-        v->offset = 0;
-        fetch_current();
-      }
-      break;
     case A_PREV: case A_NEXT:
       if (busy) break;
-      if (action == A_PREV) v->offset = v->offset >= ND_ROWS ? v->offset - ND_ROWS : 0;
-      else v->offset += ND_ROWS;
+      if (action == A_PREV) v->offset = v->offset >= ND_PAGE ? v->offset - ND_PAGE : 0;
+      else v->offset += ND_PAGE;
       if (remote_paging()) fetch_current();
       else render_rows();
       break;
+    case A_PLAY_ALL: if (!busy) prepare_playback(0); break;
     case A_RETRY: fetch_current(); break;
   }
   return ND_OK;
 }
+static widget_t *make_search_box(void) {
+  widget_t *box = api.view_create(win, 36, 6, 232, 38);
+  if (!box) return NULL;
+  api.widget_set_name(box, "nd_search_box");
+  prop(box, "style:normal:bg_image", "search_bg");
+  prop(box, "style:normal:bg_image_draw_type", "scale");
+  search_edit = make("edit", box, 14, 0, 208, 38, "nd_search_text");
+  if (!search_edit) return NULL;
+  api.edit_set_keyboard(search_edit, "kb_default_t9");
+  api.edit_set_tips(search_edit, "Search artists, albums, songs");
+  /* Inline styles copied from the stock search_page edit. */
+  state_props(search_edit, "bg_color", "#131313");
+  state_props(search_edit, "border_width", "0");
+  state_props(search_edit, "text_color", "#FFFFFF");
+  state_props(search_edit, "tips_text_color", "#AAAAAA");
+  state_props(search_edit, "font_size", "18");
+  return box;
+}
 static ret_t open_window(void *ctx, event_t *event) {
+  enum section section = (enum section)(uintptr_t)ctx;
   widget_t *top;
   int i;
-  (void)ctx; (void)event;
+  (void)event;
   if (win) return ND_OK;
   top = api.window_create(NULL, 0, 0, 0, 0);
   if (!top) return ND_OK;
@@ -676,37 +946,44 @@ static ret_t open_window(void *ctx, event_t *event) {
     win = NULL; api.window_close(top); return ND_OK;
   }
   api.widget_set_name(win, "nd_navidrome");
-  api.widget_set_prop_str(win, "style:normal:bg_color", "#000000");
+  prop(win, "style:normal:bg_color", "#000000");
   if (!api.widget_on(win, ND_EVT_DESTROY, on_window_destroy, win)) goto failed;
-  if (!make_button(win, 4, 0, 68, 42, "nd_back", "Back", A_BACK)) goto failed;
-  title_label = make_label(win, 76, 0, 168, 42, "nd_title", "Navidrome");
-  if (!title_label || !make_button(win, 248, 0, 68, 42, "nd_close", "Close", A_CLOSE)) goto failed;
-  if (!make_button(win, 4, 44, 102, 40, "nd_artists", "Artists", A_ARTISTS) ||
-      !make_button(win, 108, 44, 102, 40, "nd_albums", "Albums", A_ALBUMS) ||
-      !make_button(win, 212, 44, 104, 40, "nd_lists", "Playlists", A_LISTS)) goto failed;
-  search_edit = api.widget_factory_create_widget(api.widget_factory(), "edit", win, 6, 88, 218, 40);
-  if (!search_edit) goto failed;
-  api.widget_set_name(search_edit, "nd_search_text");
-  api.edit_set_keyboard(search_edit, "kb_default_t9");
-  api.edit_set_tips(search_edit, "Search music");
-  if (!make_button(win, 228, 88, 86, 40, "nd_search", "Search", A_SEARCH)) goto failed;
-  status_label = make_label(win, 6, 132, 230, 44, "nd_status", "Loading…");
-  retry_button = make_button(win, 240, 134, 74, 40, "nd_retry", "Retry", A_RETRY);
-  if (!status_label || !retry_button) goto failed;
+  /* Lists live in one container below the navigation bar, status and toast. */
+  content = api.view_create(win, 0, 0, 320, 450);
+  if (!content) goto failed;
+  api.widget_set_name(content, "nd_content");
+  /* Stock navigation bar: title first, so the 80px return button stays on top of it. */
+  title_label = make_text(win, 36, 12, 184, 26, "nd_title", "Navidrome", "srlabel_leftwhite22_style", "#FFFFFF", "22");
+  if (!title_label || !make_button(win, 0, 0, 80, ND_NAV_H, "nd_back", NULL, "navbar_btnreturn_style", A_BACK)) goto failed;
+  search_open_button = make_button(win, 224, 0, 48, ND_NAV_H, "nd_search_open", NULL, "search_style", A_SEARCH_OPEN);
+  player_button = make_button(win, 272, 0, 48, ND_NAV_H, "nd_player", NULL, "navbar_btnbackplayer_style", A_PLAYER);
+  search_box = make_search_box();
+  search_go_button = make_button(win, 272, 0, 48, ND_NAV_H, "nd_search", NULL, "search_style", A_SEARCH_GO);
+  if (!search_open_button || !player_button || !search_box || !search_go_button) goto failed;
+  if (!api.navigator_switch_to_with_context) api.widget_set_visible(player_button, 0);
   for (i = 0; i < 3; ++i) {
-    const char *names[] = {"nd_search_artists", "nd_search_albums", "nd_search_tracks"};
-    const char *labels[] = {"Artists", "Albums", "Songs"};
-    search_tabs[i] = make_button(win, 4 + i * 104, 176, 102, 32, names[i], labels[i], (enum action)(A_SEARCH_ARTISTS + i));
+    const char *names[] = {"nd_search_tracks", "nd_search_albums", "nd_search_artists"};
+    const char *labels[] = {"Songs", "Albums", "Artists"};
+    search_tabs[i] = make_button(win, i * 107, ND_NAV_H, 106, 44, names[i], labels[i],
+                                 "btn_tablerow_style", (enum action)(A_TAB_TRACKS + i));
     if (!search_tabs[i]) goto failed;
+    prop(search_tabs[i], "style:normal:font_size", "18");
   }
-  rows_box = api.view_create(win, 6, 212, 308, 176);
-  if (!rows_box) goto failed;
-  api.widget_set_name(rows_box, "nd_rows");
-  prev_button = make_button(win, 4, 398, 100, 42, "nd_previous", "Previous", A_PREV);
-  page_label = make_label(win, 108, 398, 104, 42, "nd_page", "");
-  next_button = make_button(win, 216, 398, 100, 42, "nd_next", "Next", A_NEXT);
-  if (!prev_button || !page_label || !next_button) goto failed;
-  navigate(R_ARTISTS, K_ARTISTS, "", "Artists", 1);
+  spinner = make_image(win, 135, 160, 50, 50, "nd_spinner", "imge_wait1", "icon");
+  status_label = make_label(win, 10, 216, 300, 30, "nd_status", "", "label_centergray20_white", "#AAAAAA", "20");
+  retry_button = make_button(win, 100, 260, 120, 44, "nd_retry", "Retry", "btn_tablerow_style", A_RETRY);
+  toast = make_label(win, 24, 388, 272, 44, "nd_toast", "", NULL, "#FFFFFF", "18");
+  if (!spinner || !status_label || !retry_button || !toast) goto failed;
+  prop(toast, "style:normal:bg_color", "#262626");
+  prop(toast, "style:normal:round_radius", "8");
+  api.widget_set_visible(toast, 0);
+  hide_status();
+  switch (section) {
+    case S_ALBUMS: navigate(R_ALBUMS, K_ALBUMS, "", "Albums", 1); break;
+    case S_LISTS: navigate(R_LISTS, K_LISTS, "", "Playlists", 1); break;
+    case S_SEARCH: navigate(R_SEARCH, K_TRACKS, "", "Search", 1); break;
+    default: navigate(R_ARTISTS, K_ARTISTS, "", "Artists", 1); break;
+  }
   return ND_OK;
 failed:
   release_window();
@@ -714,32 +991,64 @@ failed:
   fputs("Navidrome: widget creation failed; window closed\n", stderr);
   return ND_OK;
 }
+
+/* ---- Home page: a stock-style 2×2 tile page inside the home slide view. ---- */
+static int make_tile(widget_t *page, int index, const char *name, const char *text,
+                     const char *icon, enum section section) {
+  int x = 6 + (index % 2) * 154, y = (index / 2) * 118;
+  widget_t *tile = api.view_create(page, x, y, 154, 118), *button, *label, *art;
+  char id[48];
+  if (!tile) return -1;
+  snprintf(id, sizeof(id), "nd_tile_%s", name);
+  api.widget_set_name(tile, id);
+  if (icon) art = make_image(tile, 44, 20, 66, 66, NULL, icon, "default");
+  else {
+    /* No stock 66px search tile exists: accent disc plus the stock search glyph. */
+    art = api.view_create(tile, 44, 20, 66, 66);
+    prop(art, "style:normal:bg_color", ND_ACCENT);
+    prop(art, "style:normal:round_radius", "33");
+    if (art && !make_image(art, 21, 21, 24, 24, NULL, "search", "center")) return -1;
+  }
+  label = make_label(tile, 0, 90, 154, 28, NULL, text, "label_centerwhitehome_white", "#FFFFFF", "21");
+  snprintf(id, sizeof(id), "nd_open_%s", name);
+  button = make_button(tile, 0, 0, 154, 118, id, NULL, "btn_nottablerow_style", 0);
+  if (!art || !label || !button) return -1;
+  return api.widget_on(button, ND_EVT_CLICK, open_window, (void *)(uintptr_t)section) ? 0 : -1;
+}
+static void install_home_page(void) {
+  widget_t *home, *slides, *indicator, *page;
+  home = api.widget_lookup(api.window_manager(), "home_page", 1);
+  if (!home || api.widget_lookup(home, "nd_home_page", 1)) return;
+  slides = api.widget_lookup(home, "home_sview", 1);
+  indicator = api.widget_lookup(home, "home_sindicator", 1);
+  if (!slides || !indicator) return;
+  page = api.view_create(slides, 0, 0, 320, 364);
+  if (!page) return;
+  if (make_tile(page, 0, "artists", "Artists", "songer", S_ARTISTS) ||
+      make_tile(page, 1, "albums", "Albums", "album", S_ALBUMS) ||
+      make_tile(page, 2, "playlists", "Playlists", "playlist", S_LISTS) ||
+      make_tile(page, 3, "search", "Search", NULL, S_SEARCH) ||
+      !make_label(page, 0, 262, 320, 28, "nd_home_hint", "Navidrome", "label_centergray20_white", "#AAAAAA", "20")) {
+    api.widget_destroy(page);
+    return;
+  }
+  api.widget_set_name(page, "nd_home_page");
+  api.slide_indicator_set_max(indicator, (uint32_t)api.widget_count_children(slides));
+}
 static ret_t timer_tick(const timer_info_t *unused) {
-  widget_t *home, *slides, *indicator, *page, *button;
   (void)unused;
   deliver_results(NULL);
   if (win && busy && time(NULL) >= busy_deadline) {
     cancel_previous();
     busy = 0;
-    if (current_json) render_rows();
-    status_text("Request timed out; retry", 1);
-    update_paging();
+    if (current_json) notify("Request timed out; try again", 4);
+    else show_status("Request timed out", 1, 0);
   }
-  home = api.widget_lookup(api.window_manager(), "home_page", 1);
-  if (!home || api.widget_lookup(home, "nd_home_page", 1)) return ND_REPEAT;
-  slides = api.widget_lookup(home, "home_sview", 1);
-  indicator = api.widget_lookup(home, "home_sindicator", 1);
-  if (!slides || !indicator) return ND_REPEAT;
-  page = api.view_create(slides, 0, 0, 320, 364);
-  if (!page) return ND_REPEAT;
-  button = make_button(page, 30, 130, 260, 60, "nd_open", "Navidrome", 0);
-  if (!button || !api.widget_on(button, ND_EVT_CLICK, open_window, NULL)) {
-    api.widget_destroy(page);
-    return ND_REPEAT;
+  if (win && toast_deadline && time(NULL) >= toast_deadline) {
+    toast_deadline = 0;
+    api.widget_set_visible(toast, 0);
   }
-  api.widget_set_name(page, "nd_home_page");
-  api.slide_indicator_set_max(indicator, (uint32_t)api.widget_count_children(slides));
-  make_label(page, 30, 196, 260, 44, "nd_home_hint", "Your music server");
+  install_home_page();
   return ND_REPEAT;
 }
 

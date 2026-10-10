@@ -39,19 +39,21 @@ Build and inspect the experimental container and its `validation.json` first. If
 
 [Shanling's M1 Plus instructions](https://en.shanling.com/download/118) call for a fully charged player and **System settings → System Update → TF card update**, followed by waiting for the restart with the card present. Those vendor instructions describe the updater workflow; they do not validate this modified package.
 
-The manifest uses `V2.1-ND-dev2`. About may still display V2.1 because the stock application and its embedded version are unchanged. A successful update message alone does not prove the extension started.
+The reference commands use `V2.1-ND-dev3` for the stock-style interface and Vietnamese font (`V2.1-ND-dev2` was the first owner-tested build). About may still display V2.1 because the stock application and its embedded version are unchanged. A successful update message alone does not prove the extension started.
 
 ## Verify on the device
 
 Record these observations individually:
 
 1. Updater acceptance and a normal reboot into Shanling's application.
-2. A Navidrome home page, readable native widgets and a working search keyboard.
-3. Wi-Fi and a correct device clock for verified HTTPS.
-4. Artist → album → track browsing and a successful search.
-5. Actual decoded sound through the intended output, pause/resume and seek.
-6. Multi-track next/previous, queue behavior, sleep/resume and reconnect after Wi-Fi loss.
-7. After reconnecting USB Storage, the boot snapshot's kernel/CPU/RAM/MTD and initial backend state.
+2. A Navidrome home page with four tiles, stock-looking lists that scroll, and a working search keyboard.
+3. Vietnamese text (for example "Nghệ sĩ Sơn Tùng") in both Navidrome lists and the stock library/Now Playing pages, with CJK titles still readable.
+4. Selecting a song opens the stock Now Playing page, and its Back returns to the Navidrome list.
+5. Wi-Fi and a correct device clock for verified HTTPS.
+6. Artist → album → track browsing and a successful search.
+7. Actual decoded sound through the intended output, pause/resume and seek.
+8. Multi-track next/previous, queue behavior, sleep/resume and reconnect after Wi-Fi loss.
+9. After reconnecting USB Storage, the boot snapshot's kernel/CPU/RAM/MTD and initial backend state.
 
 Use the [hardware issue template](../.github/ISSUE_TEMPLATE/hardware-validation.yml). A snapshot can prove only its reported boot facts; it cannot prove GUI rendering or sound.
 

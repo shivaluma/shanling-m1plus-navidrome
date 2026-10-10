@@ -14,9 +14,14 @@ The development package prepared for this test was **V2.1-ND-dev2**, based on st
 
 This is a user-reported result from one player. No boot snapshot, device log, photo or recording accompanied the report. The server identity, credentials and music metadata are omitted.
 
+## Next device test
+
+On 2026-10-10 the **V2.1-ND-dev3** package (SHA-256 `b2eba661c6f745ec9631887bd50775db6f9f3fec690c5772d0d90fd7ea108fda`, [packaging report](reference-firmware-validation-dev3.json)) and the matching SD payload were copied to the owner's card, keeping the existing account configuration. It adds the stock-style interface and the merged Vietnamese system font. It had not been flashed when this was recorded, so there is no dev3 device result yet.
+
 ## Remaining checks
 
 - Search and native T9 input, long names and Unicode rendering.
+- The `V2.1-ND-dev3` stock-style interface, the merged Vietnamese system font and the Now Playing switch (not part of this report).
 - Playlist and multi-track queue transitions, seek and hardware controls.
 - Sleep/resume, Wi-Fi loss/reconnection and longer playback sessions.
 - Device resource usage, partition geometry, fallback behavior and physical recovery.

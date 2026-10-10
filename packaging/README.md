@@ -6,14 +6,14 @@ Follow [the build guide](../docs/build.md) to supply your firmware, prepare `.wo
 
 ```sh
 python packaging/rebuild.py --overlay dist/rootfs \
-  --output dist/firmware-V2.1-ND-dev2 --version V2.1-ND-dev2
+  --output dist/firmware-V2.1-ND-dev3 --version V2.1-ND-dev3
 ```
 
 The output directory must not exist. The tool rejects an original hash mismatch, inode type changes, partial/inconsistent hardlink replacement, unsupported original metadata and rootfs growth. Existing paths keep type, mode, uid/gid and mtime. Every rebuilt inode is read through the independent parser and checked by path/content hash, link target and hardlink equivalence; root metadata and compression settings are checked too.
 
-The default size limit is the original 55,738,368-byte rootfs. `--allow-growth` requires an explicit independently verified `--max-rootfs-size`; it is not used by the reference build. The final overlay changes only `etc/init.d/S90play` and adds `usr/bin/launch-navidrome`.
+The default size limit is the original 55,738,368-byte rootfs. `--allow-growth` requires an explicit independently verified `--max-rootfs-size`; it is not used by the reference build. The final overlay changes `etc/init.d/S90play`, replaces `release/assets/default/raw/fonts/default.ttf` with the merged Vietnamese font (omitted with `scripts/build.py --stock-font`) and adds `usr/bin/launch-navidrome`. The replaced font keeps its original mode, owner and timestamp.
 
-The version must begin with `V2.1-ND-` and differ from V2.1. This addresses the known same-version UI guard; it does not establish acceptance of a development suffix. The default remains the early dev1 label for backward compatibility; commands here explicitly select dev2.
+The version must begin with `V2.1-ND-` and differ from V2.1. This addresses the known same-version UI guard; it does not establish acceptance of a development suffix. The default remains the early dev1 label for backward compatibility; commands here explicitly select dev3.
 
 Outputs include the experimental update container, `rootfs.squashfs`, complete expected/actual inode inventories, filesystem validation, tool/command provenance and an experimental-status notice. The container inspector verifies member layout, payload MD5, uImage CRCs and SquashFS bounds. The source hash is checked again after packaging.
 

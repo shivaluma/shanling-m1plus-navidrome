@@ -367,3 +367,28 @@ func TestLoopbackOriginAndTLS(t *testing.T) {
 		}
 	}
 }
+
+func TestDisplayTextComposedToNFC(t *testing.T) {
+	cases := map[string]string{
+		"Tiếng Việt": "Tiếng Việt",
+		"Người":       "Người",
+		"Quảng Ngãi":   "Quảng Ngãi",
+		"ễ ́x":         "ễ ́x",
+		"宇多田 café":       "宇多田 café",
+		"a͠b":            "a͠b",
+	}
+	for in, want := range cases {
+		if got := nfc(in); got != want {
+			t.Errorf("nfc(%q) = %q, want %q", in, got, want)
+		}
+	}
+	s, _ := testService(t, func(w http.ResponseWriter, r *http.Request) {
+		reply(w, `"album":{"id":"Việt","name":"Việt","artist":"Sơn","song":[{"id":"s","title":"Hồng"}]}`)
+	})
+	body := localRequest(s, http.MethodGet, "/v1/album?id=x", "").Body.String()
+	for _, want := range []string{"\"name\":\"Việt\"", "\"artist\":\"Sơn\"", "\"title\":\"Hồng\"", "\"id\":\"Việt\""} {
+		if !strings.Contains(body, want) {
+			t.Fatalf("display text not composed or ID altered, missing %q in %s", want, body)
+		}
+	}
+}

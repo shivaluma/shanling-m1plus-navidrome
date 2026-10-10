@@ -69,7 +69,20 @@ typedef struct nd_api {
   void (*mclLoadPlayList)(void *, int, int);
   void (*mclSetStartSeekTime)(int);
   int (*start_playqueue)(int);
+  /* Optional: absence only loses list relayout or the now-playing shortcut. */
+  ret_t (*widget_layout)(widget_t *);
+  ret_t (*navigator_switch_to_with_context)(const char *, void *, int);
 } nd_api;
+
+/* Stack context of the stock "back to player" button at 0x4cd58c: {NULL, 0, 255, 2}.
+   Tidal playback stores a queue/index in the first fields; the button leaves them empty. */
+typedef struct nd_player_context {
+  void *queue;
+  int32_t index, source, mode;
+} nd_player_context;
+#if UINTPTR_MAX == 0xffffffffU
+typedef char nd_player_context_must_be_16[(sizeof(nd_player_context) == 16) ? 1 : -1];
+#endif
 
 /* Called only on the GUI thread. Returns -1 if the shipped ABI is unavailable. */
 __attribute__((visibility("default"))) int nd_ui_start(void);

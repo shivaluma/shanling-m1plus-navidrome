@@ -5,7 +5,8 @@ Reference observations were recorded on **2026-10-10**. The device owner has now
 | Requirement | Evidence | What remains unproven |
 | --- | --- | --- |
 | Subsonic browsing, auth and errors | Go unit/race tests; real local Navidrome FLAC integration | Behavior of other server implementations |
-| Native navigation and queue ownership | 13 host scenarios with UBSAN/ASAN; Unicode, cancellation, deep copy and queue checks | Actual toolkit ABI/rendering, font and keyboard on the player |
+| Native navigation and queue ownership | 15 host scenarios with UBSAN/ASAN; Unicode, cancellation, deep copy, queue and back-to-player checks | Stock-style list rendering, scrolling, keyboard and Now Playing switch on the player |
+| Vietnamese UI font | Merge unit tests; stb_truetype 1.26 host render of every Vietnamese letter; packaged font hash checked after repacking | Rendering and memory use of the replaced font on the player |
 | Executable acceptance in emulation | QEMU P5600 MIPS backend and original-library plugin/startup probes | Live kernel/CPU policy and memory use |
 | Live server transport | 10 authenticated checks using the actual SD MIPS binary, audio/mp4 HEAD and two byte ranges | Decoding, audible sound, DAC and hardware controls |
 | Packaging integrity | Complete inode/content/link audit and unchanged kernel | Updater acceptance, signatures, flash behavior and boot |
@@ -19,6 +20,7 @@ Reference observations were recorded on **2026-10-10**. The device owner has now
 - [MIPS fixture runtime](validation/mips-runtime.json): 17 backend checks and original-userland plugin loading.
 - [Authenticated live MIPS probe](validation/live-server-mips.json): aggregate evidence only. Playlist detail was not exercised live because the account had no playlists; local fixtures cover it.
 - [Reference dev2 packaging](validation/reference-firmware-validation.json): 3,741 paths, 3,016 regular-file hashes, 494 symlinks and 208 hardlink groups.
+- [Reference dev3 packaging](validation/reference-firmware-validation-dev3.json): the same full audit with the merged UI font replacing `default.ttf`; rootfs 55,476,224 bytes (stock 55,738,368), package SHA-256 `b2eba661c6f745ec9631887bd50775db6f9f3fec690c5772d0d90fd7ea108fda`.
 
 Personal filesystem paths and server identity were removed from public reports. Firmware payloads, real credentials, song metadata and audio are not included. Reports describe the reference run; contributors should produce their own current results.
 

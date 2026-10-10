@@ -30,6 +30,9 @@ def sha(path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--skip-backend', action='store_true', help='Use already-built dist/navidrome-service')
+    ap.add_argument('--font-weight', choices=('medium', 'regular'), default='medium',
+                    help='Be Vietnam Pro weight merged into the UI font')
+    ap.add_argument('--stock-font', action='store_true', help='Keep the stock UI font (no Vietnamese)')
     args = ap.parse_args()
     for rel, expected in PINNED.items():
         if sha(ROOT / rel) != expected:
@@ -106,6 +109,10 @@ def main():
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_bytes(init.replace(old, new))
     dest.chmod(0o775)  # original metadata, also preserved by packaging for replacements
+    if not args.stock_font:
+        # Replaces the system UI font in place: Vietnamese also renders in stock pages.
+        run([sys.executable, ROOT / 'scripts/build_font.py', '--weight', args.font_weight,
+             '--output', overlay / 'release/assets/default/raw/fonts/default.ttf'])
     report = {'source_sha256': PINNED['inputs/update.bin'], 'target': 'MIPS little-endian o32',
               'sd_payload_files': {str(p.relative_to(sd)): {'size': p.stat().st_size, 'sha256': sha(p)}
                                    for p in sorted(sd.rglob('*')) if p.is_file()},
