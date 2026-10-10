@@ -80,13 +80,15 @@ def main():
         sock = socket.socket(); sock.bind(("127.0.0.1", 0)); port = sock.getsockname()[1]; sock.close()
         upstream = "http://127.0.0.1:" + str(port)
         config = root / "navidrome.toml"
-        config.write_text("\n".join([
-            'Address = "127.0.0.1"', "Port = " + str(port),
+        def write_config(downloads):
+          config.write_text("\n".join([
+            'Address = "127.0.0.1"', "Port = " + str(port), "EnableDownloads = " + ("true" if downloads else "false"),
             "MusicFolder = " + json.dumps(str(music)), "DataFolder = " + json.dumps(str(data)),
             'LogLevel = "error"', 'ScanSchedule = "0"', 'EnableExternalServices = false',
             'EnableGravatar = false', 'EnableArtworkPrecache = false',
             "FFmpegPath = " + json.dumps(shutil.which("ffmpeg")), ""])
-        )
+          )
+        write_config(True)
         admin_user, admin_pass = "e2e-local-" + secrets.token_hex(4), secrets.token_hex(24)
         try:
             # Discard server output entirely: no auth bodies/tokens persisted in logs.
@@ -121,8 +123,11 @@ def main():
             subprocess.run([shutil.which("go"), "build", "-trimpath", "-o", str(helper), "."],
                            cwd=here, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             backend_config = root / "backend.json"
+            card = root / "card"
+            card.mkdir()
             backend_config.write_text(json.dumps({"server_url": upstream, "username": admin_user,
-                                                 "password": admin_pass, "allow_http": True}))
+                                                 "password": admin_pass, "allow_http": True,
+                                                 "offline_dir": str(card / "Navidrome"), "offline_reserve_mb": 1}))
             os.chmod(backend_config, 0o600)
             # Require the fixed backend port to be free; never reuse an existing service.
             probe = socket.socket()
@@ -175,6 +180,40 @@ def main():
             assert headers.get("Content-Length") == "84"
             results["checks"].append("capability prepare + complete original FLAC byte equality: PASS")
             results["checks"].append("real GET Range + If-Range and HEAD Range: PASS")
+
+            def download(kind, ident):
+                status, _, _ = request(base + "/v1/downloads", "POST", {"kind": kind, "id": ident})
+                assert status == 202, "download job not accepted"
+                for _ in range(200):
+                    job = next(j for j in api("/v1/downloads")["jobs"] if j["id"] == kind + ":" + ident)
+                    if job["state"] in ("done", "failed"):
+                        return job
+                    time.sleep(.1)
+                raise AssertionError("download job did not finish")
+
+            job = download("album", album["id"])
+            assert job["state"] == "done" and job["done"] == 1, "album download failed: " + job["error"]
+            saved = card / "Navidrome" / "宇多田 Test" / "Requiem café" / "2-01 光 & Search.flac"
+            assert saved.read_bytes() == sample_bytes, "downloaded FLAC differs from original"
+            album_view = api("/v1/album?id=" + urllib.parse.quote(album["id"]))
+            assert album_view["offline"]["downloaded"] == 1 and album_view["tracks"][0]["downloaded"]
+            results["checks"].append("real /rest/download of original FLAC into FAT-safe album folder: PASS")
+            job = download("playlist", pl["id"])
+            m3u = (card / "Navidrome" / "Playlists" / "E2E Fixture.m3u8").read_text()
+            assert job["state"] == "done" and m3u == "#EXTM3U\n../宇多田 Test/Requiem café/2-01 光 & Search.flac\n"
+            status, _, body = request(base + "/v1/offline/remove", "POST", {"kind": "album", "id": album["id"]})
+            assert json.loads(body)["removed_files"] == 1 and not saved.exists()
+            results["checks"].append("real playlist download, .m3u8 and removal: PASS")
+            # Respect a server that disables downloads; never fall back to streaming.
+            nav.terminate(); nav.wait(timeout=8)
+            write_config(False)
+            nav = subprocess.Popen([str(binary), "--configfile", str(config), "--nobanner"],
+                                   cwd=root, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            processes.append(nav)
+            wait_ready(upstream + "/app/", nav)
+            job = download("album", album["id"])
+            assert job["state"] == "failed" and "does not allow downloads" in job["error"] and not saved.exists()
+            results["checks"].append("server with EnableDownloads=false reported, no streaming fallback: PASS")
             results["credentials"] = "ephemeral local-only; not retained or logged"
             results["device_execution"] = False
         finally:

@@ -77,7 +77,7 @@ class Fixture(http.server.BaseHTTPRequestHandler):
             requests[endpoint]+=1
             artist={'id':ARTIST,'name':'宇多田 光 & café','albumCount':1}
             album={'id':ALBUM,'name':'夜曲 café','artist':'宇多田 光 & café','artistId':ARTIST,'songCount':1}
-            track={'id':TRACK,'title':'光 — bài hát','artist':'宇多田 光 & café','album':'夜曲 café','artistId':ARTIST,'albumId':ALBUM,'duration':1,'track':2,'discNumber':1,'contentType':'audio/flac'}
+            track={'id':TRACK,'title':'光 — bài hát','artist':'宇多田 光 & café','album':'夜曲 café','artistId':ARTIST,'albumId':ALBUM,'duration':1,'track':2,'discNumber':1,'contentType':'audio/flac','suffix':'flac','size':len(PAYLOAD),'year':2024,'coverArt':ALBUM}
             if endpoint=='getArtists':
                 self.envelope({'artists':{'index':[{'name':'宇','artist':[artist]}]}})
             elif endpoint=='getArtist':
@@ -106,8 +106,11 @@ class Fixture(http.server.BaseHTTPRequestHandler):
             elif endpoint=='getPlaylist':
                 require(q('id')=='mix','playlist identifier')
                 self.envelope({'playlist':{'id':'mix','name':'夜の mix','songCount':1,'entry':[track]}})
-            elif endpoint=='stream':
-                require(q('format')=='raw','raw streaming requested')
+            elif endpoint=='getCoverArt':
+                require(q('id')==ALBUM,'cover identifier preserved')
+                self.respond(200,b'\xff\xd8fixture-jpeg','image/jpeg')
+            elif endpoint in ('stream','download'):
+                require(endpoint=='download' or q('format')=='raw','raw streaming requested')
                 if q('id')=='audio-error':
                     self.respond(200,json.dumps({'subsonic-response':{'status':'failed','error':{'code':40,'message':PASSWORD}}}).encode())
                     return
@@ -213,7 +216,8 @@ def main():
         tls=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER);tls.minimum_version=ssl.TLSVersion.TLSv1_2;tls.load_cert_chain(cert,key)
         fixture.socket=tls.wrap_socket(fixture.socket,server_side=True)
         thread=threading.Thread(target=fixture.serve_forever,daemon=True);thread.start()
-        config={'server_url':f'https://127.0.0.1:{fixture.server_port}/music/','username':USER,'password':PASSWORD,'ca_file':str(cert)}
+        card=directory/'card';card.mkdir()
+        config={'server_url':f'https://127.0.0.1:{fixture.server_port}/music/','username':USER,'password':PASSWORD,'ca_file':str(cert),'offline_dir':str(card/'Navidrome'),'offline_reserve_mb':1}
         process,log=start(config,directory)
         try:
             artists=json_request('/v1/artists')['artists'];require(artists[0]['id']==ARTIST and artists[0]['name']=='宇多田 光 & café','artist Unicode JSON');passed('verified HTTPS authentication and Unicode artist list')
@@ -241,6 +245,20 @@ def main():
             error_url=json_request('/v1/prepare',method='POST',body={'id':'audio-error'})['url']
             json_request(error_url,status=502)
             passed('malformed upstream, authentication, HTTP and audio-error documents fail closed')
+            job=json_request('/v1/downloads',status=202,method='POST',body={'kind':'album','id':ALBUM})['job'];require(job['id']=='album:'+ALBUM,'download job created')
+            deadline=time.monotonic()+60
+            while time.monotonic()<deadline:
+                state=json_request('/v1/downloads')
+                if state['jobs'][0]['state'] in ('done','failed'):break
+                time.sleep(.3)
+            require(state['jobs'][0]['state']=='done','MIPS download job completed: '+state['jobs'][0].get('error',''))
+            require(state['free_bytes']>0 and state['downloaded_tracks']==1,'statfs free space and manifest count')
+            saved=card/'Navidrome'/'宇多田 光 & café'/'夜曲 café (2024)'/'02 光 — bài hát.flac'
+            require(saved.read_bytes()==PAYLOAD and (saved.parent/'cover.jpg').read_bytes()==b'\xff\xd8fixture-jpeg','downloaded bytes and cover')
+            require(not [p for p in saved.parent.iterdir() if p.name.endswith('.part')],'no partial files left')
+            album=json_request('/v1/album?'+urllib.parse.urlencode({'id':ALBUM}));require(album['tracks'][0]['downloaded'] and album['offline']['downloaded']==1,'album reports SD-card copy')
+            removed=json_request('/v1/offline/remove',method='POST',body={'kind':'album','id':ALBUM});require(removed['removed_files']==1 and [p.name for p in (card/'Navidrome').iterdir()]==['.navidrome-offline.json'],'removal deletes files and folders')
+            passed('offline album download to SD folder: exact bytes, cover, manifest, statfs and removal')
         finally:stop(process,log)
         untrusted=dict(config);del untrusted['ca_file']
         process,log=start(untrusted,directory)

@@ -37,7 +37,7 @@ class DiagnosticsTest(unittest.TestCase):
         (self.card / 'diagnostics-enable').touch()
         self.assertEqual(self.run_collector().returncode, 0)
         output = (self.card / 'diagnostics/boot.txt').read_text()
-        for expected in ('5.10.21+', 'Ingenic X2000', 'mips32r2', '131072 kB', '04000000', 'ieee754=2008', 'filesystem=vfat', 'execution=noexec'):
+        for expected in ('5.10.21+', 'Ingenic X2000', 'mips32r2', '131072 kB', '04000000', 'ieee754=2008', 'filesystem=vfat', 'execution=noexec', 'writable=read_write', '[sd_space_kib]', 'available='):
             self.assertIn(expected, output)
         self.assertNotIn('private-', output)
         self.assertFalse(list((self.card / 'diagnostics').glob('.boot.*')))

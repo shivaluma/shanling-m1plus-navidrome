@@ -9,8 +9,8 @@
   "cpu": "P5600",
   "kernel_emulation": "Linux user-mode syscall translation, not the supplied device kernel",
   "adjustment": {
-    "original_sha256": "b0cc202cac640fa90a2df9dd2a72e6e624d27d805ff8a3ef4ee5a79339ad2cbb",
-    "adjusted_sha256": "9badb7a0a1979fcffc1367836b0f10ba39c0087c5598ca32575e9fc2ac335b9d",
+    "original_sha256": "031967e473e51fc31dd0ab6d70e2bcf5c44d96af95cb4c2f2bc1dad0b59236c8",
+    "adjusted_sha256": "d8f945d93335433cbd17c94b30a65f9f14fe7502eaa3f5de323315ebd9d7f4f0",
     "old_flags": "0x50001004",
     "new_flags": "0x50001404",
     "only_changed_range": [
@@ -40,20 +40,23 @@
     "Range 416 suppresses upstream error body",
     "malformed input, unknown capability and origin/Host rejection",
     "malformed upstream, authentication, HTTP and audio-error documents fail closed",
+    "offline album download to SD folder: exact bytes, cover, manifest, statfs and removal",
     "self-signed upstream rejected without ca_file",
     "hostname mismatch rejected even with trusted ca_file"
   ],
   "upstream_endpoint_counts": {
     "getArtists": 1,
     "getArtist": 1,
-    "getAlbum": 4,
+    "getAlbum": 6,
     "getAlbumList2": 1,
     "search3": 1,
     "getPlaylists": 1,
     "getPlaylist": 1,
-    "stream": 5
+    "stream": 5,
+    "download": 1,
+    "getCoverArt": 1
   },
-  "unique_auth_salts": 15,
+  "unique_auth_salts": 19,
   "fixture_errors": [],
   "stream_payload_size": 1048580,
   "stream_payload_sha256": "a3d66c607a15a21a6ce5a1baf212e6466c3bb9cfb2a423154ebd3a13caa528e8",
@@ -67,7 +70,7 @@
     "No live Navidrome server credentials used"
   ],
   "native_plugin_probe": {
-    "plugin_sha256": "61ba03b7e0928e9a3190a0f5f14561ce7654c9c1c038eb594863f11d85e21b58",
+    "plugin_sha256": "54d121ca5a3742af14ee74265e3421ef3f45a154b873f816002addaf8704b552",
     "startup_interception_passed": true,
     "preload_exit_status": 0,
     "passed": true,

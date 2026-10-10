@@ -181,13 +181,17 @@ def main():
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     renderer = Renderer(args.font)
-    names = ['home', 'artists', 'album', 'search']
+    names = [n for n in ('home', 'artists', 'album', 'search', 'album-offline', 'downloads')
+             if (args.trees / (n + '.json')).exists()]
     shots = [renderer.render(json.loads((args.trees / (n + '.json')).read_text()), n == 'home') for n in names]
-    sheet = Image.new('RGBA', (len(shots) * 340 - 20, 506), (40, 40, 40, 255))
+    columns = min(4, len(shots))
+    rows = (len(shots) + columns - 1) // columns
+    sheet = Image.new('RGBA', (columns * 340 - 20, rows * 506), (40, 40, 40, 255))
     draw = ImageDraw.Draw(sheet)
     for i, shot in enumerate(shots):
-        sheet.paste(shot, (i * 340, 26))
-        draw.text((i * 340, 18), names[i] + ' — approximate render, not a device screenshot',
+        x, y = i % columns * 340, i // columns * 506
+        sheet.paste(shot, (x, y + 26))
+        draw.text((x, y + 18), names[i] + ' — approximate render, not a device screenshot',
                   font=renderer.font(12), fill='#FFCC77', anchor='ls')
     output = args.output or args.trees / 'preview.png'
     sheet.convert('RGB').save(output)

@@ -20,6 +20,12 @@ Preparing a track creates a random 128-bit loopback bearer capability with a 12-
 
 See [the backend API](../backend/README.md).
 
+## Offline downloads
+
+Album and playlist headers carry a download button (stock `download_more`; `cancel` while running; `mulselected` once on the card, `delete_more` after one tap to arm removal). Saved songs show the stock orange check. A Downloads page (home tile) lists jobs with progress, free space and an **Update library** button. While a job runs, the plugin polls `GET /v1/downloads` every two seconds on the same serialized worker; polls never set the busy state, and any user request supersedes them. In-place updates keep the Downloads list scrolled; when a job finishes, the album/playlist reloads once to refresh its checks.
+
+The backend writes files to `/mnt/mmc/Navidrome` (see [backend](../backend/README.md#offline-downloads)). The stock library only sees them after a scan. Reverse engineering showed that the stock "scan specific folders" path (`scanSpecFolder` `0x4e9e90`) calls `toolsInitDatabase`, which executes `drop table songtable`, so scanning only the download folder would empty the rest of the library index. The extension therefore never starts a scan; **Update library** opens the stock `systemset/updatemusic_page` with exported `navigator_to` (`0x4d1d80`) so the user runs the normal stock scan.
+
 ## UI font
 
 The stock application loads one font, `assets/default/raw/fonts/default.ttf` (Microsoft YaHei + Arial at 256 units/em), through AWTK's stb_truetype loader (`font_loader_stb`), which does no shaping or kerning. It lacks 49 Vietnamese letters such as ơ, ư and ạ. `scripts/build_font.py` replaces every code point covered by Be Vietnam Pro (459) with decomposed outlines scaled to 256 units/em and keeps all other glyphs and the stock ascent/descent, so stock layouts keep their baseline. Glyphs that a stock code point outside Be Vietnam Pro shares are not overwritten. Zero-width combining marks are moved over the preceding glyph for unshaped rendering, and the backend composes decomposed (NFD) metadata to NFC with a generated table (`backend/nfc_table.go`, from `scripts/gen_nfc_table.py`). Glyph names and OpenType layout tables, which stb_truetype never reads, are dropped. The result is 9,344,124 bytes (stock 9,794,280). Stacked capital diacritics extend above the stock ascent, so very tight stock labels may clip their top pixels.

@@ -6,7 +6,11 @@ launcher must run it alongside the native interface and arrange playback.
 
 Configuration is read once at startup from `-config` (default
 `/mnt/mmc/navidrome/config.json`). Restart after editing it. Required fields:
-`server_url`, `username`, `password`. Optional: `allow_http` (false), `ca_file`.
+`server_url`, `username`, `password`. Optional: `allow_http` (false), `ca_file`,
+and for offline downloads `offline_dir` (absolute, default `/mnt/mmc/Navidrome`),
+`offline_reserve_mb` (free space always kept, default 500), `offline_format` and
+`offline_max_bitrate` (empty format = original files; e.g. `"opus"`/`192` asks
+Navidrome to transcode).
 Use your own Navidrome server URL and supply your account locally. Never put credentials in source or shell arguments.
 HTTP servers require explicit `allow_http: true`; HTTPS certificate and hostname
 verification remain enabled. A PEM CA file augments platform trust, useful when
@@ -35,10 +39,17 @@ messages and authenticated URLs are withheld. Empty lists are `[]`, never null.
 | `GET /v1/playlist?id=...` | `playlist`, `tracks` |
 | `POST /v1/prepare` with JSON `{"id":"song-id"}` | `url`, `expires_in` |
 | `GET` or `HEAD /stream/<capability>` | audio, forwarded range semantics |
+| `GET /v1/downloads` | `jobs` (newest first), `free_bytes`, `reserve_bytes`, `folder`, `downloaded_tracks` |
+| `POST /v1/downloads` with JSON `{"kind":"album"\|"playlist","id":"..."}` | 202, `job` |
+| `POST /v1/downloads/cancel` with the same JSON | `cancelled` |
+| `POST /v1/offline/remove` with the same JSON | `removed_files` |
 
 Artists: `id,name,album_count`.
 Albums: `id,name,artist,artist_id,song_count,year,duration`.
-Tracks: `id,title,artist,album,artist_id,album_id,duration,track,disc,content_type`.
+Tracks: `id,title,artist,album,artist_id,album_id,duration,track,disc,content_type,suffix,size,downloaded`.
+`/v1/album` and `/v1/playlist` also return `offline`: `downloaded,total,state,done,error`.
+Jobs: `id` (`album:<id>`/`playlist:<id>`), `kind,source_id,name,state` (`queued`,
+`active`, `done`, `failed`, `cancelled`, `removed`), `total,done,bytes,total_bytes,current,error`.
 Playlists: `id,name,song_count,duration`.
 
 Duration is in seconds. IDs are opaque UTF-8 strings. Query parameters must be
@@ -58,8 +69,36 @@ API requests have a 20-second total timeout and an 8 MiB response cap. Media
 requests have connection/header timeouts and no total playback deadline.
 Disconnecting the client cancels the upstream request. Cross-origin redirects
 are refused for both API and audio to avoid sending authentication elsewhere.
-The service never reports playback/scrobbles, transcodes, downloads offline
-copies, or rewrites the library.
+The service never reports playback/scrobbles or rewrites the library. Streaming
+never transcodes; offline downloads transcode only when `offline_format` is set.
+
+## Offline downloads
+
+One worker downloads queued albums/playlists a song at a time through Subsonic
+`download` (original file), into
+`<offline_dir>/<album artist>/<album (year)>/<[disc-]track> <title>.<suffix>`.
+Names are NFC, FAT32-safe (no `\ / : * ? " < > |`, no trailing dots/spaces,
+at most 100 bytes per component). Each file is written to a hidden
+`.<name>.part`, synced, checked against the server's size, then renamed, so the
+stock scanner never indexes partial audio. Interrupted files resume with `Range`
+(restarting if the server ignores it); network errors are retried three times,
+and a stalled transfer is abandoned after 60 seconds. Before each file the
+worker checks free space minus the reserve; files over the FAT32 4 GB limit are
+refused. If the server disables downloads (Subsonic error 50 / HTTP 403), the
+job fails with that message: there is no streaming fallback.
+
+`<offline_dir>/.navidrome-offline.json` records which files this feature
+created, their album and owners (`album:<id>`, `playlist:<id>`), created
+`cover.jpg` files (JPEG artwork only), playlist `.m3u8` files under `Playlists/`
+and pending jobs, which resume after a restart. Existing files are never
+overwritten: a clashing name gets " (2)". Removing an album deletes all its
+downloaded songs; removing a playlist deletes only songs no other download
+owns. Empty folders and leftover `.part` files are then pruned. A corrupt
+manifest is kept as `.navidrome-offline.json.corrupt`; no audio is deleted.
+
+The stock library is not updated automatically: its "scan specific folders"
+path drops the whole song table first. Run the stock "Update music library"
+(the UI opens that page) after downloading.
 
 ## Validation
 

@@ -16,7 +16,7 @@ This is a user-reported result from one player. No boot snapshot, device log, ph
 
 ## Next device test
 
-On 2026-10-10 the **V2.1-ND-dev3** package (SHA-256 `b2eba661c6f745ec9631887bd50775db6f9f3fec690c5772d0d90fd7ea108fda`, [packaging report](reference-firmware-validation-dev3.json)) and the matching SD payload were copied to the owner's card, keeping the existing account configuration. It adds the stock-style interface and the merged Vietnamese system font. It had not been flashed when this was recorded, so there is no dev3 device result yet.
+On 2026-10-10 the **V2.1-ND-dev3** package (SHA-256 `b2eba661c6f745ec9631887bd50775db6f9f3fec690c5772d0d90fd7ea108fda`, [packaging report](reference-firmware-validation-dev3.json)) and the matching SD payload were copied to the owner's card, keeping the existing account configuration. It adds the stock-style interface and the merged Vietnamese system font. It had not been flashed when this was recorded, so there is no dev3 device result yet. The later offline-download SD payload (plugin and backend only; the dev3 firmware is unchanged) has not been copied to the card or tested on the player yet.
 
 ## Remaining checks
 

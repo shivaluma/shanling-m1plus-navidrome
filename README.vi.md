@@ -12,6 +12,7 @@ Dự án reverse engineering độc lập cho **Shanling M1 Plus V2.1**, bổ su
 - Danh sách cuộn giống trang gốc: thanh điều hướng, dòng 60 px, icon tròn, 50 dòng mỗi lần tải.
 - Tìm bài hát, album, nghệ sĩ bằng bàn phím T9 native với tab màu cam.
 - Hàng đợi album/playlist theo nhóm tối đa 128 bài, nút "Play all", rồi chuyển sang màn hình Now Playing gốc.
+- Tải album/playlist về thẻ nhớ (thư mục `Navidrome/`) để nghe offline: file gốc kèm ảnh bìa, tải tiếp khi bị ngắt, giữ lại dung lượng trống; trang Downloads và lối tắt cập nhật thư viện gốc.
 - Hiển thị tiếng Việt trên toàn máy: font Be Vietnam Pro ghép vào font CJK gốc, chuẩn hóa NFC cho metadata.
 - HTTPS có xác minh chứng chỉ; stream theo từng phần và HTTP Range để seek.
 - Helper nhập mật khẩu cục bộ, marker bật/tắt và chẩn đoán boot qua thẻ.

@@ -30,7 +30,11 @@ Playlists or Search. Lists scroll like stock pages and load 50 rows at a time
 ("Show more" / "Previous"). Search uses the stock T9 keyboard; the orange tabs
 switch between songs, albums and artists. Selecting a song, or "Play all" on an
 album or playlist, queues its chunk of up to 128 tracks and opens the stock Now
-Playing page; the navigation-bar player icon does the same. Back restores the
+Playing page; the navigation-bar player icon does the same. The download icon
+in an album or playlist header saves it to `/Navidrome` on the SD card (tap
+again to cancel; once saved, tap twice to remove). The Downloads tile shows
+progress and opens the stock "Update music library" page, which must be run
+before saved music appears in the local library. Back restores the
 preceding view and closes the window from its first view. The stock player
 retains ownership of the copied queue after this window closes.
 

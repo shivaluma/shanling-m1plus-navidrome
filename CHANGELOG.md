@@ -7,7 +7,9 @@
 - Be Vietnam Pro merged into the stock YaHei/Arial system font (`scripts/build_font.py`, `--font-weight`, `--stock-font`); CJK and other scripts kept.
 - Backend composes decomposed (NFD) display metadata to NFC for the unshaped device renderer.
 - Offline approximate renderer for harness widget trees (`tests/native-host/preview.py`).
-- Host, sanitizer, MIPS and packaging evidence only; no device result yet for this interface or font.
+- Offline downloads: album/playlist download button, Downloads page and home tiles; backend queue writing original files (or optional transcodes) to `/mnt/mmc/Navidrome` with FAT32-safe names, `.part` resume, retries, free-space reserve, covers, `.m3u8` playlists, ownership-aware removal and a restart-safe manifest. The UI opens the stock "Update music library" page, because the stock folder-only scan drops the song table.
+- Boot diagnostics also report SD writability and free space.
+- Host, sanitizer, MIPS, real-Navidrome and packaging evidence only; no device result yet for this interface, font or downloads.
 
 ## Experimental source publication
 

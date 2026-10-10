@@ -27,9 +27,9 @@ docker run --rm -v "$PWD:/work" m1plus-native-asan:local
 
 ## Observed results (2026-10-10)
 
-Darwin arm64 UBSAN and Linux arm64 ASAN+UBSAN passed 15 integration scenarios with 31 worker idle posts after the stock-style redesign. No enabled sanitizer reported an error. The harness builds the plugin with `-DND_PAGE=4`, so six-item fixtures exercise windowed lists.
+Darwin arm64 UBSAN and Linux arm64 ASAN+UBSAN passed 20 integration scenarios with 55 worker idle posts after the stock-style redesign and offline downloads. No enabled sanitizer reported an error. The harness builds the plugin with `-DND_PAGE=4` and `-DND_POLL_SECONDS=1`, so six-item fixtures exercise windowed lists and the download fixture advances quickly.
 
-- Actual plugin symbol resolution, one 2×2 tile home page and slide indicator count updated from two stock slides to three, without duplicate insertion after timer dispatch.
+- Actual plugin symbol resolution, one tile home page (including Downloads and Update library) and slide indicator count updated from two stock slides to three, without duplicate insertion after timer dispatch.
 - Artists delivered to the GUI as stock-styled rows; local Show more/Previous windows.
 - Artist → album → selected track playback: six queue entries, selected index 1, zero seek, URL capability shape, title/album/artist/track/disc/source kind, negative distinct IDs. The stock back-to-player request (`playing_page`, `{NULL, 0, 255, 2}`) follows, and the list stays in place.
 - Album "Play all" and the navigation-bar player button.
@@ -43,6 +43,11 @@ Darwin arm64 UBSAN and Linux arm64 ASAN+UBSAN passed 15 integration scenarios wi
 - Close after prepare is confirmed in flight: no stale playback starts.
 - Search tile opens an empty search; an empty query is rejected; Back closes.
 - Foreign credential-bearing stream URL rejected; rows remain usable for a successful subsequent prepare.
+- Album download: header shows queued → "Downloading 3/6" with a cancel icon → completion reloads the album with per-song SD-card checks.
+- Two-tap removal from the SD card.
+- Cancelling a running album download.
+- Downloads page: free space, resuming a cancelled job in place, **Update library** (`navigator_to("systemset/updatemusic_page")`) and opening the finished album.
+- Playlist removal, then a download failure ("not enough space") shown with a retry state.
 
 The invalid URL contains a synthetic fixture value only. The request trace in `requests.json` contains fixture IDs, search text, and pagination, with no user secrets.
 

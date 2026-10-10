@@ -123,6 +123,18 @@ font, `default`. `default.ttf` (SHA-256
 Microsoft YaHei + Arial merge at 256 units/em with no TrueType instructions and
 lacks 49 Vietnamese letters. See [architecture](../architecture.md#ui-font).
 
+## Library scanning (offline downloads)
+
+| Function | Address | Observed behavior |
+| --- | --- | --- |
+| `scanAllMusicFile` | `0x4e9df4` | `toolsInitDatabase("/mnt/data/database.db", "songtable")`, `toolsClearDbCount`, `toolsLoadAllFile`, `toolsDatabaseCommit`. |
+| `scanSpecFolder` | `0x4e9e90` | Same initialization, then loads only the selected folders (`deque_at` + `toolsLoadAllFile`). |
+| `toolsInitDatabase` | `0x5ed734` | Checks `sqlite_master` for the table and executes `drop table %s` before recreating it. |
+| `on_startscan_onclick` | `0x4ac9f8` | Builds a `char*` deque of folders and opens `dialog/scanmusic_dialog`, which stops the player. |
+| `navigator_to` | `0x4d1d80` | Tail call to `navigator_to_with_context(name, NULL)`. |
+
+A folder-only scan therefore rebuilds the song table from those folders alone. The extension does not start scans; it opens `systemset/updatemusic_page` (UI `ui/systemset/updatemusic_page.bin`: auto-update toggle, "update now", "specified folders") for the user.
+
 ## Playback insertion ABI
 
 Recovered C ABI, limited to the arguments and effects used here:

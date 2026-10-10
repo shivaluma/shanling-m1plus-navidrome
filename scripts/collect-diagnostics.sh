@@ -33,7 +33,10 @@ trap 'rm -f "$nd_tmp"' EXIT
     done
     echo "$nd_nan"
     echo '[sd_mount]'
-    awk '$2 == "/mnt/mmc" {print "filesystem=" $3; if (index("," $4 ",", ",noexec,")) print "execution=noexec"; else print "execution=not_disabled_by_mount_flag"}' "$nd_proc/mounts" 2>/dev/null
+    awk '$2 == "/mnt/mmc" {print "filesystem=" $3; if (index("," $4 ",", ",noexec,")) print "execution=noexec"; else print "execution=not_disabled_by_mount_flag"; if (index("," $4 ",", ",ro,")) print "writable=read_only"; else print "writable=read_write"}' "$nd_proc/mounts" 2>/dev/null
+    echo '[sd_space_kib]'
+    # Offline downloads need free space on the card; sizes only, no file names.
+    df -k "$nd_card" 2>/dev/null | awk 'NR == 2 {print "total=" $2; print "available=" $4}'
 } > "$nd_tmp" || exit 1
 mv -f "$nd_tmp" "$nd_dir/boot.txt" || exit 1
 exit 0

@@ -72,6 +72,8 @@ typedef struct nd_api {
   /* Optional: absence only loses list relayout or the now-playing shortcut. */
   ret_t (*widget_layout)(widget_t *);
   ret_t (*navigator_switch_to_with_context)(const char *, void *, int);
+  /* Optional: opens a stock page by name (0x4d1d80, = navigator_to_with_context(name, NULL)). */
+  ret_t (*navigator_to)(const char *);
 } nd_api;
 
 /* Stack context of the stock "back to player" button at 0x4cd58c: {NULL, 0, 255, 2}.

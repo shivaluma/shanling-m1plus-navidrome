@@ -18,13 +18,14 @@ An independent reverse-engineering project for **Shanling M1 Plus firmware V2.1*
 - Scrolling lists that reuse the stock navigation bar, 60 px rows, round icons and format badges, 50 rows at a time.
 - Search across songs, albums and artists using the native T9 keyboard and accent-colored result tabs.
 - Album and playlist queues with "Play all", up to 128 tracks per chunk, then a jump to the stock Now Playing page.
+- Offline downloads of albums and playlists to `Navidrome/` on the SD card (original files and covers, resumable, with a free-space reserve), a Downloads page, and a shortcut to the stock library update so they play without Wi-Fi.
 - Vietnamese text in the whole player: Be Vietnam Pro merged into the stock CJK font, plus NFC composition of decomposed metadata.
 - HTTPS to your Navidrome server, with certificate and hostname verification.
 - Incremental audio streaming with GET/HEAD, Range and If-Range support.
 - Local credential setup, an explicit enable marker and optional SD boot diagnostics.
 - Stock-application fallback for missing payload, early backend failure or a failing extended application.
 
-The target is **Navidrome and the Subsonic API**. Jellyfin integration, offline downloads, transcoding, scrobbling and changes to the local music database are outside the current implementation. Generic Subsonic servers have not been independently validated.
+The target is **Navidrome and the Subsonic API**. Jellyfin integration, streaming transcoding, scrobbling and direct changes to the local music database are outside the current implementation. Generic Subsonic servers have not been independently validated.
 
 ## How it fits together
 
@@ -45,11 +46,11 @@ Only the init-script reference, a launcher and (unless `--stock-font` is chosen)
 
 | Layer | Evidence | Status |
 | --- | --- | --- |
-| Go backend | Unit/race tests, TLS and streaming fixtures | Passed |
-| Native C interface | 15 host scenarios, Darwin UBSAN and Linux ASAN/UBSAN | Passed with mocked toolkit/player |
+| Go backend | Unit/race tests, TLS, streaming and offline-download fixtures | Passed |
+| Native C interface | 20 host scenarios, Darwin UBSAN and Linux ASAN/UBSAN | Passed with mocked toolkit/player |
 | UI font | Merge unit tests; every Vietnamese letter rendered through stb_truetype 1.26 | Passed on host; device rendering not yet observed |
-| MIPS execution | 17 backend checks and original-library plugin loading | Passed under QEMU P5600 |
-| Real Navidrome | Local full-FLAC integration; authenticated live MIPS browse/search and two audio ranges | Passed in the documented scope |
+| MIPS execution | 18 backend checks (incl. an offline download) and original-library plugin loading | Passed under QEMU P5600 |
+| Real Navidrome | Local full-FLAC integration incl. downloads and a server with downloads disabled; authenticated live MIPS browse/search and two audio ranges | Passed in the documented scope |
 | Firmware packaging | 3,016 file hashes, 494 symlinks, 208 hardlink groups; unchanged kernel | Passed offline; with the merged font, rootfs 262,144 bytes smaller than stock |
 | M1 Plus hardware | Successful update, Navidrome browsing and audible playback (`dev2` interface, stock font) | **Owner-reported success on one player**; remaining checks in the [hardware report](docs/validation/hardware-owner-report.md) |
 

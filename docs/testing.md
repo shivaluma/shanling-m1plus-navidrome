@@ -26,7 +26,7 @@ docker build -t m1plus-qemu:local -f tests/Dockerfile.mips .
 python tests/mips-runtime/run.py
 ```
 
-The fixture runner uses isolated containers with `--network none`. It tests the actual MIPS backend, verified TLS, browse/search/playlist and bounded/ranged streams; the native probe uses original firmware libraries for RTLD_NOW loading and startup interception. Its custom CRT exits with `_exit`; normal unloading and teardown are not established by that test.
+The fixture runner uses isolated containers with `--network none`. It tests the actual MIPS backend, verified TLS, browse/search/playlist, bounded/ranged streams and an offline album download to a folder (bytes, cover, manifest, `statfs` and removal); the native probe uses original firmware libraries for RTLD_NOW loading and startup interception. Its custom CRT exits with `_exit`; normal unloading and teardown are not established by that test.
 
 The reference `mips-runtime-probe` image derives from the locally built `m1plus-qemu:local` image. QEMU user-mode does not boot the vendor kernel or emulate XBurst2 peripherals, framebuffer, DAC or device memory pressure.
 
@@ -36,6 +36,6 @@ The reference `mips-runtime-probe` image derives from the locally built `m1plus-
 
 ## Optional local Navidrome integration
 
-`backend/e2e_navidrome.py` uses a separately checksum-verified official Navidrome 0.64.2 Darwin arm64 executable, ffmpeg and temporary generated FLAC media/accounts. See `python backend/e2e_navidrome.py --help`. The retained reference report is under `docs/validation/`.
+`backend/e2e_navidrome.py` also downloads an album and a playlist through the real server, checks the saved FLAC bytes, `.m3u8` and removal, then restarts Navidrome with `EnableDownloads = false` and expects a reported failure. It uses a separately checksum-verified official Navidrome 0.64.2 Darwin arm64 executable (release asset SHA-256 `8b0a7798001453719ad50c12f7025a6044546c4a3568efe51feb296681f29956`), ffmpeg and temporary generated FLAC media/accounts. See `python backend/e2e_navidrome.py --help`. The retained reference report is under `docs/validation/`.
 
 [Validation scope](validation.md) · [Hardware checklist](installation.md#verify-on-the-device)

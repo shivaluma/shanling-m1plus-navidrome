@@ -20,6 +20,7 @@ import (
 	"os"
 	"os/signal"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -37,6 +38,11 @@ type Config struct {
 	Password  string `json:"password"`
 	AllowHTTP bool   `json:"allow_http"`
 	CAFile    string `json:"ca_file,omitempty"`
+	// Offline downloads: folder, free-space reserve and optional transcoding (empty = original files).
+	OfflineDir        string `json:"offline_dir,omitempty"`
+	OfflineReserveMB  int    `json:"offline_reserve_mb,omitempty"`
+	OfflineFormat     string `json:"offline_format,omitempty"`
+	OfflineMaxBitRate int    `json:"offline_max_bitrate,omitempty"`
 }
 
 type Artist struct {
@@ -64,6 +70,9 @@ type Track struct {
 	Track       int    `json:"track"`
 	Disc        int    `json:"disc"`
 	ContentType string `json:"content_type"`
+	Suffix      string `json:"suffix"`
+	Size        int64  `json:"size"`
+	Downloaded  bool   `json:"downloaded"`
 }
 type Playlist struct {
 	ID        string `json:"id"`
@@ -85,8 +94,10 @@ type wireAlbum struct {
 }
 type wireTrack struct {
 	ID, Title, Artist, Album, ArtistID, AlbumID string
-	Duration, Track, DiscNumber                 int
-	ContentType                                 string
+	Duration, Track, DiscNumber, Year           int
+	ContentType, Suffix, CoverArt               string
+	DisplayAlbumArtist                          string
+	Size                                        int64
 }
 type wirePlaylist struct {
 	ID, Name            string
@@ -122,7 +133,7 @@ func album(w wireAlbum) Album {
 	return Album{w.ID, nfc(w.Name), nfc(w.Artist), w.ArtistID, w.SongCount, w.Year, w.Duration}
 }
 func track(w wireTrack) Track {
-	return Track{w.ID, nfc(w.Title), nfc(w.Artist), nfc(w.Album), w.ArtistID, w.AlbumID, w.Duration, w.Track, w.DiscNumber, w.ContentType}
+	return Track{w.ID, nfc(w.Title), nfc(w.Artist), nfc(w.Album), w.ArtistID, w.AlbumID, w.Duration, w.Track, w.DiscNumber, w.ContentType, w.Suffix, w.Size, false}
 }
 func playlist(w wirePlaylist) Playlist { return Playlist{w.ID, nfc(w.Name), w.SongCount, w.Duration} }
 func artists(ws []wireArtist) []Artist {
@@ -159,6 +170,7 @@ type service struct {
 	sessions   map[string]capability
 	now        func() time.Time
 	ui         http.Handler
+	offline    *offline
 }
 
 func newService(cfg Config) (*service, error) {
@@ -171,6 +183,15 @@ func newService(cfg Config) (*service, error) {
 	}
 	if cfg.Username == "" || cfg.Password == "" {
 		return nil, errors.New("username and password are required")
+	}
+	if cfg.OfflineDir != "" && !filepath.IsAbs(cfg.OfflineDir) {
+		return nil, errors.New("offline_dir must be an absolute path")
+	}
+	if f := cfg.OfflineFormat; len(f) > 8 || strings.Trim(f, "abcdefghijklmnopqrstuvwxyz0123456789") != "" {
+		return nil, errors.New("offline_format must be a short lowercase format name such as mp3 or opus")
+	}
+	if cfg.OfflineReserveMB < 0 || cfg.OfflineMaxBitRate < 0 || cfg.OfflineMaxBitRate > 10000 {
+		return nil, errors.New("offline_reserve_mb and offline_max_bitrate must be non-negative")
 	}
 	tlsConfig := &tls.Config{MinVersion: tls.VersionTLS12}
 	if cfg.CAFile != "" {
@@ -198,7 +219,9 @@ func newService(cfg Config) (*service, error) {
 		}
 		return nil
 	}
-	return &service{cfg: cfg, base: base, api: &http.Client{Transport: transport, Timeout: 20 * time.Second, CheckRedirect: redirect}, media: &http.Client{Transport: transport, CheckRedirect: redirect}, sessions: make(map[string]capability), now: time.Now}, nil
+	s := &service{cfg: cfg, base: base, api: &http.Client{Transport: transport, Timeout: 20 * time.Second, CheckRedirect: redirect}, media: &http.Client{Transport: transport, CheckRedirect: redirect}, sessions: make(map[string]capability), now: time.Now}
+	s.offline = newOffline(s, cfg)
+	return s, nil
 }
 
 func loadConfig(filename string) (Config, error) {
@@ -377,6 +400,10 @@ func (s *service) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		s.prepare(w, r)
 		return
 	}
+	if strings.HasPrefix(r.URL.Path, "/v1/downloads") || r.URL.Path == "/v1/offline/remove" {
+		s.downloads(w, r)
+		return
+	}
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", "GET")
 		fail(w, &apiError{405, "method_not_allowed", "GET required"})
@@ -448,7 +475,7 @@ func (s *service) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/v1/albums":
 		out = map[string]any{"albums": albums(v.AlbumList2.Album), "offset": offset, "size": size}
 	case "/v1/album":
-		out = map[string]any{"album": album(v.Album), "tracks": tracks(v.Album.Song)}
+		out = s.withOffline("album", v.Album.ID, map[string]any{"album": album(v.Album)}, v.Album.Song)
 	case "/v1/search":
 		out = map[string]any{"artists": artists(v.SearchResult3.Artist), "albums": albums(v.SearchResult3.Album), "tracks": tracks(v.SearchResult3.Song), "offset": offset, "size": size}
 	case "/v1/playlists":
@@ -458,9 +485,20 @@ func (s *service) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		out = map[string]any{"playlists": p}
 	case "/v1/playlist":
-		out = map[string]any{"playlist": playlist(v.Playlist), "tracks": tracks(v.Playlist.Entry)}
+		out = s.withOffline("playlist", v.Playlist.ID, map[string]any{"playlist": playlist(v.Playlist)}, v.Playlist.Entry)
 	}
 	jsonResponse(w, 200, out)
+}
+
+// withOffline adds per-track "downloaded" flags and the collection's offline summary.
+func (s *service) withOffline(kind, id string, out map[string]any, songs []wireTrack) map[string]any {
+	sum, have := s.offline.summary(kind, id, songs)
+	t := tracks(songs)
+	for i := range t {
+		t[i].Downloaded = have[t[i].ID]
+	}
+	out["tracks"], out["offline"] = t, sum
+	return out
 }
 
 func (s *service) prepare(w http.ResponseWriter, r *http.Request) {
@@ -596,6 +634,7 @@ func main() {
 	if *uiDir != "" {
 		svc.ui = http.FileServer(http.Dir(*uiDir))
 	}
+	go svc.offline.run(context.Background())
 	server := &http.Server{Addr: listenAddr, Handler: svc, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, IdleTimeout: 60 * time.Second, MaxHeaderBytes: 16 * 1024}
 	// Stream responses intentionally have no global write timeout; context cancellation
 	// closes upstream requests when the player disconnects.

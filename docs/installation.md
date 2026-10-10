@@ -49,13 +49,18 @@ Record these observations individually:
 2. A Navidrome home page with four tiles, stock-looking lists that scroll, and a working search keyboard.
 3. Vietnamese text (for example "Nghệ sĩ Sơn Tùng") in both Navidrome lists and the stock library/Now Playing pages, with CJK titles still readable.
 4. Selecting a song opens the stock Now Playing page, and its Back returns to the Navidrome list.
-5. Wi-Fi and a correct device clock for verified HTTPS.
-6. Artist → album → track browsing and a successful search.
-7. Actual decoded sound through the intended output, pause/resume and seek.
-8. Multi-track next/previous, queue behavior, sleep/resume and reconnect after Wi-Fi loss.
-9. After reconnecting USB Storage, the boot snapshot's kernel/CPU/RAM/MTD and initial backend state.
+5. Downloading an album: progress in its header and on the Downloads page, files under `Navidrome/` on the card, and after **Update library** the album in the local library playing with Wi-Fi off. Also try Wi-Fi loss and sleep during a download (it should fail or resume when retried), and removal.
+6. Wi-Fi and a correct device clock for verified HTTPS.
+7. Artist → album → track browsing and a successful search.
+8. Actual decoded sound through the intended output, pause/resume and seek.
+9. Multi-track next/previous, queue behavior, sleep/resume and reconnect after Wi-Fi loss.
+10. After reconnecting USB Storage, the boot snapshot's kernel/CPU/RAM/MTD and initial backend state.
 
 Use the [hardware issue template](../.github/ISSUE_TEMPLATE/hardware-validation.yml). A snapshot can prove only its reported boot facts; it cannot prove GUI rendering or sound.
+
+## Offline downloads
+
+Downloads go to `Navidrome/` at the card root, as original files with cover art. They appear in the local library only after **Settings → Update music library → Update now** (the Downloads tile and page open that screen). If your library is set to scan only specific folders, add `Navidrome` to them. Removing a download from the Navidrome screens deletes only files it created. Your Navidrome account needs download permission (`EnableDownloads`, on by default). Optional `config.json` keys: `offline_reserve_mb` (free space to keep, default 500), and `offline_format`/`offline_max_bitrate` to save transcoded copies (for example `"opus"` and `192`) instead of originals.
 
 ## Disable and troubleshoot
 

@@ -21,6 +21,10 @@ def main():
         artists=[{"id":f"ar{i}","name":"宇多田 Test" if i==0 else f"Artist {i}","album_count":2} for i in range(6)]
         albums=[{"id":f"al{i}","name":"Requiem café" if i==0 else f"Album {i}","artist":"宇多田 Test","artist_id":"ar0","song_count":6} for i in range(6)]
         tracks=[{"id":f"s{i}","title":f"Track {i}","album":"Requiem café","artist":"宇多田 Test","track":i+1,"disc":2,"duration":120} for i in range(6)]
+        jobs={};saved=set()
+        def offline_summary(key,items):
+            j=jobs.get(key,{})
+            return {"downloaded":sum(t["id"] in saved for t in items),"total":len(items),"state":"" if j.get("state")=="removed" else j.get("state",""),"done":j.get("done",0),"error":j.get("error","")}
         class Fixture(http.server.BaseHTTPRequestHandler):
             def log_message(self,*args):pass
             def respond(self,value,status=200):
@@ -30,6 +34,7 @@ def main():
                 except (BrokenPipeError,ConnectionResetError):pass
             def do_GET(self):
                 u=urllib.parse.urlsplit(self.path);q=urllib.parse.parse_qs(u.query);requests.append((u.path,q));mode=state.read_text()
+                if mode=="dlfail" and u.path!="/v1/downloads":mode="normal"
                 if mode=="delay":Path(str(state)+".inflight").touch();time.sleep(1)
                 if mode=="malformed":self.respond(b"{broken");return
                 if mode=="schema":self.respond({"artists":"invalid shape"});return
@@ -39,15 +44,36 @@ def main():
                 elif u.path=="/v1/artist":self.respond({"artist":artists[0],"albums":albums[:2]})
                 elif u.path=="/v1/albums":
                     o=int(q.get("offset",["0"])[0]);n=int(q.get("size",["4"])[0]);self.respond({"albums":albums[o:o+n],"offset":o,"size":n})
-                elif u.path=="/v1/album":self.respond({"album":albums[0],"tracks":tracks})
+                elif u.path=="/v1/album":self.respond({"album":albums[0],"tracks":[dict(t,downloaded=t["id"] in saved) for t in tracks],"offline":offline_summary("album:al0",tracks)})
+                elif u.path=="/v1/downloads":
+                    for j in jobs.values():
+                        if j["state"]=="queued":j["state"]="active";j["done"]=3;j["bytes"]=3000
+                        elif j["state"]=="active" and mode=="dlfail":j["state"]="failed";j["error"]="not enough space on the SD card"
+                        elif j["state"]=="active":j.update(state="done",done=6,bytes=6000);saved.update(t["id"] for t in tracks)
+                    self.respond({"jobs":list(reversed(list(jobs.values()))),"free_bytes":12884901888,"reserve_bytes":524288000,"folder":"Navidrome","downloaded_tracks":len(saved)})
                 elif u.path=="/v1/search":
                     assert q.get("q")==["宇多田 & café"],"native UTF-8 query was corrupted"
                     o=int(q.get("offset",["0"])[0]);n=int(q.get("size",["4"])[0]);self.respond({"artists":artists[o:o+n],"albums":albums[o:o+n],"tracks":tracks[o:o+n],"offset":o,"size":n})
                 elif u.path=="/v1/playlists":self.respond({"playlists":[{"id":"pl","name":"Fixture Mix","song_count":3}]})
-                elif u.path=="/v1/playlist":self.respond({"playlist":{"id":"pl","name":"Fixture Mix"},"tracks":tracks[:3]})
+                elif u.path=="/v1/playlist":self.respond({"playlist":{"id":"pl","name":"Fixture Mix"},"tracks":[dict(t,downloaded=t["id"] in saved) for t in tracks[:3]],"offline":offline_summary("playlist:pl",tracks[:3])})
                 else:self.respond({},404)
             def do_POST(self):
                 data=json.loads(self.rfile.read(int(self.headers.get("Content-Length","0"))));requests.append((self.path,{"id":[data["id"]]}))
+                if self.path in ("/v1/downloads","/v1/downloads/cancel","/v1/offline/remove"):
+                    assert data["kind"] in ("album","playlist") and set(data)=={"kind","id"},"bad download request"
+                    key=data["kind"]+":"+data["id"]
+                    if self.path=="/v1/downloads":
+                        jobs[key]=dict(id=key,kind=data["kind"],source_id=data["id"],name="Requiem café" if data["kind"]=="album" else "Fixture Mix",state="queued",total=6,done=0,bytes=0,total_bytes=6000,current="",error="")
+                        self.respond({"job":jobs[key]},202)
+                    elif self.path=="/v1/downloads/cancel":
+                        ok=key in jobs and jobs[key]["state"] in ("queued","active")
+                        if ok:jobs[key]["state"]="cancelled"
+                        self.respond({"cancelled":ok})
+                    else:
+                        n=len(saved);saved.clear()
+                        if key in jobs:jobs[key]["state"]="removed"
+                        self.respond({"removed_files":n})
+                    return
                 if state.read_text()=="delay_prepare":Path(str(state)+".inflight").touch();time.sleep(1)
                 if state.read_text()=="badurl":self.respond({"url":"https://user:secret@foreign.invalid/track"});return
                 token=("%032x" % (int(data["id"][1:])+1))
@@ -59,7 +85,7 @@ def main():
         common=["clang","-g","-O1","-fsanitize="+sanitizers,"-fno-omit-frame-pointer","-Wno-deprecated-declarations"]
         darwin=platform.system()=="Darwin"
         plugin=work/("native-host.dylib" if darwin else "native-host.so");harness=work/"harness"
-        subprocess.run(common+(["-dynamiclib"] if darwin else ["-shared","-fPIC"])+["-DND_HOST_TEST","-DND_PAGE=4","-fvisibility=hidden",str(ROOT/"native/nd_ui.c"),str(ROOT/"native/startup.c"),str(ROOT/"vendor/cJSON.c"),"-lcurl","-lpthread","-o",str(plugin)],check=True)
+        subprocess.run(common+(["-dynamiclib"] if darwin else ["-shared","-fPIC"])+["-DND_HOST_TEST","-DND_PAGE=4","-DND_POLL_SECONDS=1","-fvisibility=hidden",str(ROOT/"native/nd_ui.c"),str(ROOT/"native/startup.c"),str(ROOT/"vendor/cJSON.c"),"-lcurl","-lpthread","-o",str(plugin)],check=True)
         subprocess.run(common+[str(HERE/"harness.c")]+(["-Wl,-export_dynamic"] if darwin else ["-rdynamic","-ldl"])+["-lpthread","-o",str(harness)],check=True)
         env=dict(os.environ,ASAN_OPTIONS="detect_leaks=0:abort_on_error=1",UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1")
         try:
