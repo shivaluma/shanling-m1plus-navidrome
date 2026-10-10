@@ -2,7 +2,7 @@
 
 ## Next: hardware evidence
 
-- Confirm updater acceptance and boot on the pinned V2.1 target.
+- Retain diagnostics and firmware identification for the first owner-reported successful update, Navidrome browsing and audible playback; see the [hardware report](validation/hardware-owner-report.md).
 - Capture CPU/ISA, NaN policy clues, RAM and actual MTD partition sizes.
 - Verify home integration, native layout/T9 keyboard and error states.
 - Verify decoded audio, DAC output, seek, multi-track queues and hardware controls.

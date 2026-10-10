@@ -1,6 +1,6 @@
 # Installation and device validation
 
-**Experimental: no on-device boot, UI or audio validation has been recorded.** A working recovery method has not been established. The restore draft requires a functioning updater and does not recover a player that cannot boot.
+**Experimental: one owner reports successful flashing, Navidrome browsing and audible playback on an M1 Plus.** See the [hardware report](validation/hardware-owner-report.md) for scope and remaining checks. A working recovery method has not been established. The restore draft requires a functioning updater and does not recover a player that cannot boot.
 
 ## Prepare the SD payload
 

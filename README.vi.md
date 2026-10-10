@@ -4,7 +4,7 @@
 
 Dự án reverse engineering độc lập cho **Shanling M1 Plus V2.1**, bổ sung duyệt nghệ sĩ/album/playlist và tìm kiếm server Navidrome ngay trong giao diện native Shanling. Bài được chuyển vào hàng đợi của trình phát gốc; giữ widget, theme và cỡ chữ hiện có.
 
-**Đây là bản thử nghiệm, chưa xác minh trên phần cứng.** Backend MIPS đã chạy dưới QEMU và thử với Navidrome thật. Cập nhật firmware, boot, bố cục/bàn phím, giải mã nhạc và DAC trên M1 Plus vẫn chưa được kiểm chứng. Repo chưa phát hành firmware sẵn để flash.
+**Đã chạy trên M1 Plus thật, theo xác nhận của chủ máy.** Ngày 2026-10-10, chủ máy xác nhận flash thành công, duyệt Navidrome được và phát nhạc có tiếng. Backend MIPS cũng đã chạy dưới QEMU và thử với Navidrome thật. Tìm kiếm/T9, seek, nút điều khiển và sleep/resume còn cần kiểm tra riêng; xem [báo cáo thiết bị](docs/validation/hardware-owner-report.md). Đây vẫn là bản thử nghiệm; repo chưa phát hành firmware sẵn để flash.
 
 ## Đã triển khai
 
